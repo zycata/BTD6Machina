@@ -257,7 +257,6 @@ bool findWindow() {
 
 
 void testListMake() {
-    addTowers(); // Initialize tower locations
     for (int i = 0; i < totalTowers; ++i) {
         cout << "Row " << i << ": ";
         for (int j = 0; j < 2; ++j) {
@@ -270,6 +269,8 @@ void testListMake() {
 
 int main() {
     cout << "Script Started" << endl;
+
+    addTowers(); // Initialize tower locations
 
     testListMake(); // Initialize tower locations
     findWindow(); // Find the window
@@ -285,6 +286,6 @@ int main() {
     upgradeTower(300, 690, 1); 
     
 
-    Sleep(1000);
+    cout << "Towers placed: " << endl;
     return 0;
 }
