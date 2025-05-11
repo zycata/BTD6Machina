@@ -160,7 +160,12 @@ void pageup() {
 }
 
 
-void placeTower(int tower, int x, int y) {
+
+// add something to check if the pixels given are valid
+// return false when pixels are not valid
+bool placeTower(int tower, int x, int y) {
+    
+
     if (tower >= page1Towers) {
         if (pageState == 0) {
             pagedown();
@@ -170,8 +175,6 @@ void placeTower(int tower, int x, int y) {
             pageup();
         }
     }
-
-
     CONST int delay = 50;
     Sleep(delay*10);
     int towerX = towerLocations[tower][0];
@@ -186,7 +189,7 @@ void placeTower(int tower, int x, int y) {
     Sleep(delay);
     moveMouse(heroLocation[0], heroLocation[1]);
     Sleep(delay*3);
-
+    return true;
 }
 
 
@@ -270,13 +273,13 @@ void testListMake() {
 int main() {
     cout << "Script Started" << endl;
 
-    addTowers(); // Initialize tower locations
+    addTowers(); 
 
-    testListMake(); // Initialize tower locations
-    findWindow(); // Find the window
+    testListMake(); 
+    findWindow(); 
     
-   /* placeTower(0, 100, 200);
-    placeTower(22, 300, 400); */
+    placeTower(21, 100, 200);
+    placeTower(22, 300, 400); 
     placeTower(2, 300, 690);
     upgradeTower(300, 690, 2);
     upgradeTower(300, 690, 2);
@@ -284,7 +287,8 @@ int main() {
     upgradeTower(300, 690, 1);
     upgradeTower(300, 690, 1);
     upgradeTower(300, 690, 1); 
-    
+    upgradeTower(300, 690, 1); 
+
 
     cout << "Towers placed: " << endl;
     return 0;
