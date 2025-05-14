@@ -17,10 +17,10 @@ bool towerPlacedSuccessfully() {
 
 bool assertBool(bool expected ,bool condition, string message) {
     if (condition != expected) {
-        cout << "Assertion failed: " << message << endl;
+        cerr << "Assertion failed: " << message << endl;
         return false;
     } else {
-        cout << "Test passed" << endl;
+        cerr << "Test passed" << endl;
     }
     return true;
 }
