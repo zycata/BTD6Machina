@@ -109,6 +109,8 @@ void logTowers() {
         TowerFile << "Tower ID: " << tower.towerId << ", Type: " << tower.towerType << ", Position: (" << tower.x << ", " << tower.y << ")" << ", Cross Pathing: " << tower.getCrossPathing() << endl;
     }
 }
+
+
 int main() {
     cout << "Script Started" << endl;
     placeTower(1, 100, 200);

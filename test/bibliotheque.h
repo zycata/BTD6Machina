@@ -2,6 +2,12 @@
 #ifndef BIBLIOTHEQUE_H
 #define BIBLIOTHEQUE_H
 
-int yap(); // Function declaration
+
+
+namespace bibliotheque {
+    int yap();
+
+    void test();
+}
 
 #endif
