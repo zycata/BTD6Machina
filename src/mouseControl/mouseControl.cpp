@@ -256,9 +256,6 @@ bool findWindow() {
 }
 
 
-
-
-
 void testListMake() {
     for (int i = 0; i < totalTowers; ++i) {
         cout << "Row " << i << ": ";

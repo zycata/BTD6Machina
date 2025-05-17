@@ -1,4 +1,4 @@
 Towers placed: 3
-Tower ID: 0, Type: Dart Monkey, Position: (100, 200), Cross Pathing: 000
-Tower ID: 1, Type: Boomerang Monkey, Position: (300, 400), Cross Pathing: 000
-Tower ID: 2, Type: Bomb Shooter, Position: (500, 600), Cross Pathing: 000
+Tower ID: 0, Type: Dart Monkey, Position: (100, 200), Cross Pathing: 052, Round Placed: 6
+Tower ID: 1, Type: Monkey Buccaneer, Position: (300, 400), Cross Pathing: 000, Round Placed: 7
+Tower ID: 2, Type: Dartling Gunner, Position: (500, 600), Cross Pathing: 000, Round Placed: 7
