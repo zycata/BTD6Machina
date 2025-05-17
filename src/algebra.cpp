@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
@@ -36,7 +37,7 @@ map<int, std::string> towerMap = {
     {24, "Beast Handler"}
 };
 
-const int towerUpgrades[24][3][5] = {
+const int towerUpgrades[25][3][5] = {
     
     {
 
@@ -47,50 +48,50 @@ const int towerUpgrades[24][3][5] = {
 
     // Dart Monkey
     {
-        {140, 220, 300, 1800, 15000}, // Path 1
-        {100, 190, 400, 7500, 45000}, // Path 2
-        {90, 200, 450, 1800, 18000}   // Path 3
+        {140, 200, 320, 1800, 15000}, // Path 1
+        {100, 190, 450, 7200, 45000}, // Path 2
+        {90, 200, 575, 2050, 21500}   // Path 3
     },
     // Boomerang Monkey
     {
-        {150, 300, 750, 3000, 25000},
-        {130, 270, 700, 2800, 23000},
-        {140, 290, 720, 2900, 24000}
+        {200, 280, 600, 2000, 25000},
+        {175, 250, 1250, 4200, 35000},
+        {100, 300, 1300, 2400, 50000}
     },
     // Bomb Shooter
     {
-        {200, 400, 1000, 4000, 30000},
-        {180, 360, 900, 3600, 28000},
-        {190, 380, 950, 3800, 29000}
+        {250, 650, 1100, 2800, 55000},
+        {250, 400, 1000, 3450, 28000},
+        {200, 300, 700, 2500, 23000}
     },
     // Tack Shooter
     {
-        {100, 200, 500, 2000, 20000},
-        {110, 220, 550, 2200, 21000},
-        {120, 240, 600, 2400, 22000}
+        {150, 300, 600, 3500, 45500},
+        {100, 225, 550, 2700, 15000},
+        {110, 110, 450, 3200, 20000}
     },
     // Ice Monkey
     {
-        {150, 300, 750, 3000, 25000},
-        {160, 320, 800, 3200, 26000},
-        {170, 340, 850, 3400, 27000}
+        {150, 350, 1500, 2200, 28000},
+        {225, 450, 2500, 4000, 19200},
+        {175, 225, 1750, 2750, 30000}
     },
     // Glue Gunner
     {
-        {100, 200, 500, 2000, 20000},
-        {110, 220, 550, 2200, 21000},
-        {120, 240, 600, 2400, 22000}
+        {200, 300, 2000, 5000, 22500},
+        {100, 970, 1950, 4000, 16000},
+        {280, 400, 3600, 4000, 24000}
     },
     // Sniper Monkey
     {
-        {250, 500, 1250, 5000, 35000},
-        {260, 520, 1300, 5200, 36000},
-        {270, 540, 1350, 5400, 37000}
+        {350, 1300, 2500, 6000, 32000},
+        {250, 450, 2100, 7600, 14000},
+        {450, 450, 2900, 4100, 14700}
     },
     // Monkey Sub
     {
         {300, 600, 1500, 6000, 40000},
-        {310, 620, 1550, 6200, 41000},
+        {310, 450, 1550, 6200, 41000},
         {320, 640, 1600, 6400, 42000}
     },
     // Monkey Buccaneer
@@ -182,9 +183,70 @@ const int towerUpgrades[24][3][5] = {
         {950, 1900, 4750, 19000, 105000},
         {960, 1920, 4800, 19200, 106000},
         {970, 1940, 4850, 19400, 107000}
+    },
+    // Beast Handler
+    {
+        {1000, 2000, 5000, 20000, 110000},
+        {1100, 2200, 5500, 22000, 115000},
+        {1200, 2400, 6000, 24000, 120000}
     }
 };
 
+const int towerCosts[25] = {
+    0,  // Hero
+    200, // Dart Monkey
+    315, // Boomerang Monkey
+    375, // Bomb Shooter
+    260, // Tack Shooter
+    500, // Ice Monkey
+    225, // Glue Gunner
+    350, // Sniper Monkey
+    325, // Monkey Sub
+    400,// Monkey Buccaneer
+    800,// Monkey Ace
+    1500,// Heli Pilot
+    750,// Mortar Monkey
+    850,// Dartling Gunner
+    250,// Wizard Monkey
+    2500,// Super Monkey
+    400,// Ninja Monkey
+    550,// Alchemist
+    400,// Druid
+    475,// Mermonkey
+    1250,// Banana Farm
+    1000,// Spike Factory
+    1200,// Monkey Village
+    350,// Engineer Monkey
+    250,// Beast Handler
+};
+
+const int towersAllowed[25] {
+    0, 
+    1, // Dart Monkey
+    2, // Boomerang Monkey
+    3, // Bomb Shooter
+    4, // Tack Shooter
+    5, // Ice Monkey
+    6, // Glue Gunner
+    7, // Sniper Monkey
+    8, // Monkey Sub
+    9, // Monkey Buccaneer
+    10, // Monkey Ace
+    11, // Heli Pilot
+    12, // Mortar Monkey
+    13, // Dartling Gunner
+    14, // Wizard Monkey
+    15, // Super Monkey
+    16, // Ninja Monkey
+    17, // Alchemist
+    18, // Druid
+    19, // Mermonkey
+    20, // Banana Farm
+    21, // Spike Factory
+    22, // Monkey Village
+    23, // Engineer Monkey
+    24  // Beast Handler 
+};
 
 
 class Tower {
@@ -240,6 +302,16 @@ struct UpgradeOption {
     string towerType;
 };
 
+struct PlacementOption {
+    int towerType;
+    int cost;
+    string towerTypeStr;
+
+};
+
+enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE };
+
+
 class StrategyMaker {
     private:
         vector<Tower> TowersPlaced;
@@ -247,16 +319,34 @@ class StrategyMaker {
         int currentRound;
         int totalTowers;
         int cash;
+        Difficulty type;
+        float cashMultiplier;
+
     public:
         
 
-        StrategyMaker(int currentRound) {
-
+        StrategyMaker(int currentRound, Difficulty type) {
             TowersPlaced = {};
             StrategyActions = {};
             this->currentRound = currentRound;
             totalTowers = 0;
-            this->cash = 1000000; 
+            this->cash = 650; 
+
+            this->type = type;
+            switch (type) {
+                case EASY:
+                    cashMultiplier = 0.85;
+                    break;
+                case MEDIUM:
+                    cashMultiplier = 1.0;
+                    break;
+                case HARD:
+                    cashMultiplier = 1.08;
+                    break;
+                case IMPOPPABLE:
+                    cashMultiplier = 1.111;
+                    break;
+            }
         }
 
         int getCurrentRound() {
@@ -288,14 +378,18 @@ class StrategyMaker {
             return numUsedPaths <= 2 && numHighPaths <= 1;
         }
 
-
+        int roundToNearest5(int num, float multiplier) {
+            float value = num * multiplier;
+            return static_cast<int>(5 * round(value / 5.0f));
+        }
 
         vector<UpgradeOption> getAvailableUpgrades() {
             vector<UpgradeOption> availableUpgrades;
             for (auto& tower : TowersPlaced) {
                 for (int i = 0; i < 3; i++) {
                     int cost = towerUpgrades[tower.getTowerType()][i][tower.path[i]];
-
+                    cost = roundToNearest5(cost, cashMultiplier);
+                    // !!! Check add multiplayer of difficulty soon
                     tower.path[i] += 1;
                     if (isValidBTD6Upgrade(tower.path) && cost <= cash ) {
                         UpgradeOption option;
@@ -313,6 +407,20 @@ class StrategyMaker {
             return availableUpgrades;
         }
 
+        vector<PlacementOption> getTowerPlacementOptions() {
+            vector<PlacementOption> newTowers;
+            for (auto& towerType : towersAllowed) {
+                int cost = roundToNearest5(towerCosts[towerType], cashMultiplier);
+                if (cost > cash) continue; // Skip if not enough cash
+                if (towerType == 0) continue; // Skip hero (changes later)
+                PlacementOption option;
+                option.towerType = towerType;
+                option.cost = cost;
+                option.towerTypeStr = towerMap[towerType];
+                newTowers.push_back(option);
+            }
+            return newTowers;
+        }
 
         const char* actionTypeToStr(Action::ActionType type) {
             switch (type) {
@@ -336,7 +444,7 @@ class StrategyMaker {
             //implement mouse control later
             for (auto& tower : TowersPlaced) {
                 if (tower.getTowerId() == towerId) {
-                    tower.path[path]++; // Set the path to 1 to indicate it's upgraded
+                    tower.path[path]++; 
                     // mouse::upgradeTower(tower.x, tower.y, path);
                     return true;
                 }
@@ -367,10 +475,15 @@ void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
     }
 }
 
-
+void printTowerPlacementOptions(const vector<PlacementOption>& options) {
+    cout << "Available Tower Placement Options:" << endl;
+    for (const auto& option : options) {
+        cout << "Tower Type: " << option.towerTypeStr << ", Tower ID: " << option.towerType << ", Placement Cost: " << option.cost << endl;
+    }
+}
 int main() {
     cout << "Script Started" << endl;
-    StrategyMaker strategy(6);
+    StrategyMaker strategy(6, Difficulty::HARD);
     strategy.placeTower(1, 100, 200);
     strategy.upgradeTower(0, 1);
     strategy.upgradeTower(0, 1);
@@ -385,10 +498,11 @@ int main() {
     strategy.placeTower(13, 500, 600);
     strategy.logTowers();
     printAvailableUpgrades(strategy.getAvailableUpgrades());
+    printTowerPlacementOptions(strategy.getTowerPlacementOptions());
     int x = 0;
-    cin >> x;
+    //cin >> x;
 
     cout << x*3 << endl;
-    system("pause");
+    //system("pause");
     return 0;
 }

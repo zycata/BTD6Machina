@@ -271,9 +271,10 @@ int main() {
     cout << "Script Started" << endl;
 
     addTowers(); 
-
+    findWindow();
+    /*
     testListMake(); 
-    findWindow(); 
+    
     
     placeTower(21, 100, 200);
     placeTower(22, 300, 400); 
@@ -284,9 +285,9 @@ int main() {
     upgradeTower(300, 690, 1);
     upgradeTower(300, 690, 1);
     upgradeTower(300, 690, 1); 
-    upgradeTower(300, 690, 1); 
+    upgradeTower(300, 690, 1); */
 
-
+    moveMouse(0, 0);
     cout << "Towers placed: " << endl;
     return 0;
 }
