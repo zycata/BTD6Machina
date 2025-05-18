@@ -37,13 +37,14 @@ map<int, std::string> towerMap = {
     {24, "Beast Handler"}
 };
 
+const int INVALID = -1;
 const int towerUpgrades[25][3][5] = {
     
     {
-
-        {0, 0, 0, 0, 0}, // Hero
-        {0, 0, 0, 0, 0}, // Path 1
-        {0, 0, 0, 0, 0}  // Path 2
+        // Hero (upgrading hero is not allowed)
+        {INVALID, INVALID, INVALID, INVALID, INVALID}, 
+        {INVALID, INVALID, INVALID, INVALID, INVALID}, 
+        {INVALID, INVALID, INVALID, INVALID, INVALID  }  
     },
 
     // Dart Monkey
@@ -54,7 +55,7 @@ const int towerUpgrades[25][3][5] = {
     },
     // Boomerang Monkey
     {
-        {200, 280, 600, 2000, 25000},
+        {200, 280, 600, 2000, 32500},
         {175, 250, 1250, 4200, 35000},
         {100, 300, 1300, 2400, 50000}
     },
@@ -90,105 +91,105 @@ const int towerUpgrades[25][3][5] = {
     },
     // Monkey Sub
     {
-        {300, 600, 1500, 6000, 40000},
-        {310, 450, 1550, 6200, 41000},
-        {320, 640, 1600, 6400, 42000}
+        {130, 500, 700, 2300, 28000},
+        {450, 300, 1350, 13000, 29000},
+        {450, 1000, 1100, 2500, 25000}
     },
     // Monkey Buccaneer
     {
-        {350, 700, 1750, 7000, 45000},
-        {360, 720, 1800, 7200, 46000},
-        {370, 740, 1850, 7400, 47000}
+        {275, 425, 3050, 8000, 24500},
+        {550, 500, 900, 3900, 27000},
+        {200, 350, 2400, 5500, INVALID} //23000} // tell ai to not upgrade a boat to trade empire
     },
     // Monkey Ace
     {
-        {400, 800, 2000, 8000, 50000},
-        {410, 820, 2050, 8200, 51000},
-        {420, 840, 2100, 8400, 52000}
+        {650, 650, 1000, 3000, 42500},
+        {200, 350, 900, 18000, 30000},
+        {500, 550, 2550, 23400, 85000}
     },
     // Heli Pilot
     {
-        {450, 900, 2250, 9000, 55000},
-        {460, 920, 2300, 9200, 56000},
-        {470, 940, 2350, 9400, 57000}
+        {800, 500, 1850, 19600, 45000},
+        {300, 600, 3500, 9500, 30000},
+        {250, 350, 3100, 8500, 35000}
     },
     // Mortar Monkey
     {
-        {500, 1000, 2500, 10000, 60000},
-        {510, 1020, 2550, 10200, 61000},
-        {520, 1040, 2600, 10400, 62000}
+        {500, 500, 825, 7200, 36000},
+        {300, 500, 900, 6500, 38000},
+        {200, 500, 900, 9500, 40000}
     },
     // Dartling Gunner
     {
-        {550, 1100, 2750, 11000, 65000},
-        {560, 1120, 2800, 11200, 66000},
-        {570, 1140, 2850, 11400, 67000}
+        {300, 900, 3000, 11750, 75000},
+        {250, 950, 4500, 5850, 65000},
+        {150, 1200, 3400, 12000, 58000}
     },
     // Wizard Monkey
     {
-        {600, 1200, 3000, 12000, 70000},
-        {610, 1220, 3050, 12200, 71000},
-        {620, 1240, 3100, 12400, 72000}
+        {175, 450, 1450, 10000, 32000},
+        {300, 800, 3300, 6000, 50000},
+        {300, 300, 1500, 2800, 26500}
     },
     // Super Monkey
     {
-        {1000, 2000, 5000, 20000, 100000},
-        {1100, 2200, 5500, 22000, 110000},
-        {1200, 2400, 6000, 24000, 120000}
+        {2000, 2500, 20000, 100000, 500000},
+        {1500, 1900, 7500, 25000, 70000},
+        {3000, 1200, 5600, 55555, 165650}
     },
     // Ninja Monkey
     {
-        {650, 1300, 3250, 13000, 75000},
-        {660, 1320, 3300, 13200, 76000},
-        {670, 1340, 3350, 13400, 77000}
+        {350, 350, 900, 2750, 35000},
+        {250, 400, 1200, 5200, 22000},
+        {300, 450, 2250, 5000, 40000}
     },
     // Alchemist
     {
-        {700, 1400, 3500, 14000, 80000},
-        {710, 1420, 3550, 14200, 81000},
-        {720, 1440, 3600, 14400, 82000}
+        {250, 350, 1400, 2850, 48000},
+        {250, 475, 2800, 4200, 45000},
+        {650, 450, 1000, 2750, 40000}
     },
     // Druid
     {
-        {750, 1500, 3750, 15000, 85000},
-        {760, 1520, 3800, 15200, 86000},
-        {770, 1540, 3850, 15400, 87000}
+        {350, 850, 1700, 4500, 60000},
+        {250, 350, 1050, 4900, 35000},
+        {100, 300, 600, 2350, 45000}
     },
     // Mermonkey
     {
-        {750, 1500, 3750, 15000, 85000},
-        {760, 1520, 3800, 15200, 86000},
-        {770, 1540, 3850, 15400, 87000}
+        {250, 300, 1300, 4200, 23000},
+        {300, 400, 2300, 8000, 52000},
+        {200, 380, 2000, 7600, 25000}
     },
     // Banana Farm
     {
-        {800, 1600, 4000, 16000, 90000},
-        {810, 1620, 4050, 16200, 91000},
-        {820, 1640, 4100, 16400, 92000}
+        {500, 600, 3000, 19000, 115000},
+        {300, 800, 3650, 7200, 100000},
+        {250, 400, 2700, 15000, 70000}
     },
     // Spike Factory
     {
-        {850, 1700, 4250, 17000, 95000},
-        {860, 1720, 4300, 17200, 96000},
-        {870, 1740, 4350, 17400, 97000}
+        {800, 600, 2300, 9500, 125000},
+        {600, 800, 2500, 7000, 41000},
+        {150, 400, 1300, 3600, 30000}
     },
     // Monkey Village
     {
-        {900, 1800, 4500, 18000, 100000},
-        {910, 1820, 4550, 18200, 101000},
-        {920, 1840, 4600, 18400, 102000}
+        {400, 1500, 800, 2500, 25000},
+        {250, 2000, 7500, 20000, 40000},
+        {500, 500, 10000, 3000, INVALID} // 5000} //monkey opolis is shit 
     },
     // Engineer Monkey
     {
-        {950, 1900, 4750, 19000, 105000},
-        {960, 1920, 4800, 19200, 106000},
-        {970, 1940, 4850, 19400, 107000}
+        {500, 400, 575, 2500, 32000},
+        {250, 350, 900, 13500, 72000},
+        {450, 220, 450, 3600, 45000}
     },
     // Beast Handler
     {
-        {1000, 2000, 5000, 20000, 110000},
-        {1100, 2200, 5500, 22000, 115000},
-        {1200, 2400, 6000, 24000, 120000}
+        {160, 810, 2010, 12500, 45000},
+        {175, 830, 2065, 9500, 60000},
+        {190, 860, 2120, 9000, 30000}
     }
 };
 
@@ -253,17 +254,16 @@ class Tower {
     private:
         int towerId; // which tower it is for upgrading
         int tower; 
-    public:
-        string towerType;
-        int x, y;             // for placement
-        int path[3];          // represent cross pathing
+        string towerTypeStr;
         int round_placed;
+        int x, y;             // for placement
+    public:
+        
+        int path[3];          // represent cross pathing
+        
 
-        Tower(int xPos, int yPos, int towerCode,
-            int path0, int path1, int path2,
-            int roundPlaced, int id)
-            : towerType(towerMap[towerCode]), x(xPos), y(yPos), tower(towerCode),
-            round_placed(roundPlaced), towerId(id)
+        Tower(int xPos, int yPos, int towerCode, int path0, int path1, int path2, int roundPlaced, int id)
+            : towerTypeStr(towerMap[towerCode]), x(xPos), y(yPos), tower(towerCode),round_placed(roundPlaced), towerId(id)
         {
             path[0] = path0;
             path[1] = path1;
@@ -278,6 +278,21 @@ class Tower {
             return towerId;
         }
 
+        int getRoundPlaced() {
+            return round_placed;
+        }
+
+        string getTowerTypeStr() {
+            return towerTypeStr;
+        }
+        
+        int getX() {
+            return x;
+        }
+
+        int getY() {
+            return y;
+        }
         
 
         string getCrossPathing() {
@@ -299,7 +314,7 @@ struct UpgradeOption {
     int path;
     int cost;
     int tier;
-    string towerType;
+    string towerTypeStr;
 };
 
 struct PlacementOption {
@@ -344,7 +359,7 @@ class StrategyMaker {
                     cashMultiplier = 1.08;
                     break;
                 case IMPOPPABLE:
-                    cashMultiplier = 1.111;
+                    cashMultiplier = 1.2;
                     break;
             }
         }
@@ -388,8 +403,11 @@ class StrategyMaker {
             for (auto& tower : TowersPlaced) {
                 for (int i = 0; i < 3; i++) {
                     int cost = towerUpgrades[tower.getTowerType()][i][tower.path[i]];
+                    
+                    if (cost == INVALID) continue; // Skip invalid upgrades
+                    if (tower.path[i] >= 5) continue; // Skip if already at max tier
                     cost = roundToNearest5(cost, cashMultiplier);
-                    // !!! Check add multiplayer of difficulty soon
+                    
                     tower.path[i] += 1;
                     if (isValidBTD6Upgrade(tower.path) && cost <= cash ) {
                         UpgradeOption option;
@@ -397,7 +415,7 @@ class StrategyMaker {
                         option.path = i;
                         option.cost = cost;
                         option.tier = tower.path[i];
-                        option.towerType = tower.towerType;
+                        option.towerTypeStr = tower.getTowerTypeStr();
                         availableUpgrades.push_back(option);
 
                     } 
@@ -459,8 +477,8 @@ class StrategyMaker {
             cout << "Towers placed: " << TowersPlaced.size() << endl;
 
             for (auto& tower : TowersPlaced) {
-                cout << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.towerType << ", Position: (" << tower.x << ", " << tower.y << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.round_placed << endl;
-                TowerFile << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.towerType << ", Position: (" << tower.x << ", " << tower.y << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.round_placed << endl;
+                cout << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced() << endl;
+                TowerFile << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced()  << endl;
             }
         }
 
@@ -471,7 +489,7 @@ class StrategyMaker {
 void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
     cout << "Available Upgrades:" << endl;
     for (const auto& upgrade : upgrades) {
-        cout << "Tower Type: " << upgrade.towerType << ", Tower ID: " << upgrade.towerId << ", Path: " << upgrade.path << ", Upgrade Tier: " << upgrade.tier << ", Cost: " << upgrade.cost << endl;
+        cout << "Tower Type: " << upgrade.towerTypeStr << ", Tower ID: " << upgrade.towerId << ", Path: " << upgrade.path << ", Upgrade Tier: " << upgrade.tier << ", Cost: " << upgrade.cost << endl;
     }
 }
 
@@ -483,7 +501,7 @@ void printTowerPlacementOptions(const vector<PlacementOption>& options) {
 }
 int main() {
     cout << "Script Started" << endl;
-    StrategyMaker strategy(6, Difficulty::HARD);
+    StrategyMaker strategy(6, Difficulty::IMPOPPABLE);
     strategy.placeTower(1, 100, 200);
     strategy.upgradeTower(0, 1);
     strategy.upgradeTower(0, 1);
@@ -499,10 +517,7 @@ int main() {
     strategy.logTowers();
     printAvailableUpgrades(strategy.getAvailableUpgrades());
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());
-    int x = 0;
-    //cin >> x;
-
-    cout << x*3 << endl;
+    
     //system("pause");
     return 0;
 }
