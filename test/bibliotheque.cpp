@@ -31,7 +31,8 @@ int main() {
     cout << roundToNearest5(200,  1.08) << endl;
     cout << roundToNearestFive(244.0) << endl;
     cout << roundToNearestFive(250.0) << endl;
-
+    int a[2] = {1, 2};
+    cout << a[3] << endl;
     return 0;
 
 }
