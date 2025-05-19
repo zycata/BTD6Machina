@@ -4,6 +4,10 @@
 #include <fstream>
 #include <map>
 #include <cmath>
+#include "mouseControl/mouseControl.h"
+#include <cstdlib>
+#include <ctime>
+#include <windows.h>
 
 using namespace std;
 
@@ -221,7 +225,7 @@ const int towerCosts[25] = {
     250,// Beast Handler
 };
 
-const int towersAllowed[25] {
+const int te[25] {
     0, 
     1, // Dart Monkey
     2, // Boomerang Monkey
@@ -249,6 +253,7 @@ const int towersAllowed[25] {
     24  // Beast Handler 
 };
 
+const int towersAllowed[2] = {16, 17};
 
 class Tower {
     private:
@@ -326,6 +331,20 @@ struct PlacementOption {
 
 enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE };
 
+bool getInput() {
+    char choice;
+    cin >> choice;
+    switch (choice) {
+        case 't':
+            return true;
+        case 'f':
+            return false;
+        default:
+            cout << "Invalid input. Please enter 't' or 'f'." << endl;
+            return getInput();
+    }
+    
+}
 
 class StrategyMaker {
     private:
@@ -337,9 +356,12 @@ class StrategyMaker {
         Difficulty type;
         float cashMultiplier;
 
-    public:
-        
+        const int xMAx = 1000;
+        const int yMax = 720;
+        const int yMin = 40;
+        const int xMin = 25;
 
+    public:
         StrategyMaker(int currentRound, Difficulty type) {
             TowersPlaced = {};
             StrategyActions = {};
@@ -362,6 +384,13 @@ class StrategyMaker {
                     cashMultiplier = 1.2;
                     break;
             }
+            
+            mouseControl::initializeMouseControls();
+            srand(time(0));
+        }
+
+        void setCash(int cash) {
+            this->cash = cash;
         }
 
         int getCurrentRound() {
@@ -451,9 +480,19 @@ class StrategyMaker {
 
         bool placeTower(int tower, int x, int y) {
             //implement mouse control later
+            mouseControl::placeTower(tower, x, y);
+
+            // check if placement was successful
+            cout << "Tower placement at (" << x << ", " << y << ") for tower type " << towerMap[tower] << ". Was it successful? (t/f): ";
+            bool success = getInput(); // manually tell ai if the placement was successful
+            if (!success) {
+                cerr << "Tower placement failed." << endl;
+                return false; // Placement failed
+            }
             Tower newTower( x, y, tower, 0, 0, 0, currentRound, totalTowers );
             totalTowers++;
             TowersPlaced.push_back(newTower);
+            StrategyActions.push_back({Action::PLACE, newTower, x, y, tower, 0, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
             return true;
         }
@@ -463,7 +502,12 @@ class StrategyMaker {
             for (auto& tower : TowersPlaced) {
                 if (tower.getTowerId() == towerId) {
                     tower.path[path]++; 
-                    // mouse::upgradeTower(tower.x, tower.y, path);
+                    mouseControl::upgradeTower(tower.getX(), tower.getY(), path);
+                    
+                    int cost = roundToNearest5(towerUpgrades[tower.getTowerType()][path][tower.path[path]], cashMultiplier);
+                    cash -= cost;
+                    StrategyActions.push_back({Action::UPGRADE, tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
+
                     return true;
                 }
             }
@@ -482,6 +526,37 @@ class StrategyMaker {
             }
         }
 
+                
+        int getRandomInt    (int n1, int n2) {
+            // srand(time(nullptr));  // seed (only once in main ideally)
+            return n1 + rand() % (n2 - n1 + 1);
+        }
+
+        void singleRoundLoop() {
+            
+            int shouldPass; 
+            do {
+                vector<PlacementOption> newTowers = getTowerPlacementOptions();
+                shouldPass = newTowers.size();
+                int randomNum = rand() % newTowers.size(); 
+                PlacementOption selectedTower = newTowers[randomNum];
+                for (int i = 0; i < 10; i++) {
+                    int x = getRandomInt(xMin, xMAx);
+                    int y = getRandomInt(yMin, yMax);
+                    if (placeTower(selectedTower.towerType, x, y)) {
+                        cash -= selectedTower.cost;
+                        cout << "Placed tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
+                        break; // Exit the loop after successful placement
+                    } else {
+                        cout << "Failed to place tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
+                    }
+                } 
+            } while (shouldPass > 0 && cash > 0);
+            
+            
+        }
+        
+
 };
 
 
@@ -499,7 +574,13 @@ void printTowerPlacementOptions(const vector<PlacementOption>& options) {
         cout << "Tower Type: " << option.towerTypeStr << ", Tower ID: " << option.towerType << ", Placement Cost: " << option.cost << endl;
     }
 }
+
+
+
 int main() {
+    // wait 2 seconds
+    
+    Sleep(2000);
     cout << "Script Started" << endl;
     StrategyMaker strategy(6, Difficulty::IMPOPPABLE);
     strategy.placeTower(1, 100, 200);

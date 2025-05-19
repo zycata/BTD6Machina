@@ -1,7 +1,10 @@
 #include <iostream>
 #include <cmath>
 #include "bibliotheque.h"
-
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+#include <map>
 namespace bibliotheque {
     int yap() {
         std::cout << "Hello from bibliotheque" << std::endl;
@@ -26,13 +29,31 @@ int roundToNearest5(int num, float multiplier) {
     float value = num * multiplier;
     return static_cast<int>(5 * round(value / 5.0f));
 }
+
+
+
+
 int main() {
     
-    cout << roundToNearest5(200,  1.08) << endl;
-    cout << roundToNearestFive(244.0) << endl;
-    cout << roundToNearestFive(250.0) << endl;
-    int a[2] = {1, 2};
-    cout << a[3] << endl;
+    srand(time(0));
+    vector<int> randomints;
+    map<int, int> randintmap;
+// Generate a random number between 0 and 9
+    for (int i = 0; i < 1000; ++i) {
+        int randomNum = rand() % 2;
+        randomints.push_back(randomNum);
+    }
+    
+    for (int i : randomints) {
+        if (randintmap.find(i) == randintmap.end()) {
+            randintmap[i] = i;
+        } else {
+            randintmap[i]++;
+        }
+    }
+    for (auto& pair : randintmap) {
+        cout << "Number: " << pair.first << ", Percentage occured: " << (pair.second*100) / randomints.size() << "%" << endl;
+    }
     return 0;
 
-}
+}  

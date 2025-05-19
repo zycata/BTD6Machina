@@ -1,12 +1,15 @@
 #include <iostream>
 #include <windows.h>
 #include <cctype>
+#include "mouseControl.h"
 using namespace std;
 
 struct towerLocation {
     int x;
     int y;
 };
+
+
 
 int pageState = 0; // 0 for page 1, 1 for page 2
 CONST int cardHeight = 90;
@@ -159,103 +162,6 @@ void pageup() {
     pageState = 0;
 }
 
-
-
-// add something to check if the pixels given are valid
-// return false when pixels are not valid
-bool placeTower(int tower, int x, int y) {
-    
-
-    if (tower >= page1Towers) {
-        if (pageState == 0) {
-            pagedown();
-        }
-    } else {
-        if (pageState == 1) {
-            pageup();
-        }
-    }
-    CONST int delay = 50;
-    Sleep(delay*10);
-    int towerX = towerLocations[tower][0];
-    int towerY = towerLocations[tower][1];
-    moveMouse(towerX, towerY);
-    Sleep(delay);
-    clickMouse();
-    Sleep(delay);
-    moveMouse(x, y);
-    Sleep(delay);
-    unclickMouse();
-    Sleep(delay);
-    moveMouse(heroLocation[0], heroLocation[1]);
-    Sleep(delay*3);
-    return true;
-}
-
-
-void upgradeTower(int x, int y, int path) {
-    int delay = 50;
-    moveMouse(x, y);
-    Sleep(delay);
-    clickMouse();
-    Sleep(delay);
-    unclickMouse();
-    Sleep(delay);
-    
-    switch (path) {
-        case 0:
-            pressKeyScan(0x33); // 0x31 = scan code for ','
-            break;
-        case 1:
-            pressKeyScan(0x34); // 0x34 = scan code for '.'
-            break;
-        case 2:
-            pressKeyScan(0x35); // 0x35 = scan code for '/'
-            break;
-        default:
-            cout << "Invalid path" << endl;
-            return;
-    }
-
-
-    
-    Sleep(delay);
-    moveMouse(x, y);
-    Sleep(delay);
-    clickMouse();
-    Sleep(delay);
-    unclickMouse();
-    Sleep(delay);
-}
-
-bool findWindow() {
-    const wchar_t* windowTitle = L"BloonsTD6"; // Replace with the actual title (case sensitive)
-
-    HWND hwnd = FindWindowW(NULL, windowTitle);
-
-    if (hwnd == NULL) {
-        cerr << "Window not found!" << endl;
-        return false;
-    } else {
-        cout << "Window found!" << endl;
-    }
-    RECT rect;
-    GetWindowRect(hwnd, &rect);
-    windowX = rect.left;
-    windowY = rect.top;
-    int width = rect.right - rect.left;
-    int height = rect.bottom - rect.top;
-    cout << "Window Position: (" << windowX << ", " << windowY << ")" << endl;
-    cout << "Window size: " << width << " x " << height << endl;
-
-
-
-    return true;
-
-
-}
-
-
 void testListMake() {
     for (int i = 0; i < totalTowers; ++i) {
         cout << "Row " << i << ": ";
@@ -266,13 +172,117 @@ void testListMake() {
     }
 }
 
+// add something to check if the pixels given are valid
+// return false when pixels are not valid
 
+namespace mouseControl {
+
+    bool placeTower(int tower, int x, int y) {
+        
+
+        if (tower >= page1Towers) {
+            if (pageState == 0) {
+                pagedown();
+            }
+        } else {
+            if (pageState == 1) {
+                pageup();
+            }
+        }
+        CONST int delay = 50;
+        Sleep(delay*10);
+        int towerX = towerLocations[tower][0];
+        int towerY = towerLocations[tower][1];
+        moveMouse(towerX, towerY);
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        moveMouse(x, y);
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+        moveMouse(heroLocation[0], heroLocation[1]);
+        Sleep(delay*3);
+        return true;
+    }
+
+    void upgradeTower(int x, int y, int path) {
+        int delay = 50;
+        moveMouse(x, y);
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+        
+        switch (path) {
+            case 0:
+                pressKeyScan(0x33); // 0x31 = scan code for ','
+                break;
+            case 1:
+                pressKeyScan(0x34); // 0x34 = scan code for '.'
+                break;
+            case 2:
+                pressKeyScan(0x35); // 0x35 = scan code for '/'
+                break;
+            default:
+                cout << "Invalid path" << endl;
+                return;
+        }
+
+
+        
+        Sleep(delay);
+        moveMouse(x, y);
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+    }
+
+    bool findWindow() {
+        const wchar_t* windowTitle = L"BloonsTD6"; // Replace with the actual title (case sensitive)
+
+        HWND hwnd = FindWindowW(NULL, windowTitle);
+
+        if (hwnd == NULL) {
+            cerr << "Window not found!" << endl;
+            return false;
+        } else {
+            cout << "Window found!" << endl;
+        }
+        RECT rect;
+        GetWindowRect(hwnd, &rect);
+        windowX = rect.left;
+        windowY = rect.top;
+        int width = rect.right - rect.left;
+        int height = rect.bottom - rect.top;
+        cout << "Window Position: (" << windowX << ", " << windowY << ")" << endl;
+        cout << "Window size: " << width << " x " << height << endl;
+
+
+
+        return true;
+
+
+    }
+
+    bool initializeMouseControls() {
+        findWindow();
+        addTowers();
+        return true;
+    }
+
+}
+
+/*
 int main() {
     cout << "Script Started" << endl;
 
     addTowers(); 
     findWindow();
-    /*
+    
     testListMake(); 
     
     
@@ -285,9 +295,9 @@ int main() {
     upgradeTower(300, 690, 1);
     upgradeTower(300, 690, 1);
     upgradeTower(300, 690, 1); 
-    upgradeTower(300, 690, 1); */
+    upgradeTower(300, 690, 1); 
 
     moveMouse(0, 0);
     cout << "Towers placed: " << endl;
     return 0;
-}
+} */
