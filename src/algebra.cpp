@@ -4,16 +4,22 @@
 #include <fstream>
 #include <map>
 #include <cmath>
-#include "mouseControl/mouseControl.h"
+// #include "mouseControl/mouseControl.h"
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
 
 using namespace std;
+namespace mouseControl {
+    bool placeTower(int tower, int x, int y) {return true;};
+    void upgradeTower(int x, int y, int path) {};
+    bool findWindow() {return true;};
+    bool initializeMouseControls() {return true;};
+    void ClickStartNextRound() {};
+}
+// compile using g++ src/algebra.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
 
-
-
-map<int, std::string> towerMap = {
+map<int, string> towerMap = {
     {0, "Hero"},
     {1, "Dart Monkey"},
     {2, "Boomerang Monkey"},
@@ -361,11 +367,13 @@ class StrategyMaker {
         const int yMin = 40;
         const int xMin = 25;
 
+        int startRound;
     public:
         StrategyMaker(int currentRound, Difficulty type) {
             TowersPlaced = {};
             StrategyActions = {};
             this->currentRound = currentRound;
+            startRound = currentRound;
             totalTowers = 0;
             this->cash = 650; 
 
@@ -455,7 +463,7 @@ class StrategyMaker {
         }
 
         vector<PlacementOption> getTowerPlacementOptions() {
-            vector<PlacementOption> newTowers;
+            vector<PlacementOption> newTowers = {};
             for (auto& towerType : towersAllowed) {
                 int cost = roundToNearest5(towerCosts[towerType], cashMultiplier);
                 if (cost > cash) continue; // Skip if not enough cash
@@ -521,8 +529,17 @@ class StrategyMaker {
             cout << "Towers placed: " << TowersPlaced.size() << endl;
 
             for (auto& tower : TowersPlaced) {
-                cout << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced() << endl;
+                // cout << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced() << endl;
                 TowerFile << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced()  << endl;
+            }
+        }
+
+        void logStrategy() {
+            ofstream StrategyFile("logs/strategyActions.txt");
+            StrategyFile << "Strategy Actions: " << StrategyActions.size() << endl;
+            for (auto& action : StrategyActions) {
+                // cout << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower.getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower.getTowerTypeStr() << ", Path: " << action.path << ", Round: " << action.round  << endl;
+                StrategyFile << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower.getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower.getTowerTypeStr()  << ", Path: " << action.path  << ", Round: " << action.round  << endl;
             }
         }
 
@@ -532,31 +549,72 @@ class StrategyMaker {
             return n1 + rand() % (n2 - n1 + 1);
         }
 
-        void singleRoundLoop() {
-            
-            int shouldPass; 
-            do {
-                vector<PlacementOption> newTowers = getTowerPlacementOptions();
-                shouldPass = newTowers.size();
-                int randomNum = rand() % newTowers.size(); 
-                PlacementOption selectedTower = newTowers[randomNum];
-                for (int i = 0; i < 10; i++) {
+        bool placeRandomTower(PlacementOption &selectedTower) {
+            // 10 attempts to place a tower
+            for (int i = 0; i < 10; i++) {
                     int x = getRandomInt(xMin, xMAx);
                     int y = getRandomInt(yMin, yMax);
                     if (placeTower(selectedTower.towerType, x, y)) {
                         cash -= selectedTower.cost;
                         cout << "Placed tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
-                        break; // Exit the loop after successful placement
+                        return true;
                     } else {
                         cout << "Failed to place tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
                     }
-                } 
-            } while (shouldPass > 0 && cash > 0);
+                }
+            return false; 
+        }
+        void singleRoundLoopAlgorithmOne() {
             
             
+            while (true) {
+            
+                vector<PlacementOption> newTowers = getTowerPlacementOptions();
+                if(newTowers.size() == 0) {
+                    cout << "No towers available for placement." << endl;
+                    break;
+                } else {
+                    cout << "Towers available for placement: " << newTowers.size() << endl;
+                }
+                int randomNum = rand() % newTowers.size(); 
+                PlacementOption selectedTower = newTowers[randomNum];
+                placeRandomTower(selectedTower);
+                cout << "Cash after placement: " << cash << endl;
+            }
+            cout << "No more towers can be placed or not enough cash." << endl;
+            // system("pause");
         }
         
 
+        void runGame() {
+            bool gameOver = false;
+            while (!gameOver) {
+                singleRoundLoopAlgorithmOne();
+                if (currentRound == startRound) {
+                    mouseControl::ClickStartNextRound();
+                    // click it twice for fast forward round 1 lmao
+                }
+                mouseControl::ClickStartNextRound();
+                cout << "Waiting for next round..." << endl;
+                cout << "Is the game over? (t/f): ";
+                gameOver = getInput(); // manually tell ai if the game is over
+                if (gameOver == true) {
+                    cout << "Game Over!" << endl;
+                    logStrategy();
+                    logTowers();
+                    break;
+                }
+                int temp;
+                cout << "Enter the current cash: ";
+                cin >> temp;
+                this->cash = temp;
+                incrementRound();
+                cout << "Current round: " << currentRound << endl;
+                
+                
+                cout << "Game is still ongoing." << endl;
+            }
+        }
 };
 
 
@@ -582,7 +640,8 @@ int main() {
     
     Sleep(2000);
     cout << "Script Started" << endl;
-    StrategyMaker strategy(6, Difficulty::IMPOPPABLE);
+    StrategyMaker strategy(1, Difficulty::EASY);
+    /*
     strategy.placeTower(1, 100, 200);
     strategy.upgradeTower(0, 1);
     strategy.upgradeTower(0, 1);
@@ -597,8 +656,9 @@ int main() {
     strategy.placeTower(13, 500, 600);
     strategy.logTowers();
     printAvailableUpgrades(strategy.getAvailableUpgrades());
-    printTowerPlacementOptions(strategy.getTowerPlacementOptions());
-    
-    //system("pause");
+    printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
+    strategy.runGame();
+    cout << "game has been finished" << endl;
+    system("pause");
     return 0;
 }

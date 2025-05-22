@@ -1,4 +1,5 @@
-Towers placed: 3
-Tower ID: 0, Type: Dart Monkey, Position: (100, 200), Cross Pathing: 052, Round Placed: 6
-Tower ID: 1, Type: Monkey Buccaneer, Position: (300, 400), Cross Pathing: 000, Round Placed: 7
-Tower ID: 2, Type: Dartling Gunner, Position: (500, 600), Cross Pathing: 000, Round Placed: 7
+Towers placed: 4
+Tower ID: 0, Type: Alchemist, Position: (624, 488), Cross Pathing: 000, Round Placed: 1
+Tower ID: 1, Type: Ninja Monkey, Position: (713, 57), Cross Pathing: 000, Round Placed: 2
+Tower ID: 2, Type: Alchemist, Position: (106, 160), Cross Pathing: 000, Round Placed: 2
+Tower ID: 3, Type: Ninja Monkey, Position: (88, 460), Cross Pathing: 000, Round Placed: 2

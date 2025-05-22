@@ -1,0 +1,5 @@
+Strategy Actions: 4
+Action Type: PLACE, Tower ID: 0, Position: (624, 488), Tower Type: Alchemist, Path: 0, Round: 1
+Action Type: PLACE, Tower ID: 1, Position: (713, 57), Tower Type: Ninja Monkey, Path: 0, Round: 2
+Action Type: PLACE, Tower ID: 2, Position: (106, 160), Tower Type: Alchemist, Path: 0, Round: 2
+Action Type: PLACE, Tower ID: 3, Position: (88, 460), Tower Type: Ninja Monkey, Path: 0, Round: 2
