@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <cctype>
 #include "mouseControl.h"
+#include <map>
 using namespace std;
 
 struct towerLocation {
@@ -21,6 +22,33 @@ int windowX = 0;
 int windowY = 0;
 
 int towerLocations[totalTowers][2] = {};
+map<int, BYTE> towerKeyScan = {
+    {0, 0x16},  // Hero        → U
+    {1, 0x10},  // Dart        → Q
+    {2, 0x11},  // Boomerang   → W
+    {3, 0x12},  // Bomb        → E
+    {4, 0x13},  // Tack        → R
+    {5, 0x14},  // Ice         → T
+    {6, 0x15},  // Glue        → Y
+    {7, 0x2C},  // Sniper      → Z
+    {8, 0x2D},  // Sub         → X
+    {9, 0x2E},  // Buccaneer   → C
+    {10, 0x2F}, // Ace         → V
+    {11, 0x30}, // Heli        → B
+    {12, 0x31}, // Mortar      → N
+    {13, 0x32}, // Dartling    → M
+    {14, 0x1E}, // Wizard      → A
+    {15, 0x1F}, // Super       → S
+    {16, 0x20}, // Ninja       → D
+    {17, 0x21}, // Alch        → F
+    {18, 0x22}, // Druid       → G
+    {19, 0x18}, // Mermonkey?  → O
+    {20, 0x23}, // Farm        → H
+    {21, 0x24}, // Spactory    → J
+    {22, 0x25}, // Village     → K
+    {23, 0x26}, // Engineer    → L
+    {24, 0x17}  // Beast       → I
+};
 
 void addTowers(){
     towerLocations[0][0] = heroLocation[0];
@@ -75,51 +103,6 @@ void unclickMouse() {
     SendInput(1, &input, sizeof(INPUT));
 }
 
-short charToVirtualKey(char c) {
-    SHORT vk = VkKeyScanA(c);
-    return vk;
-}
-
-void pressKey(char c) {
-    INPUT input[2] = {};
-    short vk_combo = charToVirtualKey(c);
-
-    if (vk_combo == -1) return; // character not supported
-
-    // Extract virtual key and shift state
-    BYTE vk = LOBYTE(vk_combo);
-    BYTE shiftState = HIBYTE(vk_combo);
-
-    int inputIndex = 0;
-
-    // If shift is needed
-    if (shiftState & 1) {
-        input[inputIndex].type = INPUT_KEYBOARD;
-        input[inputIndex].ki.wVk = VK_SHIFT;
-        inputIndex++;
-    }
-
-    // Press key
-    input[inputIndex].type = INPUT_KEYBOARD;
-    input[inputIndex].ki.wVk = vk;
-    inputIndex++;
-
-    // Release key
-    input[inputIndex].type = INPUT_KEYBOARD;
-    input[inputIndex].ki.wVk = vk;
-    input[inputIndex].ki.dwFlags = KEYEVENTF_KEYUP;
-    inputIndex++;
-
-    // If shift was pressed, release it
-    if (shiftState & 1) {
-        input[inputIndex].type = INPUT_KEYBOARD;
-        input[inputIndex].ki.wVk = VK_SHIFT;
-        input[inputIndex].ki.dwFlags = KEYEVENTF_KEYUP;
-        inputIndex++;
-    }
-
-    SendInput(inputIndex, input, sizeof(INPUT));
-}
 
 void pressKeyScan(BYTE scanCode) {
     INPUT input[2] = {};
@@ -172,12 +155,7 @@ void testListMake() {
     }
 }
 
-// add something to check if the pixels given are valid
-// return false when pixels are not valid
-
-namespace mouseControl {
-
-    bool placeTower(int tower, int x, int y) {
+bool placeTowerOld(int tower, int x, int y) {
         
 
         if (tower >= page1Towers) {
@@ -203,6 +181,31 @@ namespace mouseControl {
         Sleep(delay);
         moveMouse(heroLocation[0], heroLocation[1]);
         Sleep(delay*3);
+        return true;
+    }
+// add something to check if the pixels given are valid
+// return false when pixels are not valid
+
+namespace mouseControl {
+
+    bool placeTower(int tower, int x, int y) {
+        
+        CONST int delay = 50;
+        moveMouse(1075, 107); // Intiailize the window
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+        
+        moveMouse(x, y);
+        Sleep(delay);
+        pressKeyScan(towerKeyScan[tower]);
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+       
         return true;
     }
 
@@ -274,9 +277,16 @@ namespace mouseControl {
         return true;
     }
 
+    void ClickStartNextRound() {
+        moveMouse(1222, 705);
+        Sleep(50);
+        clickMouse();
+        Sleep(50);
+        unclickMouse();
+    }
 }
-
 /*
+using namespace mouseControl;
 int main() {
     cout << "Script Started" << endl;
 
@@ -286,9 +296,9 @@ int main() {
     testListMake(); 
     
     
-    placeTower(21, 100, 200);
-    placeTower(22, 300, 400); 
-    placeTower(2, 300, 690);
+    placeTower(16, 100, 200);
+    placeTower(17, 300, 400); 
+    placeTower(13, 300, 690);
     upgradeTower(300, 690, 2);
     upgradeTower(300, 690, 2);
     upgradeTower(300, 690, 1);

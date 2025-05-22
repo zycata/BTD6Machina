@@ -6,6 +6,7 @@ namespace mouseControl {
     void upgradeTower(int x, int y, int path);
     bool findWindow();
     bool initializeMouseControls();
+    void ClickStartNextRound();
 }
 
 
