@@ -7,6 +7,9 @@ using namespace std;
 #include <string>
 using json = nlohmann::json;
 
+#include "Logic.h"
+bool isGameOver = false;
+bool isGameWon = false;
 int cash = 0;
 int curRound = 0;
 int lives = 1;
@@ -17,7 +20,7 @@ int logNumber = 0;
 int prevRound = 0;
 int prevLogNumber = 0;
 int prevTowerPlaced = 0;
-
+int startRound = -1; // riyal or fakeh
 bool towerPlacedSuccessfully() {
     
     if (towersPlaced == (prevTowerPlaced + 1)) {
@@ -65,12 +68,16 @@ void updateValues() {
     prevLogNumber = logNumber;
     prevTowerPlaced = towersPlaced;
 
+    isGameOver = gameDataJson["isDefeated"];
+    isGameWon = gameDataJson["gameWon"];
     cash = gameDataJson["Cash"]; //truncates towards zero (ignores decimal places)
     curRound = gameDataJson["Round"];
     lives = gameDataJson["Lives"];
     towersPlaced = gameDataJson["TowersPlaced"];
     totalAbilities = gameDataJson["TotalAbilities"];
     logNumber = gameDataJson["LogNumber"];
+    startRound = gameDataJson["StartRound"];
+
     
 }
 
@@ -85,6 +92,10 @@ void didLogFileChange() {
 namespace gameInfo {
     int getCash() {
         return cash;
+    }
+
+    int getStartRound() {
+        return startRound;
     }
 
     int getCurRound() {
@@ -111,6 +122,17 @@ namespace gameInfo {
         didLogFileChange();
         return curRound != prevRound;
     }
+
+    bool gameOver() {
+        didLogFileChange();
+        return isGameOver;
+
+    }
+
+    bool gameWon() {
+        didLogFileChange();
+        return isGameWon;
+    }
 }
 
 int main() {
@@ -127,6 +149,9 @@ int main() {
         cout << "Towers Placed: " << towersPlaced << endl;
         cout << "Total Abilities: " << totalAbilities << endl;
         cout << "Log Number: " << logNumber << endl;
+        cout << "Start Round: " << startRound << endl;
+        cout << "Is Game Over: " << (isGameOver ? "Yes" : "No") << endl;
+        cout << "Is Game Won: " << (isGameWon ? "Yes" : "No") << endl;
         Sleep(1000); // Sleep for 1 second before the next update
     
     }
