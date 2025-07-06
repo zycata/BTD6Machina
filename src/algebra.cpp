@@ -44,7 +44,8 @@ map<int, string> towerMap = {
     {21, "Spike Factory"},
     {22, "Monkey Village"},
     {23, "Engineer Monkey"},
-    {24, "Beast Handler"}
+    {24, "Beast Handler"},
+    {25, "Desperado"} //!!! implement desperado later plz
 };
 
 const int INVALID = -1;
@@ -231,6 +232,7 @@ const int towerCosts[25] = {
     250,// Beast Handler
 };
 
+// all towers temporarily not allowed for testing purposes lol
 const int te[25] {
     0, 
     1, // Dart Monkey
