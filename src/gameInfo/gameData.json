@@ -1,8 +1,11 @@
 {
-  "Cash": 95048.10092623532,
-  "Round": 81,
-  "Lives": 100,
-  "TowersPlaced": 2,
-  "TotalAbilities": 2,
-  "LogNumber": 12159
+  "isDefeated": false,
+  "gameWon": false,
+  "Cash": 118149.40099605918,
+  "Round": 101,
+  "Lives": 1,
+  "TowersPlaced": 9,
+  "TotalAbilities": 0,
+  "LogNumber": 11871,
+  "StartRound": 3
 }
