@@ -51,6 +51,10 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "random": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "optional": "cpp",
+        "xtree": "cpp"
     }
 }
