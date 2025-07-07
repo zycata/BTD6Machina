@@ -7,7 +7,7 @@ using namespace std;
 #include <string>
 using json = nlohmann::json;
 
-#include "Logic.h"
+#include "gameReader.h"
 
 bool isGameOver = false;
 bool isGameWon = false;
