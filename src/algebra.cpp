@@ -5,6 +5,7 @@
 #include <map>
 #include <cmath>
 // #include "mouseControl/mouseControl.h"
+// #include "gameReader.h"
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
@@ -17,6 +18,20 @@ namespace mouseControl {
     bool initializeMouseControls() {return true;};
     void ClickStartNextRound() {};
 }
+
+namespace gameInfo {
+    int getCash();
+    int getStartRound();
+    int getCurRound();
+    int getLives();
+    int getTowersPlaced();
+    int getTotalAbilities();
+    int getLogNumber();
+    bool roundChanged();
+    bool isGameOver();
+    bool isGameWon();
+}
+
 // compile using g++ src/algebra.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
 
 map<int, string> towerMap = {
@@ -494,7 +509,9 @@ class StrategyMaker {
 
             // check if placement was successful
             cout << "Tower placement at (" << x << ", " << y << ") for tower type " << towerMap[tower] << ". Was it successful? (t/f): ";
-            bool success = getInput(); // manually tell ai if the placement was successful
+            int curTowers = TowersPlaced.size();
+            bool success = (curTowers + 1) == gameInfo::getTowersPlaced(); // check if the number of towers placed has increased
+            // bool success = getInput(); // manually tell ai if the placement was successful
             if (!success) {
                 cerr << "Tower placement failed." << endl;
                 return false; // Placement failed
@@ -504,6 +521,8 @@ class StrategyMaker {
             TowersPlaced.push_back(newTower);
             StrategyActions.push_back({Action::PLACE, newTower, x, y, tower, 0, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
+            this->cash = gameInfo::getCash(); // update cash after placement
+
             return true;
         }
 
@@ -514,9 +533,22 @@ class StrategyMaker {
                     tower.path[path]++; 
                     mouseControl::upgradeTower(tower.getX(), tower.getY(), path);
                     
+                    
+                    
                     int cost = roundToNearest5(towerUpgrades[tower.getTowerType()][path][tower.path[path]], cashMultiplier);
-                    cash -= cost;
+                    
+                    if (cash > gameInfo::getCash()) {
+                        //this->cash = gameInfo::getCash(); // update cash after upgrade
+                        return true;
+
+                    } else if (cost > cash) {
+                        cerr << "Not enough cash to upgrade tower ID " << towerId << " on path " << path << ". Required: " << cost << ", Available: " << cash << endl;
+                        return false; // Not enough cash
+                    } else {
+                        return false; // upgrade failed for some reason
+                    }
                     StrategyActions.push_back({Action::UPGRADE, tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
+
 
                     return true;
                 }
@@ -557,7 +589,7 @@ class StrategyMaker {
                     int x = getRandomInt(xMin, xMAx);
                     int y = getRandomInt(yMin, yMax);
                     if (placeTower(selectedTower.towerType, x, y)) {
-                        cash -= selectedTower.cost;
+                        this->cash = gameInfo::getCash();
                         cout << "Placed tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
                         return true;
                     } else {
@@ -597,21 +629,40 @@ class StrategyMaker {
                     // click it twice for fast forward round 1 lmao
                 }
                 mouseControl::ClickStartNextRound();
+                
                 cout << "Waiting for next round..." << endl;
-                cout << "Is the game over? (t/f): ";
-                gameOver = getInput(); // manually tell ai if the game is over
+                
+                bool roundOver = false;
+                while (true) {
+                    gameOver = gameInfo::isGameOver();
+                    if (this->currentRound != gameInfo::getCurRound()) {
+                        cout << "Round changed from " << this->currentRound << " to " << gameInfo::getCurRound() << endl;
+                        this->currentRound = gameInfo::getCurRound();
+                        roundOver = true;
+                        break; // exit the waiting loop
+                    } else if (gameInfo::isGameWon()) {
+                        cout << "Game Won!" << endl;
+                        logStrategy();
+                        logTowers();
+                        return; // exit the game loop
+                    } else if (gameInfo::isGameOver()) {
+                        gameOver = true;
+                        break; // exit the waiting loop
+                    }
+                    Sleep(500); 
+
+                }
+                // gameOver = getInput(); // manually tell ai if the game is over
                 if (gameOver == true) {
                     cout << "Game Over!" << endl;
                     logStrategy();
                     logTowers();
                     break;
                 }
-                int temp;
-                cout << "Enter the current cash: ";
-                cin >> temp;
-                this->cash = temp;
+                
+                this->cash = gameInfo::getCash();
                 incrementRound();
-                cout << "Current round: " << currentRound << endl;
+                cout << "Current round: " << this->currentRound << endl;
                 
                 
                 cout << "Game is still ongoing." << endl;
