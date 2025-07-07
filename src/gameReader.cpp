@@ -8,6 +8,7 @@ using namespace std;
 using json = nlohmann::json;
 
 #include "Logic.h"
+
 bool isGameOver = false;
 bool isGameWon = false;
 int cash = 0;
@@ -23,7 +24,7 @@ int prevTowerPlaced = 0;
 int startRound = -1; // riyal or fakeh
 bool towerPlacedSuccessfully() {
     
-    if (towersPlaced == (prevTowerPlaced + 1)) {
+    if ((towersPlaced == (prevTowerPlaced + 1))) {
         prevTowerPlaced++;
         return true;
     }
@@ -82,9 +83,15 @@ void updateValues() {
 }
 
 void didLogFileChange() {
+    int iterations = 0;
+    int maxiterations = 10;
     while (logNumber == prevLogNumber) {
         updateValues();
         cout << "Waiting for log number to change..." << endl;
+        iterations++;
+        if (iterations >= maxiterations) {
+            // implementation later (due to level up)
+        }
     };
 
       
@@ -99,6 +106,7 @@ namespace gameInfo {
     }
 
     int getCurRound() {
+        didLogFileChange();
         return curRound;
     }
 
@@ -107,6 +115,7 @@ namespace gameInfo {
     }
 
     int getTowersPlaced() {
+        didLogFileChange();
         return towersPlaced;
     }
 
@@ -123,20 +132,22 @@ namespace gameInfo {
         return curRound != prevRound;
     }
 
-    bool gameOver() {
+    
+
+    bool isGameOver() {
         didLogFileChange();
         return isGameOver;
 
     }
 
-    bool gameWon() {
+    bool isGameWon() {
         didLogFileChange();
         return isGameWon;
     }
 }
 
 int main() {
-    /*
+    /*w
     assertBool(false, towerPlacedSuccessfully(), "Tower did not place successfully");
     towersPlaced++;
     assertBool(true, towerPlacedSuccessfully(), "Tower placed not successfully");*/
@@ -146,6 +157,7 @@ int main() {
         cout << "Cash: " << cash << endl;
         cout << "Current Round: " << curRound << endl;
         cout << "Lives: " << lives << endl;
+        cout << "Prev Towers Placed: " << prevTowerPlaced << endl;
         cout << "Towers Placed: " << towersPlaced << endl;
         cout << "Total Abilities: " << totalAbilities << endl;
         cout << "Log Number: " << logNumber << endl;
