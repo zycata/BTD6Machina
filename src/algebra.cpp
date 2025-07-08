@@ -4,22 +4,22 @@
 #include <fstream>
 #include <map>
 #include <cmath>
-// #include "mouseControl/mouseControl.h"
-// #include "gameReader.h"
+#include "mouseControl/mouseControl.h"
+#include "gameReader.h"
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
 
 using namespace std;
-namespace mouseControl {
-    bool placeTower(int tower, int x, int y) {return true;};
+/*
+namespace mouseControl {dddint y) {return true;};
     void upgradeTower(int x, int y, int path) {};
     bool findWindow() {return true;};
     bool initializeMouseControls() {return true;};
     void ClickStartNextRound() {};
 }
 
-namespace gameInfo {
+namespace gameInfo {f
     int getCash();
     int getStartRound();
     int getCurRound();
@@ -31,8 +31,8 @@ namespace gameInfo {
     bool isGameOver();
     bool isGameWon();
 }
-
-// compile using g++ src/algebra.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
+*/
+// compile using g++ src/algebra.cpp src/gameReader.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
 
 map<int, string> towerMap = {
     {0, "Hero"},
@@ -391,8 +391,8 @@ class StrategyMaker {
             StrategyActions = {};
             this->currentRound = currentRound;
             startRound = currentRound;
-            totalTowers = 0;
-            this->cash = 650; 
+            totalTowers = gameInfo::getTowersPlaced();
+            this->cash = gameInfo::getCash(); 
 
             this->type = type;
             switch (type) {
@@ -506,18 +506,22 @@ class StrategyMaker {
         bool placeTower(int tower, int x, int y) {
             //implement mouse control later
             mouseControl::placeTower(tower, x, y);
-
+            Sleep(100); // wait for the tower to be placed
             // check if placement was successful
-            cout << "Tower placement at (" << x << ", " << y << ") for tower type " << towerMap[tower] << ". Was it successful? (t/f): ";
-            int curTowers = TowersPlaced.size();
-            bool success = (curTowers + 1) == gameInfo::getTowersPlaced(); // check if the number of towers placed has increased
+            totalTowers++;
+            int curTowers = gameInfo::getTowersPlaced();
+            cout << "Total Towers: " << totalTowers << ", Current Towers: " << curTowers << endl;
+            bool success = (totalTowers) == curTowers; // check if the number of towers placed has increased
+            
             // bool success = getInput(); // manually tell ai if the placement was successful
             if (!success) {
+                totalTowers--; // revert the total towers count if placement failed
+
                 cerr << "Tower placement failed." << endl;
                 return false; // Placement failed
             }
+            
             Tower newTower( x, y, tower, 0, 0, 0, currentRound, totalTowers );
-            totalTowers++;
             TowersPlaced.push_back(newTower);
             StrategyActions.push_back({Action::PLACE, newTower, x, y, tower, 0, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
@@ -584,8 +588,8 @@ class StrategyMaker {
         }
 
         bool placeRandomTower(PlacementOption &selectedTower) {
-            // 10 attempts to place a tower
-            for (int i = 0; i < 10; i++) {
+            // 5 attempts to place a tower
+            for (int i = 0; i < 5; i++) {
                     int x = getRandomInt(xMin, xMAx);
                     int y = getRandomInt(yMin, yMax);
                     if (placeTower(selectedTower.towerType, x, y)) {
@@ -593,15 +597,19 @@ class StrategyMaker {
                         cout << "Placed tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
                         return true;
                     } else {
+                        
                         cout << "Failed to place tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
+                        //system("pause");
                     }
                 }
+            this->totalTowers = gameInfo::getTowersPlaced(); // update total towers placed
+            this->cash = gameInfo::getCash(); // update cash after placement
             return false; 
         }
         void singleRoundLoopAlgorithmOne() {
             
-            
-            while (true) {
+            int maxattempts = 5;
+            for (int i = 0; i < maxattempts; i++) {
             
                 vector<PlacementOption> newTowers = getTowerPlacementOptions();
                 if(newTowers.size() == 0) {
@@ -634,22 +642,29 @@ class StrategyMaker {
                 
                 bool roundOver = false;
                 while (true) {
-                    gameOver = gameInfo::isGameOver();
+                    gameOver = gameInfo::didGameOver();
+                    cout << "Game over? " << (gameOver ? "Yes" : "No") << endl;
                     if (this->currentRound != gameInfo::getCurRound()) {
                         cout << "Round changed from " << this->currentRound << " to " << gameInfo::getCurRound() << endl;
                         this->currentRound = gameInfo::getCurRound();
+
                         roundOver = true;
+
+                        if (gameInfo::didGameWon()) {
+                            cout << "Game Won!" << endl;
+                            logStrategy();
+                            logTowers();
+                            return; // exit the game loop
+                        }
                         break; // exit the waiting loop
-                    } else if (gameInfo::isGameWon()) {
-                        cout << "Game Won!" << endl;
-                        logStrategy();
-                        logTowers();
-                        return; // exit the game loop
-                    } else if (gameInfo::isGameOver()) {
+                    } 
+                    
+                    
+                    else if (gameInfo::didGameOver()) {
                         gameOver = true;
                         break; // exit the waiting loop
                     }
-                    Sleep(500); 
+                    Sleep(200); 
 
                 }
                 // gameOver = getInput(); // manually tell ai if the game is over
@@ -659,9 +674,8 @@ class StrategyMaker {
                     logTowers();
                     break;
                 }
-                
+                this->currentRound = gameInfo::getCurRound();
                 this->cash = gameInfo::getCash();
-                incrementRound();
                 cout << "Current round: " << this->currentRound << endl;
                 
                 
@@ -689,10 +703,18 @@ void printTowerPlacementOptions(const vector<PlacementOption>& options) {
 
 
 int main() {
-    // wait 2 seconds
     
-    Sleep(2000);
+    
     cout << "Script Started" << endl;
+    gameInfo::initialize(); // Initialize game info
+    
+    cout << "Starting game..." << endl;
+    mouseControl::findWindow(); // find the game window
+    if (!mouseControl::findWindow()) {
+        cerr << "Game window not found. Please ensure the game is running." << endl;
+        return 1; // Exit if the game window is not found
+    }
+    system("pause");
     StrategyMaker strategy(1, Difficulty::EASY);
     /*
     strategy.placeTower(1, 100, 200);
@@ -710,6 +732,7 @@ int main() {
     strategy.logTowers();
     printAvailableUpgrades(strategy.getAvailableUpgrades());
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
+    
     strategy.runGame();
     cout << "game has been finished" << endl;
     system("pause");

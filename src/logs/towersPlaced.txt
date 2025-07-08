@@ -1,5 +1,37 @@
-Towers placed: 4
-Tower ID: 0, Type: Alchemist, Position: (624, 488), Cross Pathing: 000, Round Placed: 1
-Tower ID: 1, Type: Ninja Monkey, Position: (713, 57), Cross Pathing: 000, Round Placed: 2
-Tower ID: 2, Type: Alchemist, Position: (106, 160), Cross Pathing: 000, Round Placed: 2
-Tower ID: 3, Type: Ninja Monkey, Position: (88, 460), Cross Pathing: 000, Round Placed: 2
+Towers placed: 36
+Tower ID: 1, Type: Alchemist, Position: (911, 615), Cross Pathing: 000, Round Placed: 1
+Tower ID: 2, Type: Ninja Monkey, Position: (258, 194), Cross Pathing: 000, Round Placed: 3
+Tower ID: 3, Type: Ninja Monkey, Position: (349, 450), Cross Pathing: 000, Round Placed: 5
+Tower ID: 4, Type: Ninja Monkey, Position: (889, 316), Cross Pathing: 000, Round Placed: 7
+Tower ID: 5, Type: Ninja Monkey, Position: (797, 623), Cross Pathing: 000, Round Placed: 9
+Tower ID: 6, Type: Alchemist, Position: (983, 715), Cross Pathing: 000, Round Placed: 11
+Tower ID: 7, Type: Ninja Monkey, Position: (831, 415), Cross Pathing: 000, Round Placed: 13
+Tower ID: 8, Type: Ninja Monkey, Position: (196, 426), Cross Pathing: 000, Round Placed: 14
+Tower ID: 9, Type: Ninja Monkey, Position: (496, 307), Cross Pathing: 000, Round Placed: 15
+Tower ID: 10, Type: Alchemist, Position: (859, 300), Cross Pathing: 000, Round Placed: 17
+Tower ID: 11, Type: Ninja Monkey, Position: (107, 133), Cross Pathing: 000, Round Placed: 19
+Tower ID: 12, Type: Alchemist, Position: (68, 697), Cross Pathing: 000, Round Placed: 20
+Tower ID: 13, Type: Ninja Monkey, Position: (698, 347), Cross Pathing: 000, Round Placed: 22
+Tower ID: 14, Type: Ninja Monkey, Position: (139, 710), Cross Pathing: 000, Round Placed: 23
+Tower ID: 15, Type: Alchemist, Position: (924, 278), Cross Pathing: 000, Round Placed: 24
+Tower ID: 16, Type: Ninja Monkey, Position: (615, 607), Cross Pathing: 000, Round Placed: 26
+Tower ID: 17, Type: Ninja Monkey, Position: (932, 529), Cross Pathing: 000, Round Placed: 27
+Tower ID: 18, Type: Alchemist, Position: (129, 517), Cross Pathing: 000, Round Placed: 28
+Tower ID: 19, Type: Ninja Monkey, Position: (213, 186), Cross Pathing: 000, Round Placed: 28
+Tower ID: 20, Type: Alchemist, Position: (420, 262), Cross Pathing: 000, Round Placed: 30
+Tower ID: 21, Type: Alchemist, Position: (486, 706), Cross Pathing: 000, Round Placed: 31
+Tower ID: 22, Type: Alchemist, Position: (367, 616), Cross Pathing: 000, Round Placed: 32
+Tower ID: 23, Type: Ninja Monkey, Position: (897, 457), Cross Pathing: 000, Round Placed: 33
+Tower ID: 24, Type: Ninja Monkey, Position: (546, 101), Cross Pathing: 000, Round Placed: 33
+Tower ID: 25, Type: Alchemist, Position: (886, 614), Cross Pathing: 000, Round Placed: 35
+Tower ID: 26, Type: Ninja Monkey, Position: (231, 635), Cross Pathing: 000, Round Placed: 36
+Tower ID: 27, Type: Alchemist, Position: (307, 174), Cross Pathing: 000, Round Placed: 36
+Tower ID: 28, Type: Ninja Monkey, Position: (741, 615), Cross Pathing: 000, Round Placed: 36
+Tower ID: 29, Type: Alchemist, Position: (317, 585), Cross Pathing: 000, Round Placed: 36
+Tower ID: 32, Type: Ninja Monkey, Position: (222, 282), Cross Pathing: 000, Round Placed: 38
+Tower ID: 33, Type: Ninja Monkey, Position: (155, 386), Cross Pathing: 000, Round Placed: 38
+Tower ID: 34, Type: Alchemist, Position: (182, 372), Cross Pathing: 000, Round Placed: 38
+Tower ID: 35, Type: Ninja Monkey, Position: (365, 618), Cross Pathing: 000, Round Placed: 38
+Tower ID: 39, Type: Ninja Monkey, Position: (642, 297), Cross Pathing: 000, Round Placed: 39
+Tower ID: 40, Type: Alchemist, Position: (382, 634), Cross Pathing: 000, Round Placed: 40
+Tower ID: 43, Type: Ninja Monkey, Position: (48, 502), Cross Pathing: 000, Round Placed: 40

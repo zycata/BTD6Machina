@@ -1,5 +1,37 @@
-Strategy Actions: 4
-Action Type: PLACE, Tower ID: 0, Position: (624, 488), Tower Type: Alchemist, Path: 0, Round: 1
-Action Type: PLACE, Tower ID: 1, Position: (713, 57), Tower Type: Ninja Monkey, Path: 0, Round: 2
-Action Type: PLACE, Tower ID: 2, Position: (106, 160), Tower Type: Alchemist, Path: 0, Round: 2
-Action Type: PLACE, Tower ID: 3, Position: (88, 460), Tower Type: Ninja Monkey, Path: 0, Round: 2
+Strategy Actions: 36
+Action Type: PLACE, Tower ID: 1, Position: (911, 615), Tower Type: Alchemist, Path: 0, Round: 1
+Action Type: PLACE, Tower ID: 2, Position: (258, 194), Tower Type: Ninja Monkey, Path: 0, Round: 3
+Action Type: PLACE, Tower ID: 3, Position: (349, 450), Tower Type: Ninja Monkey, Path: 0, Round: 5
+Action Type: PLACE, Tower ID: 4, Position: (889, 316), Tower Type: Ninja Monkey, Path: 0, Round: 7
+Action Type: PLACE, Tower ID: 5, Position: (797, 623), Tower Type: Ninja Monkey, Path: 0, Round: 9
+Action Type: PLACE, Tower ID: 6, Position: (983, 715), Tower Type: Alchemist, Path: 0, Round: 11
+Action Type: PLACE, Tower ID: 7, Position: (831, 415), Tower Type: Ninja Monkey, Path: 0, Round: 13
+Action Type: PLACE, Tower ID: 8, Position: (196, 426), Tower Type: Ninja Monkey, Path: 0, Round: 14
+Action Type: PLACE, Tower ID: 9, Position: (496, 307), Tower Type: Ninja Monkey, Path: 0, Round: 15
+Action Type: PLACE, Tower ID: 10, Position: (859, 300), Tower Type: Alchemist, Path: 0, Round: 17
+Action Type: PLACE, Tower ID: 11, Position: (107, 133), Tower Type: Ninja Monkey, Path: 0, Round: 19
+Action Type: PLACE, Tower ID: 12, Position: (68, 697), Tower Type: Alchemist, Path: 0, Round: 20
+Action Type: PLACE, Tower ID: 13, Position: (698, 347), Tower Type: Ninja Monkey, Path: 0, Round: 22
+Action Type: PLACE, Tower ID: 14, Position: (139, 710), Tower Type: Ninja Monkey, Path: 0, Round: 23
+Action Type: PLACE, Tower ID: 15, Position: (924, 278), Tower Type: Alchemist, Path: 0, Round: 24
+Action Type: PLACE, Tower ID: 16, Position: (615, 607), Tower Type: Ninja Monkey, Path: 0, Round: 26
+Action Type: PLACE, Tower ID: 17, Position: (932, 529), Tower Type: Ninja Monkey, Path: 0, Round: 27
+Action Type: PLACE, Tower ID: 18, Position: (129, 517), Tower Type: Alchemist, Path: 0, Round: 28
+Action Type: PLACE, Tower ID: 19, Position: (213, 186), Tower Type: Ninja Monkey, Path: 0, Round: 28
+Action Type: PLACE, Tower ID: 20, Position: (420, 262), Tower Type: Alchemist, Path: 0, Round: 30
+Action Type: PLACE, Tower ID: 21, Position: (486, 706), Tower Type: Alchemist, Path: 0, Round: 31
+Action Type: PLACE, Tower ID: 22, Position: (367, 616), Tower Type: Alchemist, Path: 0, Round: 32
+Action Type: PLACE, Tower ID: 23, Position: (897, 457), Tower Type: Ninja Monkey, Path: 0, Round: 33
+Action Type: PLACE, Tower ID: 24, Position: (546, 101), Tower Type: Ninja Monkey, Path: 0, Round: 33
+Action Type: PLACE, Tower ID: 25, Position: (886, 614), Tower Type: Alchemist, Path: 0, Round: 35
+Action Type: PLACE, Tower ID: 26, Position: (231, 635), Tower Type: Ninja Monkey, Path: 0, Round: 36
+Action Type: PLACE, Tower ID: 27, Position: (307, 174), Tower Type: Alchemist, Path: 0, Round: 36
+Action Type: PLACE, Tower ID: 28, Position: (741, 615), Tower Type: Ninja Monkey, Path: 0, Round: 36
+Action Type: PLACE, Tower ID: 29, Position: (317, 585), Tower Type: Alchemist, Path: 0, Round: 36
+Action Type: PLACE, Tower ID: 32, Position: (222, 282), Tower Type: Ninja Monkey, Path: 0, Round: 38
+Action Type: PLACE, Tower ID: 33, Position: (155, 386), Tower Type: Ninja Monkey, Path: 0, Round: 38
+Action Type: PLACE, Tower ID: 34, Position: (182, 372), Tower Type: Alchemist, Path: 0, Round: 38
+Action Type: PLACE, Tower ID: 35, Position: (365, 618), Tower Type: Ninja Monkey, Path: 0, Round: 38
+Action Type: PLACE, Tower ID: 39, Position: (642, 297), Tower Type: Ninja Monkey, Path: 0, Round: 39
+Action Type: PLACE, Tower ID: 40, Position: (382, 634), Tower Type: Alchemist, Path: 0, Round: 40
+Action Type: PLACE, Tower ID: 43, Position: (48, 502), Tower Type: Ninja Monkey, Path: 0, Round: 40

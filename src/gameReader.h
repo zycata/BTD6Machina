@@ -2,6 +2,7 @@
 #define gameReader_H
 
 namespace gameInfo {
+    void initialize();
     int getCash();
     int getStartRound();
     int getCurRound();
@@ -10,8 +11,8 @@ namespace gameInfo {
     int getTotalAbilities();
     int getLogNumber();
     bool roundChanged();
-    bool isGameOver();
-    bool isGameWon();
+    bool didGameOver();
+    bool didGameWon();
 }
-// implemented now
+// implemented 
 #endif
