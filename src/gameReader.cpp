@@ -114,7 +114,7 @@ void didLogFileChange() {
     while (logNumber == prevLogNumber) {
         //cout << "Waiting for log number to change..." << endl;
         iterations++;
-        Sleep(80); // Sleep for 1 second before checking again
+        Sleep(100); // Sleep for 0.1 second before checking again
         if (iterations >= maxiterations) {
             // implementation later (due to level up)
             break; 

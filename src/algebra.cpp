@@ -369,6 +369,21 @@ bool getInput() {
     
 }
 
+
+void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
+    cout << "Available Upgrades:" << endl;
+    for (const auto& upgrade : upgrades) {
+        cout << "Tower Type: " << upgrade.towerTypeStr << ", Tower ID: " << upgrade.towerId << ", Path: " << upgrade.path << ", Upgrade Tier: " << upgrade.tier << ", Cost: " << upgrade.cost << endl;
+    }
+}
+
+void printTowerPlacementOptions(const vector<PlacementOption>& options) {
+    cout << "Available Tower Placement Options:" << endl;
+    for (const auto& option : options) {
+        cout << "Tower Type: " << option.towerTypeStr << ", Tower ID: " << option.towerType << ", Placement Cost: " << option.cost << endl;
+    }
+}
+
 class StrategyMaker {
     private:
         vector<Tower> TowersPlaced;
@@ -410,7 +425,7 @@ class StrategyMaker {
                     break;
             }
             
-            mouseControl::initializeMouseControls();
+            // mouseControl::initializeMouseControls();
             srand(time(0));
         }
 
@@ -502,11 +517,17 @@ class StrategyMaker {
             }
         }
 
+        bool checkIfSuccessfullyPlaced() {
+            //checks if the new gameinfo::getTowersPlaced() is greater than the previous one by a factor of 1
+            int curTowers = gameInfo::getTowersPlaced();
+            totalTowers++;
+            return (totalTowers) == curTowers; // check if the number of towers placed has increased
+        }
 
         bool placeTower(int tower, int x, int y) {
             //implement mouse control later
             mouseControl::placeTower(tower, x, y);
-            Sleep(100); // wait for the tower to be placed
+            Sleep(200); // wait for the tower to be placed
             // check if placement was successful
             totalTowers++;
             int curTowers = gameInfo::getTowersPlaced();
@@ -540,10 +561,10 @@ class StrategyMaker {
                     
                     
                     int cost = roundToNearest5(towerUpgrades[tower.getTowerType()][path][tower.path[path]], cashMultiplier);
-                    
+                    Sleep(200); // wait for the upgrade to be applied
                     if (cash > gameInfo::getCash()) {
-                        //this->cash = gameInfo::getCash(); // update cash after upgrade
-                        return true;
+                        this->cash = gameInfo::getCash(); // update cash after upgrade
+                        
 
                     } else if (cost > cash) {
                         cerr << "Not enough cash to upgrade tower ID " << towerId << " on path " << path << ". Required: " << cost << ", Available: " << cash << endl;
@@ -581,7 +602,8 @@ class StrategyMaker {
             }
         }
 
-                
+        // n2 > n1
+        // returns random int [n1, n2] (includes n1 and n2)
         int getRandomInt    (int n1, int n2) {
             // srand(time(nullptr));  // seed (only once in main ideally)
             return n1 + rand() % (n2 - n1 + 1);
@@ -606,7 +628,7 @@ class StrategyMaker {
             this->cash = gameInfo::getCash(); // update cash after placement
             return false; 
         }
-        void singleRoundLoopAlgorithmOne() {
+        void placementAlgorithmOne() {
             
             int maxattempts = 5;
             for (int i = 0; i < maxattempts; i++) {
@@ -614,7 +636,7 @@ class StrategyMaker {
                 vector<PlacementOption> newTowers = getTowerPlacementOptions();
                 if(newTowers.size() == 0) {
                     cout << "No towers available for placement." << endl;
-                    break;
+                    return;
                 } else {
                     cout << "Towers available for placement: " << newTowers.size() << endl;
                 }
@@ -622,11 +644,58 @@ class StrategyMaker {
                 PlacementOption selectedTower = newTowers[randomNum];
                 placeRandomTower(selectedTower);
                 cout << "Cash after placement: " << cash << endl;
-            }
+            } 
+            
             cout << "No more towers can be placed or not enough cash." << endl;
             // system("pause");
         }
         
+        void upgradeAlgorithmOne() {
+
+            int maxAttempts = 7;
+            
+            
+            for (int j = 0; j < maxAttempts; j++) { 
+                vector<UpgradeOption> availableUpgrades = getAvailableUpgrades();
+                if (availableUpgrades.size() == 0) {
+                    cout << "No upgrades available." << endl;
+                    
+                    return; // No upgrades available
+                }
+
+                int randomNum = rand() % availableUpgrades.size(); // Randomly select an upgrade
+
+                UpgradeOption selectedUpgrade = availableUpgrades[randomNum];
+                for (int i = 0; i < maxAttempts; i++) {
+                if (upgradeTower(selectedUpgrade.towerId, selectedUpgrade.path)) {
+                    cout << "Upgraded tower ID " << selectedUpgrade.towerId << " on path " << selectedUpgrade.path << " to tier " << selectedUpgrade.tier << endl;
+                    break;
+                } else {
+                    cout << "Failed to upgrade tower ID " << selectedUpgrade.towerId << " on path " << selectedUpgrade.path << endl;
+                    
+                }
+                this->cash = gameInfo::getCash();
+            }
+            }
+            
+            
+            this->cash = gameInfo::getCash(); // update cash after upgrade
+        }
+
+        
+        void singleRoundLoopAlgorithmOne() {
+            
+            int choice = getRandomInt(1, 2); // Randomly choose between placing a tower or upgrading a tower
+            if (choice == 1 || totalTowers < 3) { // if total towers is less than 5, always place a tower
+                cout << "Placing towers..." << endl;
+                placementAlgorithmOne();
+            } else {
+                cout << "Upgrading towers..." << endl;
+                upgradeAlgorithmOne();
+                
+            }
+
+        }
 
         void runGame() {
             bool gameOver = false;
@@ -685,20 +754,6 @@ class StrategyMaker {
 };
 
 
-
-void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
-    cout << "Available Upgrades:" << endl;
-    for (const auto& upgrade : upgrades) {
-        cout << "Tower Type: " << upgrade.towerTypeStr << ", Tower ID: " << upgrade.towerId << ", Path: " << upgrade.path << ", Upgrade Tier: " << upgrade.tier << ", Cost: " << upgrade.cost << endl;
-    }
-}
-
-void printTowerPlacementOptions(const vector<PlacementOption>& options) {
-    cout << "Available Tower Placement Options:" << endl;
-    for (const auto& option : options) {
-        cout << "Tower Type: " << option.towerTypeStr << ", Tower ID: " << option.towerType << ", Placement Cost: " << option.cost << endl;
-    }
-}
 
 
 
