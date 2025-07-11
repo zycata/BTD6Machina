@@ -467,28 +467,45 @@ class StrategyMaker {
             return static_cast<int>(5 * round(value / 5.0f));
         }
 
-        vector<UpgradeOption> getAvailableUpgrades() {
-            vector<UpgradeOption> availableUpgrades;
+        vector<UpgradeOption> getLegalUpgrades() { 
+            //returns all legal upgrades for the towers placed, cost not taken into account
+            vector<UpgradeOption> legalUpgrades;
             for (auto& tower : TowersPlaced) {
                 for (int i = 0; i < 3; i++) {
                     int cost = towerUpgrades[tower.getTowerType()][i][tower.path[i]];
                     
                     if (cost == INVALID) continue; // Skip invalid upgrades
                     if (tower.path[i] >= 5) continue; // Skip if already at max tier
-                    cost = roundToNearest5(cost, cashMultiplier);
                     
                     tower.path[i] += 1;
-                    if (isValidBTD6Upgrade(tower.path) && cost <= cash ) {
+                    if (isValidBTD6Upgrade(tower.path)) {
                         UpgradeOption option;
                         option.towerId = tower.getTowerId();
                         option.path = i;
                         option.cost = cost;
                         option.tier = tower.path[i];
                         option.towerTypeStr = tower.getTowerTypeStr();
-                        availableUpgrades.push_back(option);
+                        legalUpgrades.push_back(option);
 
                     } 
-                    tower.path[i] -= 1; // Reset the path for the next iteration
+                    tower.path[i] -= 1; // Reset path (probably a better way to do this ill implement later)
+                }
+            }
+        }
+        vector<UpgradeOption> getAvailableUpgrades() {
+            vector<UpgradeOption> availableUpgrades;
+            vector<UpgradeOption> legalUpgrades = getLegalUpgrades();
+            
+            if (legalUpgrades.empty()) {
+                cout << "No legal upgrades available." << endl;
+                return availableUpgrades; // No legal upgrades found
+            }
+            for (const auto& upgrade : legalUpgrades) {
+                int cost = roundToNearest5(upgrade.cost, cashMultiplier);
+                if (upgrade.cost <= cash) {
+                    availableUpgrades.push_back(upgrade);
+                } else {
+                     //cout << "Not enough cash for upgrade: " << upgrade.towerTypeStr << " on path " << upgrade.path << ", cost: " << cost << ", available cash: " << cash << endl;
                 }
             }
             return availableUpgrades;
@@ -628,6 +645,7 @@ class StrategyMaker {
             this->cash = gameInfo::getCash(); // update cash after placement
             return false; 
         }
+
         void placementAlgorithmOne() {
             
             int maxattempts = 5;
@@ -695,6 +713,22 @@ class StrategyMaker {
                 
             }
 
+        }
+
+        // function that selects an upgrade for a tower --> only runs for higherRounds
+        // returns an upgrade option however it doesn't check if player has enough cash allowing the ai to "save up" for a tier 5 or something
+        // assuming it chooses an upgrade that the ai can afford on the spot, it'll just purchase it and buy it then run again or choose something else to run yes???
+        // AMONGLA SWAG pls work on this and lock in 
+        UpgradeOption getTargetUpgrade() {
+            vector<UpgradeOption> legalUpgrades = getLegalUpgrades();
+            if (legalUpgrades.empty()) {
+                cout << "No legal upgrades available." << endl;
+                return; // No legal upgrades found
+            }
+            int randomNum = rand() % legalUpgrades.size(); // Randomly select an upgrade
+            UpgradeOption selectedUpgrade = legalUpgrades[randomNum];
+            cout << "Selected upgrade: Tower ID " << selectedUpgrade.towerId << ", Path " << selectedUpgrade.path << ", Cost: " << selectedUpgrade.cost << endl;
+            return selectedUpgrade; // Return the selected upgrade
         }
 
         void runGame() {
