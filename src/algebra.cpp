@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
-
+#include <optional>
 using namespace std;
 /*
 namespace mouseControl {dddint y) {return true;};
@@ -64,7 +64,7 @@ map<int, string> towerMap = {
 };
 
 const int INVALID = -1;
-const int towerUpgrades[25][3][5] = {
+const int towerUpgrades[26][3][5] = {
     
     {
         // Hero (upgrading hero is not allowed)
@@ -216,11 +216,18 @@ const int towerUpgrades[25][3][5] = {
         {160, 810, 2010, 12500, 45000},
         {175, 830, 2065, 9500, 60000},
         {190, 860, 2120, 9000, 30000}
+    },
+
+    //Desperado
+    {
+        {250, 200, 1200, 5800, 17500},
+        {150, 500, 3000, 8000, 42000},
+        {220, 280, 2100, 9500, 31000}
     }
 };
 
 const int towerCosts[25] = {
-    0,  // Hero
+    650,  // Hero
     200, // Dart Monkey
     315, // Boomerang Monkey
     375, // Bomb Shooter
@@ -354,20 +361,6 @@ struct PlacementOption {
 
 enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE };
 
-bool getInput() {
-    char choice;
-    cin >> choice;
-    switch (choice) {
-        case 't':
-            return true;
-        case 'f':
-            return false;
-        default:
-            cout << "Invalid input. Please enter 't' or 'f'." << endl;
-            return getInput();
-    }
-    
-}
 
 
 void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
@@ -731,10 +724,50 @@ class StrategyMaker {
             return selectedUpgrade; // Return the selected upgrade
         }
 
+        // remember to add chedk if it returns a valid upgrade
+        // add something to reason with the price lmao yes true true amongla swag....
+        optional<UpgradeOption> upgradeAlgorithmTwo() {
+            int maxAttempts = 7;
+            for (int j = 0; j < maxAttempts; j++) {
+                UpgradeOption targetUpgrade = getTargetUpgrade();
+                if (targetUpgrade.cost <= cash) {
+                    if (upgradeTower(targetUpgrade.towerId, targetUpgrade.path)) {
+                        cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << endl;
+                    }
+                } else if (targetUpgrade.cost > cash) {
+                    cout << "Not enough cash to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;
+                    return targetUpgrade;
+                }
+            }
+            this->cash = gameInfo::getCash(); // update cash after upgrade
+            return std::nullopt;
+        }
+
+        
+
         void runGame() {
             bool gameOver = false;
+            optional<UpgradeOption> targetUpgrade = nullopt;
+
             while (!gameOver) {
-                singleRoundLoopAlgorithmOne();
+                
+                if (this->currentRound < 30) {
+                    singleRoundLoopAlgorithmOne();
+                } else {
+                    int choice = getRandomInt(1, 4); // Randomly choose between placing a tower or upgrading a tower --> higher chacne of upgrading a tower
+                    if (choice == 1) { // if total towers is less than 5, always place a tower
+                        // Placement algorithm two guys trust me imma lock tf in
+                    } else {
+                        // pretty much selec ts a target upgrade yes yes true true....
+                        
+                        if (targetUpgrade && targetUpgrade->cost <= cash) {
+                            upgradeTower(targetUpgrade->towerId, targetUpgrade->path);
+                        } else {
+                            targetUpgrade = upgradeAlgorithmTwo(); // get a new target upgrade
+                        }
+                    }
+                }
+                
                 if (currentRound == startRound) {
                     mouseControl::ClickStartNextRound();
                     // click it twice for fast forward round 1 lmao
@@ -744,7 +777,7 @@ class StrategyMaker {
                 cout << "Waiting for next round..." << endl;
                 
                 bool roundOver = false;
-                while (true) {
+                while (!roundOver) {
                     gameOver = gameInfo::didGameOver();
                     cout << "Game over? " << (gameOver ? "Yes" : "No") << endl;
                     if (this->currentRound != gameInfo::getCurRound()) {
@@ -759,13 +792,10 @@ class StrategyMaker {
                             logTowers();
                             return; // exit the game loop
                         }
-                        break; // exit the waiting loop
                     } 
-                    
-                    
                     else if (gameInfo::didGameOver()) {
                         gameOver = true;
-                        break; // exit the waiting loop
+                        break; 
                     }
                     Sleep(200); 
 
