@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
-#include <optional>
+
 using namespace std;
 /*
 namespace mouseControl {dddint y) {return true;};
@@ -350,6 +350,7 @@ struct UpgradeOption {
     int cost;
     int tier;
     string towerTypeStr;
+    bool isAllowed = true;
 };
 
 struct PlacementOption {
@@ -393,6 +394,7 @@ class StrategyMaker {
         const int xMin = 25;
 
         int startRound;
+        const UpgradeOption emptyUpgrade = {0, 0, 0, 0, "", false}; // Empty upgrade option to return when no upgrades are available
     public:
         StrategyMaker(int currentRound, Difficulty type) {
             TowersPlaced = {};
@@ -462,7 +464,7 @@ class StrategyMaker {
 
         vector<UpgradeOption> getLegalUpgrades() { 
             //returns all legal upgrades for the towers placed, cost not taken into account
-            vector<UpgradeOption> legalUpgrades;
+            vector<UpgradeOption> legalUpgrades = {};
             for (auto& tower : TowersPlaced) {
                 for (int i = 0; i < 3; i++) {
                     int cost = towerUpgrades[tower.getTowerType()][i][tower.path[i]];
@@ -484,21 +486,30 @@ class StrategyMaker {
                     tower.path[i] -= 1; // Reset path (probably a better way to do this ill implement later)
                 }
             }
+            return legalUpgrades;
         }
         vector<UpgradeOption> getAvailableUpgrades() {
             vector<UpgradeOption> availableUpgrades;
-            vector<UpgradeOption> legalUpgrades = getLegalUpgrades();
-            
-            if (legalUpgrades.empty()) {
-                cout << "No legal upgrades available." << endl;
-                return availableUpgrades; // No legal upgrades found
-            }
-            for (const auto& upgrade : legalUpgrades) {
-                int cost = roundToNearest5(upgrade.cost, cashMultiplier);
-                if (upgrade.cost <= cash) {
-                    availableUpgrades.push_back(upgrade);
-                } else {
-                     //cout << "Not enough cash for upgrade: " << upgrade.towerTypeStr << " on path " << upgrade.path << ", cost: " << cost << ", available cash: " << cash << endl;
+            for (auto& tower : TowersPlaced) {
+                for (int i = 0; i < 3; i++) {
+                    int cost = towerUpgrades[tower.getTowerType()][i][tower.path[i]];
+                    
+                    if (cost == INVALID) continue; // Skip invalid upgrades
+                    if (tower.path[i] >= 5) continue; // Skip if already at max tier
+                    cost = roundToNearest5(cost, cashMultiplier);
+                    
+                    tower.path[i] += 1;
+                    if (isValidBTD6Upgrade(tower.path) && cost <= cash ) {
+                        UpgradeOption option;
+                        option.towerId = tower.getTowerId();
+                        option.path = i;
+                        option.cost = cost;
+                        option.tier = tower.path[i];
+                        option.towerTypeStr = tower.getTowerTypeStr();
+                        availableUpgrades.push_back(option);
+
+                    } 
+                    tower.path[i] -= 1; // Reset the path for the next iteration
                 }
             }
             return availableUpgrades;
@@ -619,6 +630,7 @@ class StrategyMaker {
             return n1 + rand() % (n2 - n1 + 1);
         }
 
+        // places a random tower... tries 5 times to place it before trying a new tower or giving up lmao 
         bool placeRandomTower(PlacementOption &selectedTower) {
             // 5 attempts to place a tower
             for (int i = 0; i < 5; i++) {
@@ -639,6 +651,7 @@ class StrategyMaker {
             return false; 
         }
 
+        // pretty much places at most 5 towers randomly, but only if the towers are affordable immediately. 
         void placementAlgorithmOne() {
             
             int maxattempts = 5;
@@ -716,7 +729,7 @@ class StrategyMaker {
             vector<UpgradeOption> legalUpgrades = getLegalUpgrades();
             if (legalUpgrades.empty()) {
                 cout << "No legal upgrades available." << endl;
-                return; // No legal upgrades found
+                return emptyUpgrade; // No legal upgrades found
             }
             int randomNum = rand() % legalUpgrades.size(); // Randomly select an upgrade
             UpgradeOption selectedUpgrade = legalUpgrades[randomNum];
@@ -726,7 +739,7 @@ class StrategyMaker {
 
         // remember to add chedk if it returns a valid upgrade
         // add something to reason with the price lmao yes true true amongla swag....
-        optional<UpgradeOption> upgradeAlgorithmTwo() {
+        UpgradeOption upgradeAlgorithmTwo() {
             int maxAttempts = 7;
             for (int j = 0; j < maxAttempts; j++) {
                 UpgradeOption targetUpgrade = getTargetUpgrade();
@@ -735,19 +748,21 @@ class StrategyMaker {
                         cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << endl;
                     }
                 } else if (targetUpgrade.cost > cash) {
-                    cout << "Not enough cash to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;
+                    cout << "Selected Target Upgrade, Not enough to Upgrade this round " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;\
+                    
                     return targetUpgrade;
                 }
             }
             this->cash = gameInfo::getCash(); // update cash after upgrade
-            return std::nullopt;
+
+            return emptyUpgrade; // Return an empty UpgradeOption if no upgrade was made
         }
 
         
 
         void runGame() {
             bool gameOver = false;
-            optional<UpgradeOption> targetUpgrade = nullopt;
+            UpgradeOption targetUpgrade = emptyUpgrade;
 
             while (!gameOver) {
                 
@@ -757,12 +772,19 @@ class StrategyMaker {
                     int choice = getRandomInt(1, 4); // Randomly choose between placing a tower or upgrading a tower --> higher chacne of upgrading a tower
                     if (choice == 1) { // if total towers is less than 5, always place a tower
                         // Placement algorithm two guys trust me imma lock tf in
-                    } else {
+                    }
+                    else {
                         // pretty much selec ts a target upgrade yes yes true true....
-                        
-                        if (targetUpgrade && targetUpgrade->cost <= cash) {
-                            upgradeTower(targetUpgrade->towerId, targetUpgrade->path);
-                        } else {
+                        // if (targetUpgrade) pretty much just checks if it is null
+                        if (targetUpgrade.isAllowed && targetUpgrade.cost <= cash) {
+                            upgradeTower(targetUpgrade.towerId, targetUpgrade.path);
+                            targetUpgrade = emptyUpgrade; // reset target upgrade after successful upgrade
+                        } else if (targetUpgrade.isAllowed && targetUpgrade.cost > cash) {
+                            cout << "Not enough cash to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;
+                            cout << "saving for the target upgrade...." << endl;
+                            // do nothing, save up for the target upgrade
+                        }
+                        else {
                             targetUpgrade = upgradeAlgorithmTwo(); // get a new target upgrade
                         }
                     }
