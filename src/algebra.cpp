@@ -71,7 +71,9 @@ class StrategyMaker {
             TowersPlaced = {};
             StrategyActions = {};
             this->currentRound = currentRound;
-            startRound = currentRound;
+            cout << "Starting at Current round: " << currentRound << endl;
+            startRound = gameInfo::getStartRound(); // games actual start round yes true true --> Literally irrelevent unless i do a funny true true but yes 
+            
             totalTowers = gameInfo::getTowersPlaced();
             this->cash = gameInfo::getCash(); 
 
@@ -394,7 +396,7 @@ class StrategyMaker {
 
         }
 
-        // function that selects an upgrade for a tower --> only runs for higherRounds
+        // function that selects an up grade for a tower --> only runs for higherRounds
         // returns an upgrade option however it doesn't check if player has enough cash allowing the ai to "save up" for a tier 5 or something
         // assuming it chooses an upgrade that the ai can afford on the spot, it'll just purchase it and buy it then run again or choose something else to run yes???
         // AMONGLA SWAG pls work on this and lock in 
