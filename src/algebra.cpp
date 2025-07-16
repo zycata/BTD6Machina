@@ -220,9 +220,9 @@ class StrategyMaker {
             return (totalTowers) == curTowers; // check if the number of towers placed has increased
         }
 
-        bool placeTower(int tower, int x, int y) {
+        bool placeTower(int towerCode, int x, int y) {
             //implement mouse control later
-            mouseControl::placeTower(tower, x, y);
+            mouseControl::placeTower(towerCode, x, y);
             Sleep(200); // wait for the tower to be placed
             // check if placement was successful
             totalTowers++;
@@ -238,9 +238,9 @@ class StrategyMaker {
                 return false; // Placement failed
             }
             
-            Tower newTower( x, y, tower, 0, 0, 0, currentRound, totalTowers );
+            Tower newTower( x, y, towerCode, 0, 0, 0, currentRound, totalTowers );
             TowersPlaced.push_back(newTower);
-            StrategyActions.push_back({Action::PLACE, newTower, x, y, tower, 0, currentRound, totalTowers});
+            StrategyActions.push_back({Action::PLACE, newTower, x, y, towerCode, INVALID, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
             this->cash = gameInfo::getCash(); // update cash after placement
 

@@ -199,7 +199,7 @@ const int towerUpgrades[26][3][5] = {
     }
 };
 
-const int towerCosts[25] = {
+const int towerCosts[26] = {
     650,  // Hero
     200, // Dart Monkey
     315, // Boomerang Monkey
@@ -225,10 +225,11 @@ const int towerCosts[25] = {
     1200,// Monkey Village
     350,// Engineer Monkey
     250,// Beast Handler
+    300, // Desperado
 };
 
 // all towers temporarily not allowed for testing purposes lol
-const int te[25] {
+const int te[26] {
     0, 
     1, // Dart Monkey
     2, // Boomerang Monkey
@@ -253,10 +254,12 @@ const int te[25] {
     21, // Spike Factory
     22, // Monkey Village
     23, // Engineer Monkey
-    24  // Beast Handler 
+    24,  // Beast Handler 
+    25 // Desperado
 };
 
-const int towersAllowed[2] = {16, 17};
+const int towersAllowed[2] = {16, 17}; // only ninja monkey and alc atm 
+
 
 class Tower {
     private:
@@ -278,6 +281,7 @@ class Tower {
             path[2] = path2;
         }
 
+        // returns towerCode for what type of tower it is (shit naming means i wrote this)
         int getTowerType() {
             return tower;
         }
@@ -302,17 +306,19 @@ class Tower {
             return y;
         }
         
-
+        //lowkey cosmetic purposes only ---------> trust me bro it'll be useful later trus trs....
         string getCrossPathing() {
             return to_string(path[0]) + to_string(path[1]) + to_string(path[2]);
         }
+ 
 };
 
 struct Action {
     enum ActionType { PLACE, UPGRADE } type;
     Tower tower;
     int x, y;            // for placement
-    int towerType, path; // Tower to represent tower type, path for top mid or bottom. Null for placing a tower.
+    int towerType; // Tower to represent tower type, path for top mid or bottom.
+    int path; // -1 if is a tower placement
     int round;
     int towerId; // which tower it is for upgrading
 };
