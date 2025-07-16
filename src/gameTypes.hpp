@@ -345,5 +345,5 @@ struct UpgradeOption {
 
 enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE };
 
-
+enum GameResult { VICTORY, DEFEAT, OTHER}; //other for crash shit code etc
 #endif 

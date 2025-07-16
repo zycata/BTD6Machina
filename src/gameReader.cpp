@@ -173,7 +173,8 @@ namespace gameInfo {
     }
 
     bool didGameWon() {
-        didLogFileChange();
+        
+        // didLogFileChange();
         return isGameWon;
     }
 }

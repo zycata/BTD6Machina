@@ -434,8 +434,9 @@ class StrategyMaker {
         }
 
         
-
-        void runGame() {
+        // !!! TODO: make shitty ai restart the game using the restart button thing when the game is over
+        
+        GameResult runGame() {
             bool gameOver = false;
             UpgradeOption targetUpgrade = emptyUpgrade;
 
@@ -489,6 +490,7 @@ class StrategyMaker {
                             cout << "Game Won!" << endl;
                             logStrategy();
                             logTowers();
+                            return GameResult::VICTORY;
                             return; // exit the game loop
                         }
                     } 
@@ -504,6 +506,7 @@ class StrategyMaker {
                     cout << "Game Over!" << endl;
                     logStrategy();
                     logTowers();
+                    return GameResult::DEFEAT; 
                     break;
                 }
                 this->currentRound = gameInfo::getCurRound();
@@ -533,7 +536,7 @@ int main() {
         return 1; // Exit if the game window is not found
     }
     system("pause");
-    StrategyMaker strategy(1, Difficulty::EASY);
+    
     /*
     strategy.placeTower(1, 100, 200);
     strategy.upgradeTower(0, 1);
@@ -550,7 +553,7 @@ int main() {
     strategy.logTowers();
     printAvailableUpgrades(strategy.getAvailableUpgrades());
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
-    
+    StrategyMaker strategy(1, Difficulty::EASY);
     strategy.runGame();
     cout << "game has been finished" << endl;
     system("pause");
