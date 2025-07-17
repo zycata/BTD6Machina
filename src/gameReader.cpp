@@ -22,6 +22,8 @@ int prevRound = 0;
 int prevLogNumber = 0;
 int prevTowerPlaced = 0;
 int startRound = -1; // riyal or fakeh
+
+
 bool towerPlacedSuccessfully() {
     
     if ((towersPlaced == (prevTowerPlaced + 1))) {
@@ -31,16 +33,6 @@ bool towerPlacedSuccessfully() {
     return false;
 }
 
-
-bool assertBool(bool expected ,bool condition, string message) {
-    if (condition != expected) {
-        cerr << "Assertion failed: " << message << endl;
-        return false;
-    } else {
-        cerr << "Test passed" << endl;
-    }
-    return true;
-}
 
 json readJsonFile(){
     string filePath = "C:/Users/yanxi/Documents/Btd6Machine/Cpppractice/src/gameInfo/gameData.json";

@@ -553,6 +553,7 @@ int main() {
     strategy.logTowers();
     printAvailableUpgrades(strategy.getAvailableUpgrades());
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
+    
     StrategyMaker strategy(1, Difficulty::EASY);
     strategy.runGame();
     cout << "game has been finished" << endl;
