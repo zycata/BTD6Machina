@@ -4,16 +4,19 @@
 #include <cstdlib>
 #include <string>
 using namespace std;
+// 
+// in this folder ofc bevause im the goat
 // compile using g++ GameReaderTest.cpp GameReader.cpp -o GameReaderTest.exe
 int main() {
-    GameReader reader("C:/Users/yanxi/Documents/Btd6Machine/Cpppractice/src/gameInfo/gameData.json");
+    GameReader reader("testJsons/test1.json");
     reader.initialize();
 
-    while (true){
-        reader.testMetrics();
+    
+    reader.testMetrics();
         
-    }
+    reader.changeFilePath("testJsons/test2.json");
 
-    cout << "Game Over!" << endl;
+    reader.testMetrics();
+
     return 0;
 }
