@@ -18,26 +18,37 @@ GameReader::GameReader(const std::string& path)
 }
 
 
-json GameReader::readJsonFile() {
-    //string dataPath = 
 
-    // uses the goofy ahh file path that made in the constructor
-    //"C:/Users/yanxi/Documents/Btd6Machine/Cpppractice/src/gameInfo/gameData.json";
+json GameReader::readJsonFile(){
     ifstream file(filePath);
 
-    if (!file.is_open() || file.peek() == ifstream::traits_type::eof()) {
-        cerr << "Error: Could not open or file empty: " << filePath << endl;
-        return nullptr;
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open JSON file at " << filePath << std::endl;
+        // Optionally, you might want a small delay here before retrying in updateValues
+        // Sleep(50); // Small delay before retrying file open
+        return nullptr; // Indicate failure to open
     }
+
+    // Check if the file is empty by checking its size
+    // Move to end of file, get position, then reset to beginning
+    file.seekg(0, ios::end);
+    if (file.tellg() == 0) {
+        std::cerr << "Warning: JSON file is empty at " << filePath << ". Retrying..." << std::endl;
+        file.close();
+        return nullptr; // Indicate an empty file, so updateValues can retry
+    }
+    file.seekg(0, ios::beg); // Reset file pointer to the beginning for parsing
 
     json gameDataJson;
     try {
         gameDataJson = json::parse(file);
     } catch (const nlohmann::json::parse_error& e) {
-        cerr << "JSON Parse Error: " << e.what() << endl;
-        return nullptr;
+        std::cerr << "JSON Parse Error (file likely empty or corrupt): " << e.what() << std::endl;
+        file.close();
+        return nullptr; // Indicate parse error, so updateValues can retry
     }
 
+    file.close(); // Close the file after reading (important!)
     return gameDataJson;
 }
 
