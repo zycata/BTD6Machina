@@ -203,12 +203,27 @@ class StrategyMaker {
             return availableUpgrades;
         }
 
+        bool isHeroAlreadyPlaced() {
+            for ( auto& twr : TowersPlaced) {
+                if (twr.isHero() ) {
+                    return true; 
+                }
+            }
+            return false;
+
+        }
+
         vector<PlacementOption> getTowerPlacementOptions() {
             vector<PlacementOption> newTowers = {};
             for (auto& towerType : towersAllowed) {
                 int cost = roundToNearest5(towerCosts[towerType], cashMultiplier);
                 if (cost > cash) continue; // Skip if not enough cash
-                if (towerType == 0) continue; // Skip hero (changes later)
+
+
+                if (towerType == 0 && isHeroAlreadyPlaced()) continue; //skip hero if already placed
+
+                
+
                 PlacementOption option;
                 option.towerType = towerType;
                 option.cost = cost;
@@ -425,7 +440,7 @@ class StrategyMaker {
             }
             int randomNum = rand() % legalUpgrades.size(); // Randomly select an upgrade
             UpgradeOption selectedUpgrade = legalUpgrades[randomNum];
-            cout << "Selected upgrade: Tower ID " << selectedUpgrade.towerId << ", Path " << selectedUpgrade.path << ", Cost: " << selectedUpgrade.cost << endl;
+            cout << "Selected upgrade, Tower ID: " << selectedUpgrade.towerId << ", Path: " << selectedUpgrade.path << ", Cost: " << selectedUpgrade.cost << endl;
             return selectedUpgrade; // Return the selected upgrade
         }
 
@@ -440,7 +455,7 @@ class StrategyMaker {
                         cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << endl;
                     }
                 } else if (targetUpgrade.cost > cash) {
-                    cout << "Selected Target Upgrade, Not enough to Upgrade this round " << targetUpgrade.towerId << " on path " << targetUpgrade.path << "Tier: " << targetUpgrade.tier << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;\
+                    cout << "Selected Target Upgrade, Not enough to Upgrade this round: " << currentRound << " on path " << targetUpgrade.path << " Tier: " << targetUpgrade.tier << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;\
                     
                     return targetUpgrade;
                 }
@@ -575,11 +590,12 @@ int main() {
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
     
     while (true) {
-        StrategyMaker strategy(Difficulty::IMPOPPABLE);
+        StrategyMaker strategy(Difficulty::HARD);
         if (strategy.runGame() == GameResult::VICTORY) {
             break;
         } else {
             cout << "tryna new strat " << endl;
+            Sleep(1000);
             mouseControl::restartGameWhenOver(false);
         }
         Sleep(1000);

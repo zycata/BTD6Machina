@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 #include <string>
-#include "../../src/json.hpp"
+#include "json.hpp"
 #include <fstream>
 #include <windows.h>
 #include <string>

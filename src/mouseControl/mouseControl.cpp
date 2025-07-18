@@ -188,10 +188,39 @@ bool placeTowerOld(int tower, int x, int y) {
 // add something to check if the pixels given are valid
 // return false when pixels are not valid
 
+void placeHero( int x, int y) {
+        
+        CONST int delay = 50;
+        moveMouse(1075, 107); // Intiailize the window
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+
+        Sleep(delay);
+        moveMouse(heroLocation[0], heroLocation[1]);
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+       
+        moveMouse(x, y);
+        Sleep(delay);
+
+        Sleep(delay);
+        unclickMouse();
+       
+}
+
+
 namespace mouseControl {
 
     bool placeTower(int tower, int x, int y) {
-        
+        // hero key scan doesnt work because fuckass game :sob: 
+        if (tower == 0) {
+            placeHero(x,y);
+            return true;
+        }
         CONST int delay = 50;
         moveMouse(1075, 107); // Intiailize the window
         Sleep(delay);
@@ -307,6 +336,11 @@ namespace mouseControl {
         
     }
 }
+
+
+
+
+
 /*
 using namespace mouseControl;
 int main() {
@@ -315,10 +349,8 @@ int main() {
     addTowers(); 
     findWindow();
     
-    testListMake(); 
     
-    
-    placeTower(16, 100, 200);
+    placeHero( 100, 200);
     placeTower(17, 300, 400); 
     placeTower(13, 300, 690);
     upgradeTower(300, 690, 2);
@@ -329,7 +361,7 @@ int main() {
     upgradeTower(300, 690, 1); 
     upgradeTower(300, 690, 1); 
 
+
     moveMouse(0, 0);
-    cout << "Towers placed: " << endl;
     return 0;
 } */

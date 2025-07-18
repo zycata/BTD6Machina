@@ -1,11 +1,12 @@
 {
   "isDefeated": false,
   "gameWon": false,
-  "Cash": 650,
-  "Round": 6,
-  "Lives": 1,
-  "TowersPlaced": 0,
+  "Cash": 220,
+  "Round": 3,
+  "Lives": 100,
+  "TowersPlaced": 1,
   "TotalAbilities": 0,
-  "LogNumber": 20585,
-  "StartRound": 3
+  "LogNumber": 21260,
+  "StartRound": 3,
+  "Abilities": []
 }

@@ -200,7 +200,7 @@ const int towerUpgrades[26][3][5] = {
 };
 
 const int towerCosts[26] = {
-    650,  // Hero
+    540,  // Hero
     200, // Dart Monkey
     315, // Boomerang Monkey
     375, // Bomb Shooter
@@ -304,6 +304,10 @@ class Tower {
 
         int getY() {
             return y;
+        }
+
+        bool isHero() {
+            return getTowerType() == 0;
         }
         
         //lowkey cosmetic purposes only ---------> trust me bro it'll be useful later trus trs....
