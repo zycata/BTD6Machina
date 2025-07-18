@@ -31,5 +31,7 @@ int main() {
     testStartRound();
     Sleep(7000);
     restartGame();
+    Sleep(200);
+    placeTower(0, 690, 60);
     return 0;
 }
