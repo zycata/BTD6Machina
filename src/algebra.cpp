@@ -4,11 +4,13 @@
 #include <fstream>
 #include <map>
 #include <cmath>
-#include "mouseControl/mouseControl.h"
-#include "gameReader.h"
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
+
+
+#include "mouseControl/mouseControl.h"
+#include "jsonHandlers/GameReader.h"
 #include "gameTypes.hpp"
 using namespace std;
 /*
@@ -32,7 +34,7 @@ namespace gameInfo {f
     bool isGameWon();
 }
 */
-// compile using g++ src/algebra.cpp src/gameReader.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
+// compile using g++ src/algebra.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
 
 
 void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
@@ -57,9 +59,10 @@ class StrategyMaker {
         int totalTowers;
         int cash;
         Difficulty type;
-      
+        
         float cashMultiplier;
 
+        GameReader gameInfo;
 
         const int xMAx = 1000;
         const int yMax = 720;
@@ -69,14 +72,18 @@ class StrategyMaker {
         int startRound;
         const UpgradeOption emptyUpgrade = {0, 0, 0, 0, "", false}; // Empty upgrade option to return when no upgrades are available
     public:
-        StrategyMaker(Difficulty type) {
+        StrategyMaker(Difficulty type, string filePath) : gameInfo(filePath)
+        {
+            gameInfo.initialize();
+
             TowersPlaced = {};
             StrategyActions = {};
             this->currentRound = currentRound;
-            startRound = gameInfo::getStartRound(); // games actual start round yes true true --> Literally irrelevent unless i do a funny true true but yes 
             
-            totalTowers = gameInfo::getTowersPlaced();
-            this->cash = gameInfo::getCash(); 
+            startRound = gameInfo.getStartRound(); // games actual start round yes true true --> Literally irrelevent unless i do a funny true true but yes 
+            
+            totalTowers = gameInfo.getTowersPlaced();
+            this->cash = gameInfo.getCash(); 
 
             this->type = type;
             
@@ -243,7 +250,7 @@ class StrategyMaker {
 
         bool checkIfSuccessfullyPlaced() {
             //checks if the new gameinfo::getTowersPlaced() is greater than the previous one by a factor of 1
-            int curTowers = gameInfo::getTowersPlaced();
+            int curTowers = gameInfo.getTowersPlaced();
             totalTowers++;
             return (totalTowers) == curTowers; // check if the number of towers placed has increased
         }
@@ -254,7 +261,7 @@ class StrategyMaker {
             Sleep(200); // wait for the tower to be placed
             // check if placement was successful
             totalTowers++;
-            int curTowers = gameInfo::getTowersPlaced();
+            int curTowers = gameInfo.getTowersPlaced();
             cout << "Total Towers: " << totalTowers << ", Current Towers: " << curTowers << endl;
             bool success = (totalTowers) == curTowers; // check if the number of towers placed has increased
             
@@ -270,7 +277,7 @@ class StrategyMaker {
             TowersPlaced.push_back(newTower);
             StrategyActions.push_back({Action::PLACE, newTower, x, y, towerCode, INVALID, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
-            this->cash = gameInfo::getCash(); // update cash after placement
+            this->cash = gameInfo.getCash(); // update cash after placement
 
             return true;
         }
@@ -286,8 +293,8 @@ class StrategyMaker {
                     
                     int cost = roundToNearest5(towerUpgrades[tower.getTowerType()][path][tower.path[path]], cashMultiplier);
                     Sleep(200); // wait for the upgrade to be applied
-                    if (cash > gameInfo::getCash()) {
-                        this->cash = gameInfo::getCash(); // update cash after upgrade
+                    if (cash > gameInfo.getCash()) {
+                        this->cash = gameInfo.getCash(); // update cash after upgrade
                         StrategyActions.push_back({Action::UPGRADE, tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
                         return true;
 
@@ -344,7 +351,7 @@ class StrategyMaker {
                     int x = getRandomInt(xMin, xMAx);
                     int y = getRandomInt(yMin, yMax);
                     if (placeTower(selectedTower.towerType, x, y)) {
-                        this->cash = gameInfo::getCash();
+                        this->cash = gameInfo.getCash();
                         cout << "Placed tower of type " << selectedTower.towerTypeStr << " at (" << x << ", " << y << ")" << endl;
                         return true;
                     } else {
@@ -353,8 +360,8 @@ class StrategyMaker {
                         //system("pause");
                     }
                 }
-            this->totalTowers = gameInfo::getTowersPlaced(); // update total towers placed
-            this->cash = gameInfo::getCash(); // update cash after placement
+            this->totalTowers = gameInfo.getTowersPlaced(); // update total towers placed
+            this->cash = gameInfo.getCash(); // update cash after placement
             return false; 
         }
 
@@ -405,12 +412,12 @@ class StrategyMaker {
                     cout << "Failed to upgrade tower ID " << selectedUpgrade.towerId << " on path " << selectedUpgrade.path << endl;
                     
                 }
-                this->cash = gameInfo::getCash();
+                this->cash = gameInfo.getCash();
             }
             }
             
             
-            this->cash = gameInfo::getCash(); // update cash after upgrade
+            this->cash = gameInfo.getCash(); // update cash after upgrade
         }
 
         
@@ -460,7 +467,7 @@ class StrategyMaker {
                     return targetUpgrade;
                 }
             }
-            this->cash = gameInfo::getCash(); // update cash after upgrade
+            this->cash = gameInfo.getCash(); // update cash after upgrade
 
             return emptyUpgrade; // Return an empty UpgradeOption if no upgrade was made
         }
@@ -513,15 +520,15 @@ class StrategyMaker {
                 
                 bool roundOver = false;
                 while (!roundOver) {
-                    gameOver = gameInfo::didGameOver();
+                    gameOver = gameInfo.didGameOver();
                     cout << "Game over? " << (gameOver ? "Yes" : "No") << endl;
-                    if (this->currentRound != gameInfo::getCurRound()) {
-                        cout << "Round changed from " << this->currentRound << " to " << gameInfo::getCurRound() << endl;
-                        this->currentRound = gameInfo::getCurRound();
+                    if (this->currentRound != gameInfo.getCurRound()) {
+                        cout << "Round changed from " << this->currentRound << " to " << gameInfo.getCurRound() << endl;
+                        this->currentRound = gameInfo.getCurRound();
 
                         roundOver = true;
 
-                        if (gameInfo::didGameWon()) {
+                        if (gameInfo.didGameWon()) {
                             cout << "Game Won!" << endl;
                             logStrategy();
                             logTowers();
@@ -529,7 +536,7 @@ class StrategyMaker {
                             //return; // exit the game loop
                         }
                     } 
-                    else if (gameInfo::didGameOver()) {
+                    else if (gameInfo.didGameOver()) {
                         gameOver = true;
                         break; 
                     }
@@ -544,8 +551,8 @@ class StrategyMaker {
                     return GameResult::DEFEAT; 
                     //break;
                 }
-                this->currentRound = gameInfo::getCurRound();
-                this->cash = gameInfo::getCash();
+                this->currentRound = gameInfo.getCurRound();
+                this->cash = gameInfo.getCash();
                 cout << "Current round: " << this->currentRound << endl;
                 
                 
@@ -560,12 +567,13 @@ class StrategyMaker {
 
 int main() {
     
-    
+    string filePath = "C:/Users/yanxi/Documents/Btd6Machine/Cpppractice/src/gameInfo/gameData.json";
+
     cout << "Script Started" << endl;
-    gameInfo::initialize(); // Initialize game info
+    
     
     cout << "Starting game..." << endl;
-    mouseControl::findWindow(); // find the game window
+    bool found = mouseControl::findWindow(); // find the game window
     if (!mouseControl::findWindow()) {
         cerr << "Game window not found. Please ensure the game is running." << endl;
         return 1; // Exit if the game window is not found
@@ -590,7 +598,7 @@ int main() {
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
     
     while (true) {
-        StrategyMaker strategy(Difficulty::HARD);
+        StrategyMaker strategy(Difficulty::HARD, filePath);
         if (strategy.runGame() == GameResult::VICTORY) {
             break;
         } else {

@@ -318,7 +318,7 @@ class Tower {
 };
 
 struct Action {
-    enum ActionType { PLACE, UPGRADE } type;
+    enum ActionType { PLACE, UPGRADE, ABILITYUSE } type;
     Tower tower;
     int x, y;            // for placement
     int towerType; // Tower to represent tower type, path for top mid or bottom.

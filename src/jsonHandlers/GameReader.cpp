@@ -17,8 +17,11 @@ GameReader::GameReader(const std::string& path)
 {
 }
 
-
-
+GameReader::GameReader()
+    : filePath("")  // store the path
+{
+    cerr << "EMPTY PATH FILE" << endl;
+}
 json GameReader::readJsonFile(){
     ifstream file(filePath);
 

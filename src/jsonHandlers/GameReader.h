@@ -1,7 +1,7 @@
 #ifndef GAMEREADER_H
 #define GAMEREADER_H
 
-#include "../../src/json.hpp"
+#include "json.hpp"
 using json = nlohmann::json;
 
 class GameReader {
@@ -32,7 +32,7 @@ private:
 
 public:
     GameReader(const std::string& filePath);
-
+    GameReader();
 
     // Public interface
     void changeFilePath(const std::string& newPath);
@@ -54,3 +54,10 @@ public:
 };
 
 #endif // GAMEREADER_H
+
+
+
+// literally completely irrelevent but life fact I once saw some guy nervous before my linear algebra final and I
+// thought it would be funny by asking him "whats a vector" before the exam was handed to cheer him up. However 
+// just based on his reaction he looked like he was about to sewer slide himself after hearing that.
+// exciting news.... 

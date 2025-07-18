@@ -1,31 +1,38 @@
-Strategy Actions: 30
-Action Type: PLACE, Tower ID: 1, Position: (891, 545), Tower Type: Ninja Monkey, Path: -1, Round: 3
-Action Type: PLACE, Tower ID: 2, Position: (785, 475), Tower Type: Ninja Monkey, Path: -1, Round: 5
-Action Type: PLACE, Tower ID: 3, Position: (90, 513), Tower Type: Ninja Monkey, Path: -1, Round: 8
-Action Type: PLACE, Tower ID: 4, Position: (717, 112), Tower Type: Ninja Monkey, Path: -1, Round: 10
-Action Type: PLACE, Tower ID: 5, Position: (297, 225), Tower Type: Ninja Monkey, Path: -1, Round: 11
-Action Type: PLACE, Tower ID: 6, Position: (891, 180), Tower Type: Ninja Monkey, Path: -1, Round: 14
-Action Type: PLACE, Tower ID: 7, Position: (404, 91), Tower Type: Ninja Monkey, Path: -1, Round: 15
-Action Type: UPGRADE, Tower ID: 1, Position: (891, 545), Tower Type: Ninja Monkey, Path: 2, Round: 16
-Action Type: PLACE, Tower ID: 8, Position: (852, 646), Tower Type: Ninja Monkey, Path: -1, Round: 18
-Action Type: UPGRADE, Tower ID: 8, Position: (852, 646), Tower Type: Ninja Monkey, Path: 1, Round: 19
-Action Type: UPGRADE, Tower ID: 1, Position: (891, 545), Tower Type: Ninja Monkey, Path: 1, Round: 20
-Action Type: PLACE, Tower ID: 9, Position: (469, 671), Tower Type: Alchemist, Path: -1, Round: 22
-Action Type: PLACE, Tower ID: 10, Position: (610, 87), Tower Type: Ninja Monkey, Path: -1, Round: 24
-Action Type: UPGRADE, Tower ID: 9, Position: (469, 671), Tower Type: Alchemist, Path: 0, Round: 25
-Action Type: UPGRADE, Tower ID: 9, Position: (469, 671), Tower Type: Alchemist, Path: 2, Round: 27
-Action Type: PLACE, Tower ID: 11, Position: (634, 238), Tower Type: Hero, Path: -1, Round: 28
-Action Type: UPGRADE, Tower ID: 6, Position: (891, 180), Tower Type: Ninja Monkey, Path: 0, Round: 29
-Action Type: UPGRADE, Tower ID: 5, Position: (297, 225), Tower Type: Ninja Monkey, Path: 0, Round: 30
-Action Type: UPGRADE, Tower ID: 9, Position: (469, 671), Tower Type: Alchemist, Path: 0, Round: 32
-Action Type: UPGRADE, Tower ID: 3, Position: (90, 513), Tower Type: Ninja Monkey, Path: 0, Round: 33
-Action Type: UPGRADE, Tower ID: 3, Position: (90, 513), Tower Type: Ninja Monkey, Path: 1, Round: 33
-Action Type: UPGRADE, Tower ID: 1, Position: (891, 545), Tower Type: Ninja Monkey, Path: 2, Round: 33
-Action Type: UPGRADE, Tower ID: 8, Position: (852, 646), Tower Type: Ninja Monkey, Path: 2, Round: 35
-Action Type: UPGRADE, Tower ID: 5, Position: (297, 225), Tower Type: Ninja Monkey, Path: 1, Round: 36
-Action Type: UPGRADE, Tower ID: 8, Position: (852, 646), Tower Type: Ninja Monkey, Path: 1, Round: 36
-Action Type: UPGRADE, Tower ID: 5, Position: (297, 225), Tower Type: Ninja Monkey, Path: 0, Round: 36
-Action Type: UPGRADE, Tower ID: 8, Position: (852, 646), Tower Type: Ninja Monkey, Path: 1, Round: 37
-Action Type: UPGRADE, Tower ID: 2, Position: (785, 475), Tower Type: Ninja Monkey, Path: 1, Round: 38
-Action Type: UPGRADE, Tower ID: 10, Position: (610, 87), Tower Type: Ninja Monkey, Path: 1, Round: 38
-Action Type: UPGRADE, Tower ID: 7, Position: (404, 91), Tower Type: Ninja Monkey, Path: 0, Round: 38
+Strategy Actions: 37
+Action Type: PLACE, Tower ID: 1, Position: (566, 454), Tower Type: Hero, Path: -1, Round: 3
+Action Type: PLACE, Tower ID: 2, Position: (659, 184), Tower Type: Ninja Monkey, Path: -1, Round: 6
+Action Type: PLACE, Tower ID: 3, Position: (618, 164), Tower Type: Ninja Monkey, Path: -1, Round: 8
+Action Type: PLACE, Tower ID: 4, Position: (433, 133), Tower Type: Ninja Monkey, Path: -1, Round: 11
+Action Type: PLACE, Tower ID: 5, Position: (486, 94), Tower Type: Ninja Monkey, Path: -1, Round: 12
+Action Type: PLACE, Tower ID: 6, Position: (421, 719), Tower Type: Ninja Monkey, Path: -1, Round: 14
+Action Type: PLACE, Tower ID: 7, Position: (445, 513), Tower Type: Alchemist, Path: -1, Round: 16
+Action Type: PLACE, Tower ID: 8, Position: (615, 588), Tower Type: Ninja Monkey, Path: -1, Round: 18
+Action Type: UPGRADE, Tower ID: 5, Position: (486, 94), Tower Type: Ninja Monkey, Path: 2, Round: 19
+Action Type: PLACE, Tower ID: 9, Position: (889, 493), Tower Type: Ninja Monkey, Path: -1, Round: 21
+Action Type: UPGRADE, Tower ID: 6, Position: (421, 719), Tower Type: Ninja Monkey, Path: 1, Round: 22
+Action Type: PLACE, Tower ID: 10, Position: (577, 388), Tower Type: Ninja Monkey, Path: -1, Round: 23
+Action Type: UPGRADE, Tower ID: 2, Position: (659, 184), Tower Type: Ninja Monkey, Path: 1, Round: 24
+Action Type: PLACE, Tower ID: 11, Position: (252, 199), Tower Type: Ninja Monkey, Path: -1, Round: 26
+Action Type: PLACE, Tower ID: 12, Position: (898, 715), Tower Type: Alchemist, Path: -1, Round: 28
+Action Type: PLACE, Tower ID: 13, Position: (180, 122), Tower Type: Ninja Monkey, Path: -1, Round: 28
+Action Type: UPGRADE, Tower ID: 7, Position: (445, 513), Tower Type: Alchemist, Path: 1, Round: 29
+Action Type: PLACE, Tower ID: 14, Position: (559, 153), Tower Type: Ninja Monkey, Path: -1, Round: 30
+Action Type: UPGRADE, Tower ID: 2, Position: (659, 184), Tower Type: Ninja Monkey, Path: 0, Round: 32
+Action Type: PLACE, Tower ID: 15, Position: (205, 619), Tower Type: Alchemist, Path: -1, Round: 33
+Action Type: PLACE, Tower ID: 16, Position: (838, 614), Tower Type: Ninja Monkey, Path: -1, Round: 33
+Action Type: UPGRADE, Tower ID: 16, Position: (838, 614), Tower Type: Ninja Monkey, Path: 1, Round: 34
+Action Type: UPGRADE, Tower ID: 11, Position: (252, 199), Tower Type: Ninja Monkey, Path: 2, Round: 35
+Action Type: UPGRADE, Tower ID: 8, Position: (615, 588), Tower Type: Ninja Monkey, Path: 1, Round: 36
+Action Type: UPGRADE, Tower ID: 13, Position: (180, 122), Tower Type: Ninja Monkey, Path: 2, Round: 36
+Action Type: UPGRADE, Tower ID: 11, Position: (252, 199), Tower Type: Ninja Monkey, Path: 0, Round: 36
+Action Type: UPGRADE, Tower ID: 10, Position: (577, 388), Tower Type: Ninja Monkey, Path: 2, Round: 36
+Action Type: UPGRADE, Tower ID: 2, Position: (659, 184), Tower Type: Ninja Monkey, Path: 1, Round: 36
+Action Type: UPGRADE, Tower ID: 13, Position: (180, 122), Tower Type: Ninja Monkey, Path: 2, Round: 37
+Action Type: UPGRADE, Tower ID: 7, Position: (445, 513), Tower Type: Alchemist, Path: 0, Round: 38
+Action Type: UPGRADE, Tower ID: 8, Position: (615, 588), Tower Type: Ninja Monkey, Path: 2, Round: 38
+Action Type: UPGRADE, Tower ID: 14, Position: (559, 153), Tower Type: Ninja Monkey, Path: 0, Round: 38
+Action Type: UPGRADE, Tower ID: 9, Position: (889, 493), Tower Type: Ninja Monkey, Path: 1, Round: 38
+Action Type: UPGRADE, Tower ID: 8, Position: (615, 588), Tower Type: Ninja Monkey, Path: 2, Round: 38
+Action Type: UPGRADE, Tower ID: 3, Position: (618, 164), Tower Type: Ninja Monkey, Path: 0, Round: 39
+Action Type: UPGRADE, Tower ID: 13, Position: (180, 122), Tower Type: Ninja Monkey, Path: 1, Round: 40
+Action Type: UPGRADE, Tower ID: 13, Position: (180, 122), Tower Type: Ninja Monkey, Path: 2, Round: 40
