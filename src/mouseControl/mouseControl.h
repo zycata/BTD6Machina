@@ -7,6 +7,7 @@ namespace mouseControl {
     bool findWindow();
     bool initializeMouseControls();
     void ClickStartNextRound();
+    void restartGameWhenOver(bool roundinitialandchimps);
 }
 
 

@@ -230,7 +230,7 @@ const int towerCosts[26] = {
 
 // all towers temporarily not allowed for testing purposes lol
 const int te[26] {
-    0, 
+    0, //Hero
     1, // Dart Monkey
     2, // Boomerang Monkey
     3, // Bomb Shooter
@@ -258,7 +258,7 @@ const int te[26] {
     25 // Desperado
 };
 
-const int towersAllowed[2] = {16, 17}; // only ninja monkey and alc atm 
+const int towersAllowed[3] = {0, 16, 17}; // only ninja monkey and alc atm + hero
 
 
 class Tower {
@@ -343,7 +343,7 @@ struct UpgradeOption {
     }
 };
 
-enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE };
+enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE, CHIMPS };
 
 enum GameResult { VICTORY, DEFEAT, OTHER}; //other for crash shit code etc
 #endif 

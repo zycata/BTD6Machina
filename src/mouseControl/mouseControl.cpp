@@ -285,6 +285,26 @@ namespace mouseControl {
         Sleep(50);
         unclickMouse();
     }
+
+    void restartGameWhenOver(bool roundinitialandchimps) {
+        if (roundinitialandchimps == true) {
+            moveMouse(647, 569);
+        } else {
+            moveMouse(575, 570);
+        }
+        Sleep(50);
+
+        clickMouse();
+        Sleep(50);
+        unclickMouse();
+        Sleep(50);
+        moveMouse(757, 515);
+        Sleep(200);
+        clickMouse();
+        Sleep(50);
+        unclickMouse();
+        
+    }
 }
 /*
 using namespace mouseControl;

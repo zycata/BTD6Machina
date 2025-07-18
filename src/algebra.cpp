@@ -57,7 +57,9 @@ class StrategyMaker {
         int totalTowers;
         int cash;
         Difficulty type;
+      
         float cashMultiplier;
+
 
         const int xMAx = 1000;
         const int yMax = 720;
@@ -67,30 +69,41 @@ class StrategyMaker {
         int startRound;
         const UpgradeOption emptyUpgrade = {0, 0, 0, 0, "", false}; // Empty upgrade option to return when no upgrades are available
     public:
-        StrategyMaker(int currentRound, Difficulty type) {
+        StrategyMaker(Difficulty type) {
             TowersPlaced = {};
             StrategyActions = {};
             this->currentRound = currentRound;
-            cout << "Starting at Current round: " << currentRound << endl;
             startRound = gameInfo::getStartRound(); // games actual start round yes true true --> Literally irrelevent unless i do a funny true true but yes 
             
             totalTowers = gameInfo::getTowersPlaced();
             this->cash = gameInfo::getCash(); 
 
             this->type = type;
+            
             switch (type) {
                 case EASY:
                     cashMultiplier = 0.85;
+                    currentRound = 1;
                     break;
                 case MEDIUM:
                     cashMultiplier = 1.0;
+                    currentRound = 1 ;
                     break;
                 case HARD:
                     cashMultiplier = 1.08;
+                    currentRound = 3;
                     break;
                 case IMPOPPABLE:
                     cashMultiplier = 1.2;
+                    currentRound = 6;
                     break;
+                case CHIMPS:
+                    cashMultiplier = 1.2;
+                    currentRound = 6;
+                    break;
+            
+            cout << "Starting at Current round: " << currentRound << "Difficulty: " << type << endl;
+
             }
             
             // mouseControl::initializeMouseControls();
@@ -260,18 +273,22 @@ class StrategyMaker {
                     Sleep(200); // wait for the upgrade to be applied
                     if (cash > gameInfo::getCash()) {
                         this->cash = gameInfo::getCash(); // update cash after upgrade
-                        
+                        StrategyActions.push_back({Action::UPGRADE, tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
+                        return true;
 
                     } else if (cost > cash) {
+                        
                         cerr << "Not enough cash to upgrade tower ID " << towerId << " on path " << path << ". Required: " << cost << ", Available: " << cash << endl;
+                        tower.path[path]--;
+
                         return false; // Not enough cash
                     } else {
+                        tower.path[path]--;
                         return false; // upgrade failed for some reason
                     }
-                    StrategyActions.push_back({Action::UPGRADE, tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
 
 
-                    return true;
+                    
                 }
             }
             cerr << "Tower with ID " << towerId << " not found." << endl;
@@ -448,13 +465,15 @@ class StrategyMaker {
                     int choice = getRandomInt(1, 4); // Randomly choose between placing a tower or upgrading a tower --> higher chacne of upgrading a tower
                     if (choice == 1) { // if total towers is less than 5, always place a tower
                         // Placement algorithm two guys trust me imma lock tf in
-                        cout << "skipping upgrades" << endl;
+                        cout << "Placing towers" << endl;
+                        placementAlgorithmOne(); // guys im siorry but plcaement algorithm one is cracked...
                     }
                     else {
                         // pretty much selec ts a target upgrade yes yes true true....
                         // if (targetUpgrade) pretty much just checks if it is null
                         if (targetUpgrade.isAllowed && targetUpgrade.cost <= cash) {
                             upgradeTower(targetUpgrade.towerId, targetUpgrade.path);
+                            cout << "UPGRADING TOWER THAT HAS BEEN SAVED UP FOR" << endl;
                             cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << endl;
                             targetUpgrade = emptyUpgrade; 
                         } else if (targetUpgrade.isAllowed && targetUpgrade.cost > cash) {
@@ -472,6 +491,7 @@ class StrategyMaker {
                     mouseControl::ClickStartNextRound();
                     // click it twice for fast forward round 1 lmao
                 }
+                
                 mouseControl::ClickStartNextRound();
                 
                 cout << "Waiting for next round..." << endl;
@@ -491,7 +511,7 @@ class StrategyMaker {
                             logStrategy();
                             logTowers();
                             return GameResult::VICTORY;
-                            return; // exit the game loop
+                            //return; // exit the game loop
                         }
                     } 
                     else if (gameInfo::didGameOver()) {
@@ -507,7 +527,7 @@ class StrategyMaker {
                     logStrategy();
                     logTowers();
                     return GameResult::DEFEAT; 
-                    break;
+                    //break;
                 }
                 this->currentRound = gameInfo::getCurRound();
                 this->cash = gameInfo::getCash();
@@ -554,8 +574,17 @@ int main() {
     printAvailableUpgrades(strategy.getAvailableUpgrades());
     printTowerPlacementOptions(strategy.getTowerPlacementOptions());*/
     
-    StrategyMaker strategy(1, Difficulty::EASY);
-    strategy.runGame();
+    while (true) {
+        StrategyMaker strategy(Difficulty::IMPOPPABLE);
+        if (strategy.runGame() == GameResult::VICTORY) {
+            break;
+        } else {
+            cout << "tryna new strat " << endl;
+            mouseControl::restartGameWhenOver(false);
+        }
+        Sleep(1000);
+    }
+    
     cout << "game has been finished" << endl;
     system("pause");
     return 0;
