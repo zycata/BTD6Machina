@@ -1,4 +1,4 @@
-
+#pragma once
 #ifndef GAMETYPES_HPP
 #define GAMETYPES_HPP
 
@@ -317,11 +317,15 @@ class Tower {
  
 };
 
+
 struct Action {
     enum ActionType { PLACE, UPGRADE, ABILITYUSE } type;
     Tower tower;
     int x, y;            // for placement
-    int towerType; // Tower to represent tower type, path for top mid or bottom.
+    int towerType; // Tower to represent tower type
+
+
+
     int path; // -1 if is a tower placement
     int round;
     int towerId; // which tower it is for upgrading

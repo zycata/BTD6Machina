@@ -1,0 +1,29 @@
+[
+  {
+    "path": -1,
+    "round": 5,
+    "towerId": 0,
+    "towerType": 1,
+    "type": "PLACE",
+    "x": 10,
+    "y": 20
+  },
+  {
+    "path": 2,
+    "round": 7,
+    "towerId": 42,
+    "towerType": 0,
+    "type": "UPGRADE",
+    "x": 0,
+    "y": 0
+  },
+  {
+    "path": 0,
+    "round": 10,
+    "towerId": 42,
+    "towerType": 0,
+    "type": "ABILITYUSE",
+    "x": 0,
+    "y": 0
+  }
+]
