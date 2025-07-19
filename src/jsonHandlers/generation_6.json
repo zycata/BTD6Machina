@@ -1,0 +1,78 @@
+{
+  "ParentScore": 5000,
+  "bestChildId": "6-9",
+  "children": [
+    {
+      "ID": "6-9",
+      "actions": [
+        {
+          "path": -1,
+          "round": 5,
+          "towerId": 0,
+          "towerType": 1,
+          "type": "PLACE",
+          "x": 10,
+          "y": 20
+        },
+        {
+          "path": 2,
+          "round": 7,
+          "towerId": 42,
+          "towerType": 0,
+          "type": "UPGRADE",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "path": 0,
+          "round": 10,
+          "towerId": 42,
+          "towerType": 0,
+          "type": "ABILITYUSE",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "endCash": 650,
+      "roundObtained": 63,
+      "score": 420
+    },
+    {
+      "ID": "6-10",
+      "actions": [
+        {
+          "path": -1,
+          "round": 5,
+          "towerId": 0,
+          "towerType": 1,
+          "type": "PLACE",
+          "x": 10,
+          "y": 20
+        },
+        {
+          "path": 2,
+          "round": 7,
+          "towerId": 42,
+          "towerType": 0,
+          "type": "UPGRADE",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "path": 0,
+          "round": 10,
+          "towerId": 42,
+          "towerType": 0,
+          "type": "ABILITYUSE",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "endCash": 42,
+      "roundObtained": 422,
+      "score": 32
+    }
+  ],
+  "generationNumber": 6,
+  "parentID": "5-5"
+}
