@@ -91,12 +91,22 @@ void from_json(const json& j, Action& action) {
     j.at("x").get_to(action.x);
     j.at("y").get_to(action.y);
     j.at("towerType").get_to(action.towerType);
-
+    action.tower = nullptr;
     j.at("path").get_to(action.path);
     j.at("round").get_to(action.round);
     j.at("towerId").get_to(action.towerId);
 
 }
+
+void from_json(const json& j, Strategy& strategy) {
+    j.at("ID").get_to(strategy.ID);
+    j.at("endCash").get_to(strategy.endCash);
+    j.at("roundObtained").get_to(strategy.roundObtained);
+    j.at("score").get_to(strategy.score);
+    j.at("actions").get_to(strategy.actions);
+}
+
+
 
 
 class generationHandler {
@@ -105,11 +115,11 @@ class generationHandler {
         const int soyamdendoija = 0; // shitpost
 
         std::string filePath;
-        json readActionFromJson() {
-            std::ifstream file("action.json");
+        json readActionFromJson(std::string filePath) {
+            std::ifstream file(filePath);
             if (!file.is_open()) {
                 std::cerr << "Error: Could not open JSON file at " << filePath << std::endl;
-                Sleep(50); // Small delay before retrying file open
+                // Sleep(50); 
                 return nullptr; // Indicate failure to open
             }
             file.seekg(0, ios::end);
@@ -156,8 +166,12 @@ class generationHandler {
             }
         }
 
-        Action getActionFromJson() {
+        json getActionFromJson() {
+            return readActionFromJson("action.json");
+        }
 
+        json getStrategyFromJson() {
+            return readActionFromJson("strategy.json");
         }
 
         void writeStrategyToJson(const Strategy& strategy) {
@@ -205,9 +219,25 @@ int main() {
 
     generationHandler manHandler;
     manHandler.setGenFilePath(6); // for generation 6
+    json j = manHandler.getActionFromJson();
+
+    Action testAction = j.get<Action>();
+
+    cout << testAction.towerType <<  endl;
+    cout << to_string(testAction.type) <<  endl;
+
+    json jj = manHandler.getStrategyFromJson();
+
+    Strategy theStrat = jj.get<Strategy>();
+
+    // fun fact semicolon based languages use either the semicolon or curly braces to determine wether a statement ends, which means that tabs and new lines are option, so in ortder to not be
+    // replaced by AI, just write ur entire code in a single line and fuck it up (ai can probably parse it but idk it prolly ass)
+    // idk purely a fun fact dont actually do this unless ur making ur own shit go ahead (probably still better than pirate software code)
+    // LOOK I KNOW I USE MAGIC NUMBERS BUT THEY"RE ALWAYS TEMPORARY PLACEHOLDERS
+    cout << "End Cash: " << theStrat.endCash << " RoundObtained: " << theStrat.roundObtained << endl; cout << "Actions Size: " << theStrat.actions.size() << endl;
 
     //manHandler.writeGenerationToJson(generation6);
-
+    
     //manHandler.writeActionToJson(action);
     return 0;
 }
