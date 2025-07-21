@@ -320,7 +320,10 @@ class Tower {
 
 struct Action {
     enum ActionType { PLACE, UPGRADE, ABILITYUSE } type;
-    Tower tower;
+    // im gonna cry i act ually used a pointer im actually crying tears of happiness (THANK YOU FIRESHIP AND UR YT SHORTS FOR TEACHING TS)
+    // wait but like unironically pointers are like kinda genius like... like this is genius wtf..... i mean other languages do ts for you but this is kinda cool im literally telling a rock what do
+    // riyal or fakeh???
+    Tower* tower; // ask for a pointer to tower lol
     int x, y;            // for placement
     int towerType; // Tower to represent tower type
 
@@ -330,6 +333,7 @@ struct Action {
     int round;
     int towerId; // which tower it is for upgrading
 };
+
 
 
 struct PlacementOption {

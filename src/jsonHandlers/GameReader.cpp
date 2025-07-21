@@ -22,12 +22,12 @@ GameReader::GameReader()
 {
     cerr << "EMPTY PATH FILE" << endl;
 }
+
 json GameReader::readJsonFile(){
     ifstream file(filePath);
 
     if (!file.is_open()) {
         std::cerr << "Error: Could not open JSON file at " << filePath << std::endl;
-        // Optionally, you might want a small delay here before retrying in updateValues
         // Sleep(50); // Small delay before retrying file open
         return nullptr; // Indicate failure to open
     }
@@ -59,6 +59,7 @@ void GameReader::updateValues() {
     json gameDataJson = readJsonFile();
     while (gameDataJson.is_null()) {
         Sleep(100);
+        std::cerr << "Failed to read valid JSON. Retrying in 100ms..." << std::endl;
         gameDataJson = readJsonFile();
     }
 

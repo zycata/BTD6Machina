@@ -4,22 +4,11 @@
 #include <vector>
 #include <string>
 #include "json.hpp"
-//#include "../gameTypes.hpp"
+#include "../gameTypes.hpp"
 
 
 using json = nlohmann::json;
 
-struct Action {
-    enum ActionType { PLACE, UPGRADE, ABILITYUSE } type;
-    int x, y;            // for placement
-    int towerType; // Tower to represent tower type
-    // Tower tower; // should still work when uncommented 
-
-
-    int path; // -1 if is a tower placement
-    int round;
-    int towerId; // which tower it is for upgrading
-};
 
 
 struct Strategy {
@@ -90,17 +79,85 @@ void to_json(json& j, const Generation& generation) {
     // mewhen children...
 }
 
+
+// gonna use function overloading for another function?? TS cannort be real
+void from_json(const json& j, Action& action) {
+    std::string type_str = j.at("type").get<std::string>();
+    if (type_str == "PLACE") action.type = Action::PLACE;
+    else if (type_str == "UPGRADE") action.type = Action::UPGRADE;
+    else if (type_str == "ABILITYUSE") action.type = Action::ABILITYUSE;
+    else throw std::runtime_error("Invalid type: " + type_str);
+
+    j.at("x").get_to(action.x);
+    j.at("y").get_to(action.y);
+    j.at("towerType").get_to(action.towerType);
+
+    j.at("path").get_to(action.path);
+    j.at("round").get_to(action.round);
+    j.at("towerId").get_to(action.towerId);
+
+}
+
+
 class generationHandler {
     
     private:
         const int soyamdendoija = 0; // shitpost
+
         std::string filePath;
+        json readActionFromJson() {
+            std::ifstream file("action.json");
+            if (!file.is_open()) {
+                std::cerr << "Error: Could not open JSON file at " << filePath << std::endl;
+                Sleep(50); // Small delay before retrying file open
+                return nullptr; // Indicate failure to open
+            }
+            file.seekg(0, ios::end);
+            if (file.tellg() == 0) {
+                std::cerr << "Warning: JSON file is empty at " << filePath << ". Retrying..." << std::endl;
+                file.close();
+                return nullptr; // Indicate an empty file, so updateValues can retry
+            }
+            file.seekg(0, ios::beg); // Reset file pointer to the beginning for parsing
+
+            json actionJson;
+            try {
+                actionJson = json::parse(file);
+            } catch (const nlohmann::json::parse_error& e) {
+                std::cerr << "JSON Parse Error (file likely empty or corrupt): " << e.what() << std::endl;
+                file.close();
+                return nullptr; // Indicate parse error, so updateValues can retry
+            }
+
+            file.close(); // Close the file after reading (important!)
+            return actionJson;
+
+        }
+
+
+
     public: 
 
         void setGenFilePath(int generationNumber) {
             std::string generationNumberString = std::to_string(generationNumber);
             filePath = "generation_" + generationNumberString + ".json";
             
+        }
+
+        void writeActionToJson(const Action& action) {
+            json j_array = action;
+            std::ofstream out_file("action.json");
+            if (out_file.is_open()) {
+                out_file << j_array.dump(2); // Pretty print with 2-space indentation
+                out_file.close();
+            } else {
+                std::cerr << "Error: Could not open file for writing!" << std::endl;
+                
+            }
+        }
+
+        Action getActionFromJson() {
+
         }
 
         void writeStrategyToJson(const Strategy& strategy) {
@@ -133,10 +190,12 @@ class generationHandler {
 int main() {
     
     std::vector<Action> actions = {
-        {Action::PLACE, 10, 20, 1, -1, 5, 0},         
-        {Action::UPGRADE, 0, 0, 0, 2, 7, 42},          
-        {Action::ABILITYUSE, 0, 0, 0, 0, 10, 42}       
+        {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0},         
+        {Action::UPGRADE, nullptr, 0, 0, 0, 2, 7, 42},          
+        {Action::ABILITYUSE, nullptr, 0, 0, 0, 0, 10, 42}       
     };
+
+    Action action = {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0};
 
     Strategy strategy = {"6-9", 420, 650, 63, actions};
 
@@ -147,7 +206,8 @@ int main() {
     generationHandler manHandler;
     manHandler.setGenFilePath(6); // for generation 6
 
-    manHandler.writeGenerationToJson(generation6);
+    //manHandler.writeGenerationToJson(generation6);
 
+    //manHandler.writeActionToJson(action);
     return 0;
 }

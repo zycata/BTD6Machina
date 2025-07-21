@@ -275,7 +275,7 @@ class StrategyMaker {
             
             Tower newTower( x, y, towerCode, 0, 0, 0, currentRound, totalTowers );
             TowersPlaced.push_back(newTower);
-            StrategyActions.push_back({Action::PLACE, newTower, x, y, towerCode, INVALID, currentRound, totalTowers});
+            StrategyActions.push_back({Action::PLACE, &newTower, x, y, towerCode, INVALID, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
             this->cash = gameInfo.getCash(); // update cash after placement
 
@@ -295,7 +295,7 @@ class StrategyMaker {
                     Sleep(200); // wait for the upgrade to be applied
                     if (cash > gameInfo.getCash()) {
                         this->cash = gameInfo.getCash(); // update cash after upgrade
-                        StrategyActions.push_back({Action::UPGRADE, tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
+                        StrategyActions.push_back({Action::UPGRADE, &tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
                         return true;
 
                     } else if (cost > cash) {
@@ -333,7 +333,7 @@ class StrategyMaker {
             StrategyFile << "Strategy Actions: " << StrategyActions.size() << endl;
             for (auto& action : StrategyActions) {
                 // cout << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower.getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower.getTowerTypeStr() << ", Path: " << action.path << ", Round: " << action.round  << endl;
-                StrategyFile << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower.getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower.getTowerTypeStr()  << ", Path: " << action.path  << ", Round: " << action.round  << endl;
+                StrategyFile << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower->getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower->getTowerTypeStr()  << ", Path: " << action.path  << ", Round: " << action.round  << endl;
             }
         }
 
@@ -346,8 +346,9 @@ class StrategyMaker {
 
         // places a random tower... tries 5 times to place it before trying a new tower or giving up lmao 
         bool placeRandomTower(PlacementOption &selectedTower) {
+            int maxAttempts = 5;
             // 5 attempts to place a tower
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < maxAttempts; i++) {
                     int x = getRandomInt(xMin, xMAx);
                     int y = getRandomInt(yMin, yMax);
                     if (placeTower(selectedTower.towerType, x, y)) {
