@@ -106,6 +106,22 @@ void from_json(const json& j, Strategy& strategy) {
     j.at("actions").get_to(strategy.actions);
 }
 
+/* life lore drop: i was playing minecraft with a friend and he was like yo can my gf join so his gf joined us on the call, but then we did the matching pfps of the ceo astronomer cheating with his wife
+    and then she said "i feel like im third wheeling you two here despite being the girlfriend",
+    GITHUB COPILOT STOP RECOMMENDING STORY SUGGESTIONS RECOMMEND ME CODE
+*/
+void from_json(const json& j, Generation& generation) {
+    j.at("generationNumber").get_to(generation.generationNumber);
+    j.at("parentID").get_to(generation.parentID);
+    j.at("ParentScore").get_to(generation.parentScore);
+    j.at("bestChildId").get_to(generation.bestChildId);
+    j.at("children").get_to(generation.children);
+}
+// fuck this function overloading shit is kinda genius, i think im might just make this single class do all the json stuff, including getting stuff from the gameDATA
+// FUCKK NOOO MORE WORK
+// guys compilation tiome is O(1) since I only ever compile one projewct
+// I can see why people say building projects is how you learn --> hola soy admen
+
 
 
 

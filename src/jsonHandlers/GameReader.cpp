@@ -57,10 +57,17 @@ json GameReader::readJsonFile(){
 
 void GameReader::updateValues() {
     json gameDataJson = readJsonFile();
-    while (gameDataJson.is_null()) {
+    int maxAttempts = 10;
+    int attempts = 0;
+    // fun fact nasa code has to always have max attempts to do x or like an exit condition that has to hit, even tho true "while x" usually are coded with
+    // the intent to run until it succeeds, and probably will, because of the nature of space exploration, they impose a max limit to prevent infinite loops from fuckass bugs idk
+    // omg wait am i nasa coder nopw???
+    
+    while (gameDataJson.is_null() && attempts < maxAttempts) {
         Sleep(100);
         std::cerr << "Failed to read valid JSON. Retrying in 100ms..." << std::endl;
         gameDataJson = readJsonFile();
+        attempts++;
     }
 
     prevRound = curRound;
