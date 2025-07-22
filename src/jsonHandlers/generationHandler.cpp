@@ -156,7 +156,7 @@ class generationHandler {
     private:
         const int soyamdendoija = 0; // shitpost
 
-        std::string filePath;
+        std::string generationFilePath;
         json readActionFromJson(std::string filePath) {
             std::ifstream file(filePath);
             if (!file.is_open()) {
@@ -189,46 +189,41 @@ class generationHandler {
 
 
     public: 
+        generationHandler() : generationFilePath("generations/generation.json") {} // Default constructor sets a default file path
+
+        generationHandler(std::string filePath) : generationFilePath(filePath) {} // Constructor that allows setting a custom file path
 
         void setGenFilePath(int generationNumber) {
             std::string generationNumberString = std::to_string(generationNumber);
-            filePath = "jsonTests/generation_" + generationNumberString + ".json";
+            generationFilePath = "generations/generation_" + generationNumberString + ".json";
             
         }
 
-        void writeActionToJson(const Action& action) {
-            json j_array = action;
-            std::ofstream out_file("jsonTests/action.json");
-            if (out_file.is_open()) {
-                out_file << j_array.dump(2); // Pretty print with 2-space indentation
-                out_file.close();
-            } else {
-                std::cerr << "Error: Could not open file for writing!" << std::endl;
-                
+        
+
+        // wait you can name these whatever thje fuick you want HELLL YEAH, IM NAMING THE NEXT ONE AFTER MY DAD THJAT LEFT ME
+        // unfortunately due to the fact thjat we live in a society, I cannot name it after my dad that left me, so I will name it after my mom that left me
+        // just kidding cant do that either gotta have some fuckass practical name
+        // oh yeah might as well document this function, pretty much just returns an object of the type you want from the json file, technically it's only needed for generation struct, but other types for testing purposes
+
+        template<typename StrategyActionOrGeneration>
+        StrategyActionOrGeneration getFromJson(std::string filePath = "") {
+            if (filePath.empty()) {
+                filePath = generationFilePath;  
             }
+            return readActionFromJson(filePath).template get<StrategyActionOrGeneration>();
         }
 
-        json getActionFromJson() {
-            return readActionFromJson("jsonTests/action.json");
-        }
 
-        json getStrategyFromJson() {
-            return readActionFromJson("jsonTests/strategy.json");
-        }
+    
+        // wait template typename t is a lifehack i lied c++ is the goat i love c++ 
+        // like did this shit earlier but using for this is actually an eyeopener
 
-        void writeStrategyToJson(const Strategy& strategy) {
-            json j_array = strategy;
-            std::ofstream out_file("jsonTests/strategy.json");
-            if (out_file.is_open()) {
-                out_file << j_array.dump(2); // Pretty print with 2-space indentation
-                out_file.close();
-            } else {
-                std::cerr << "Error: Could not open file for writing!" << std::endl;
-                
+        template<typename T>
+        void writeToJson(const T& generation, std::string filePath = "") {
+            if (filePath.empty()) {
+                filePath = generationFilePath;  
             }
-        }
-
-        void writeGenerationToJson(const Generation& generation) {
             json j_array = generation;
             std::ofstream out_file(filePath);
             if (out_file.is_open()) {
@@ -241,6 +236,12 @@ class generationHandler {
         }
 };
 
+
+// pankake i swear to god you actuall infected me with the gotta "try to" optimize everything disesase
+// like ik ts is not optimized but GODDAMNIT the urge to make tiny ass improvements with negligible results is actually killing me
+// how about I actually get a working build before doing that
+// c++ pointers are cool, but you know what's cooler? 
+// having oop not shoved straight up ur ass so hard that you start vomiting it out
 
 using namespace std;
 int main() {
@@ -261,17 +262,18 @@ int main() {
 
     generationHandler manHandler;
     manHandler.setGenFilePath(6); // for generation 6
-    json j = manHandler.getActionFromJson();
+    
 
-    Action testAction = j.get<Action>();
+    Action testAction =  manHandler.getFromJson<Action>("jsonTests/action.json");
 
     cout << testAction.towerType <<  endl;
     cout << to_string(testAction.type) <<  endl;
 
-    manHandler.writeStrategyToJson(strategy);
-    json jj = manHandler.getStrategyFromJson();
+    manHandler.writeToJson(strategy, "jsonTests/strategy1.json");
+    
 
-    Strategy theStrat = jj.get<Strategy>();
+
+    Strategy theStrat = manHandler.getFromJson<Strategy>("jsonTests/strategy.json");
 
     // fun fact semicolon based languages use either the semicolon or curly braces to determine wether a statement ends, which means that tabs and new lines are option, so in ortder to not be
     // replaced by AI, just write ur entire code in a single line and fuck it up (ai can probably parse it but idk it prolly ass)
