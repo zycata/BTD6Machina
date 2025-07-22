@@ -34,7 +34,7 @@ namespace gameInfo {f
     bool isGameWon();
 }
 */
-// compile using g++ src/algebra.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o src/aitd6
+// compile using g++ src/algebra.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6
 
 
 void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
@@ -77,6 +77,9 @@ class StrategyMaker {
             gameInfo.initialize();
 
             TowersPlaced = {};
+            TowersPlaced.reserve(1000);
+            //No need to reserve 1k but Justin Case (get it funny name pls laugh)
+            // will probably reserve 1k for strategy actions idk why not lmao
             StrategyActions = {};
             this->currentRound = currentRound;
             
@@ -162,7 +165,7 @@ class StrategyMaker {
                 for (int i = 0; i < 3; i++) {
                     int cost = towerUpgrades[tower.getTowerType()][i][tower.path[i]];
                     
-                    if (cost == INVALID) continue; // Skip invalid upgrades
+                    if (cost == INVALID) continue; // Skip invalid upgrades 
                     if (tower.path[i] >= 5) continue; // Skip if already at max tier
                     cost = roundToNearest5(cost, cashMultiplier); // OMG I FORGOT TS SYBAU I WAS WONDERING WHY THE VALUES WERE WRONG 
 
@@ -275,7 +278,10 @@ class StrategyMaker {
             
             Tower newTower( x, y, towerCode, 0, 0, 0, currentRound, totalTowers );
             TowersPlaced.push_back(newTower);
-            StrategyActions.push_back({Action::PLACE, &newTower, x, y, towerCode, INVALID, currentRound, totalTowers});
+            Tower* ptrToStoredTower = &TowersPlaced.back();
+            // FUck i did the thing where i accessed invalid ram :sob: shoulda did this in scratch instead
+
+            StrategyActions.push_back({Action::PLACE, ptrToStoredTower, x, y, towerCode, INVALID, currentRound, totalTowers});
             //cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << endl;
             this->cash = gameInfo.getCash(); // update cash after placement
 
@@ -346,7 +352,7 @@ class StrategyMaker {
 
         // places a random tower... tries 5 times to place it before trying a new tower or giving up lmao 
         bool placeRandomTower(PlacementOption &selectedTower) {
-            int maxAttempts = 5;
+            int maxAttempts = 3;
             // 5 attempts to place a tower
             for (int i = 0; i < maxAttempts; i++) {
                     int x = getRandomInt(xMin, xMAx);
@@ -461,6 +467,9 @@ class StrategyMaker {
                 if (targetUpgrade.cost <= cash) {
                     if (upgradeTower(targetUpgrade.towerId, targetUpgrade.path)) {
                         cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << endl;
+                    } else {
+                        cout << "Failed to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Not enough cash." << endl;
+                        
                     }
                 } else if (targetUpgrade.cost > cash) {
                     cout << "Selected Target Upgrade, Not enough to Upgrade this round: " << currentRound << " on path " << targetUpgrade.path << " Tier: " << targetUpgrade.tier << ". Required: " << targetUpgrade.cost << ", Available: " << cash << endl;\
@@ -568,7 +577,7 @@ class StrategyMaker {
 
 int main() {
     
-    string filePath = "C:/Users/yanxi/Documents/Btd6Machine/Cpppractice/src/gameInfo/gameData.json";
+    string filePath = "gameInfo/gameData.json";
 
     cout << "Script Started" << endl;
     
