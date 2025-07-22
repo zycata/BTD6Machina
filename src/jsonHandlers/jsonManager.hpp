@@ -1,3 +1,11 @@
+#pragma once
+#ifndef JSONMANAGER_HPP
+#define JSONMANAGER_HPP
+
+
+
+
+
 #include <iostream>
 #include <fstream>
 #include <istream>
@@ -150,13 +158,14 @@ void from_json(const json& j, Generation& generation) {
 
 
 
-
-class generationHandler {
+// TODO: add a function to retrive the best child from a generation struct --> tommorow trust me bro
+class JsonManager {
     
     private:
         const int soyamdendoija = 0; // shitpost
 
         std::string generationFilePath;
+
         json readActionFromJson(std::string filePath) {
             std::ifstream file(filePath);
             if (!file.is_open()) {
@@ -189,14 +198,18 @@ class generationHandler {
 
 
     public: 
-        generationHandler() : generationFilePath("generations/generation.json") {} // Default constructor sets a default file path
+        JsonManager() : generationFilePath("generations/generation.json") {} // Default constructor sets a default file path
 
-        generationHandler(std::string filePath) : generationFilePath(filePath) {} // Constructor that allows setting a custom file path
+        JsonManager(std::string filePath) : generationFilePath(filePath) {} // Constructor that allows setting a custom file path
 
         void setGenFilePath(int generationNumber) {
             std::string generationNumberString = std::to_string(generationNumber);
             generationFilePath = "generations/generation_" + generationNumberString + ".json";
             
+        }
+        
+        std::string getGenFilePath() {
+            return generationFilePath;
         }
 
         
@@ -243,46 +256,4 @@ class generationHandler {
 // c++ pointers are cool, but you know what's cooler? 
 // having oop not shoved straight up ur ass so hard that you start vomiting it out
 
-using namespace std;
-int main() {
-    
-    std::vector<Action> actions = {
-        {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0},         
-        {Action::UPGRADE, nullptr, 0, 0, 0, 2, 7, 42},          
-        {Action::ABILITYUSE, nullptr, 0, 0, 0, 0, 10, 42}       
-    };
-
-    Action action = {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0};
-
-    Strategy strategy = {"6-9", HARD, 420, 650, 63, actions};
-
-    Strategy strategyV2 = {"6-10", HARD, 32, 42, 422, actions}; 
-
-    Generation generation6 = {6, "5-5", 5000, "6-9", 420, {strategy, strategyV2}};
-
-    generationHandler manHandler;
-    manHandler.setGenFilePath(6); // for generation 6
-    
-
-    Action testAction =  manHandler.getFromJson<Action>("jsonTests/action.json");
-
-    cout << testAction.towerType <<  endl;
-    cout << to_string(testAction.type) <<  endl;
-
-    manHandler.writeToJson(strategy, "jsonTests/strategy1.json");
-    
-
-
-    Strategy theStrat = manHandler.getFromJson<Strategy>("jsonTests/strategy.json");
-
-    // fun fact semicolon based languages use either the semicolon or curly braces to determine wether a statement ends, which means that tabs and new lines are option, so in ortder to not be
-    // replaced by AI, just write ur entire code in a single line and fuck it up (ai can probably parse it but idk it prolly ass)
-    // idk purely a fun fact dont actually do this unless ur making ur own shit go ahead (probably still better than pirate software code)
-    // LOOK I KNOW I USE MAGIC NUMBERS BUT THEY"RE ALWAYS TEMPORARY PLACEHOLDERS
-    cout << "End Cash: " << theStrat.endCash << " RoundObtained: " << theStrat.roundObtained << endl; cout << "Actions Size: " << theStrat.actions.size() << endl;
-
-    //manHandler.writeGenerationToJson(generation6);
-    
-    //manHandler.writeActionToJson(action);
-    return 0;
-}
+#endif
