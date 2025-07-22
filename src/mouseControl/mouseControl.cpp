@@ -49,7 +49,7 @@ map<int, BYTE> towerKeyScan = {
     {22, 0x25}, // Village     → K
     {23, 0x26}, // Engineer    → L
     {24, 0x17},  // Beast       → I
-    {25, 0x19} // DESPERADO NOT SET PLEASE CHANGE jk i did change it it's P allegedly...
+    {25, 0x19} // DESPERADO NOT SET PLEASE CHANGE jk i did change it it's P allegedly... P diddy haha im so funny
 };
 
 void addTowers(){
