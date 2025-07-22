@@ -10,10 +10,13 @@
 using json = nlohmann::json;
 
 
-
 struct Strategy {
     
     std::string ID;
+
+    Difficulty difficulty;
+    //enum difficulty { EASY, MEDIUM, HARD } difficulty;
+    
     int score;
     int endCash; 
     int roundObtained;
@@ -32,6 +35,19 @@ struct Generation {
 
 
 };
+
+// wow function overloading for a third time??? This is certainly a code of all time
+std::string to_string(Difficulty type) {
+    switch (type) {
+        case EASY: return "EASY";
+        case MEDIUM: return "MEDIUM";
+        case HARD: return "HARD";
+        case IMPOPPABLE: return "IMPOPPABLE";
+        case CHIMPS: return "CHIMPS";
+        default: return "UNKNOWN";
+    }
+}
+
 
 std::string to_string(Action::ActionType type) {
     switch (type) {
@@ -59,6 +75,7 @@ void to_json(json& j, const Strategy& strategy) {
     json actions = strategy.actions;
     j = json{
         {"ID", strategy.ID},
+        {"difficulty", to_string(strategy.difficulty)}, 
         {"score", strategy.score},
         {"endCash", strategy.endCash},
         {"roundObtained", strategy.roundObtained},
@@ -100,6 +117,15 @@ void from_json(const json& j, Action& action) {
 
 void from_json(const json& j, Strategy& strategy) {
     j.at("ID").get_to(strategy.ID);
+    
+    std::string difficulty_str = j.at("difficulty").get<std::string>();
+    if (difficulty_str == "EASY") strategy.difficulty = EASY;
+    else if (difficulty_str == "MEDIUM") strategy.difficulty = MEDIUM;
+    else if (difficulty_str == "HARD") strategy.difficulty = HARD;
+    else if (difficulty_str == "IMPOPPABLE") strategy.difficulty = IMPOPPABLE;
+    else if (difficulty_str == "CHIMPS") strategy.difficulty = CHIMPS;
+    else throw std::runtime_error("Invalid difficulty: " + difficulty_str);
+    //j.at("difficulty").get_to(strategy.difficulty); // difficulty
     j.at("endCash").get_to(strategy.endCash);
     j.at("roundObtained").get_to(strategy.roundObtained);
     j.at("score").get_to(strategy.score);
@@ -138,13 +164,13 @@ class generationHandler {
                 // Sleep(50); 
                 return nullptr; // Indicate failure to open
             }
-            file.seekg(0, ios::end);
+            file.seekg(0, std::ios::end);
             if (file.tellg() == 0) {
                 std::cerr << "Warning: JSON file is empty at " << filePath << ". Retrying..." << std::endl;
                 file.close();
                 return nullptr; // Indicate an empty file, so updateValues can retry
             }
-            file.seekg(0, ios::beg); // Reset file pointer to the beginning for parsing
+            file.seekg(0, std::ios::beg); // Reset file pointer to the beginning for parsing
 
             json actionJson;
             try {
@@ -166,13 +192,13 @@ class generationHandler {
 
         void setGenFilePath(int generationNumber) {
             std::string generationNumberString = std::to_string(generationNumber);
-            filePath = "generation_" + generationNumberString + ".json";
+            filePath = "jsonTests/generation_" + generationNumberString + ".json";
             
         }
 
         void writeActionToJson(const Action& action) {
             json j_array = action;
-            std::ofstream out_file("action.json");
+            std::ofstream out_file("jsonTests/action.json");
             if (out_file.is_open()) {
                 out_file << j_array.dump(2); // Pretty print with 2-space indentation
                 out_file.close();
@@ -183,16 +209,16 @@ class generationHandler {
         }
 
         json getActionFromJson() {
-            return readActionFromJson("action.json");
+            return readActionFromJson("jsonTests/action.json");
         }
 
         json getStrategyFromJson() {
-            return readActionFromJson("strategy.json");
+            return readActionFromJson("jsonTests/strategy.json");
         }
 
         void writeStrategyToJson(const Strategy& strategy) {
             json j_array = strategy;
-            std::ofstream out_file("strategy.json");
+            std::ofstream out_file("jsonTests/strategy.json");
             if (out_file.is_open()) {
                 out_file << j_array.dump(2); // Pretty print with 2-space indentation
                 out_file.close();
@@ -216,7 +242,7 @@ class generationHandler {
 };
 
 
-
+using namespace std;
 int main() {
     
     std::vector<Action> actions = {
@@ -227,9 +253,9 @@ int main() {
 
     Action action = {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0};
 
-    Strategy strategy = {"6-9", 420, 650, 63, actions};
+    Strategy strategy = {"6-9", HARD, 420, 650, 63, actions};
 
-    Strategy strategyV2 = {"6-10", 32, 42, 422, actions}; 
+    Strategy strategyV2 = {"6-10", HARD, 32, 42, 422, actions}; 
 
     Generation generation6 = {6, "5-5", 5000, "6-9", 420, {strategy, strategyV2}};
 
@@ -242,6 +268,7 @@ int main() {
     cout << testAction.towerType <<  endl;
     cout << to_string(testAction.type) <<  endl;
 
+    manHandler.writeStrategyToJson(strategy);
     json jj = manHandler.getStrategyFromJson();
 
     Strategy theStrat = jj.get<Strategy>();

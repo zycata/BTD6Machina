@@ -1,6 +1,7 @@
 {
   "ParentScore": 5000,
   "bestChildId": "6-9",
+  "difficulty": "HARD",
   "children": [
     {
       "ID": "6-9",
