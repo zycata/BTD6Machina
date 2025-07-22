@@ -5,9 +5,8 @@
 #include <string>
 #include <vector>
 #include <map>
-using namespace std;
 
-map<int, std::string> towerMap = {
+std::map<int, std::string> towerMap = {
     {0, "Hero"},
     {1, "Dart Monkey"},
     {2, "Boomerang Monkey"},
@@ -268,9 +267,23 @@ class Tower {
         std::string towerTypeStr;
         int round_placed;
         int x, y;             // for placement
+
+        bool isValidBTD6Upgrade(std::array<int, 3> path) {
+            int numUsedPaths = 0;
+            int numHighPaths = 0;
+
+            for (int i = 0; i < 3; ++i) {
+                if (path[i] >= 6) return false;  // Can't go above tier 5
+                if (path[i] > 0) ++numUsedPaths;
+                if (path[i] >= 3) ++numHighPaths;
+            }
+
+            return numUsedPaths <= 2 && numHighPaths <= 1;
+        }
+
     public:
         
-        int path[3];          // represent cross pathing
+        std::array<int, 3> path = {0,0,0};         // represent cross pathing
         
 
         Tower(int xPos, int yPos, int towerCode, int path0, int path1, int path2, int roundPlaced, int id)
@@ -279,6 +292,29 @@ class Tower {
             path[0] = path0;
             path[1] = path1;
             path[2] = path2;
+        }
+
+        std::vector<int> getValidUpgradePaths() {
+            std::vector<int> validPaths;
+            for (int i = 0; i < 3; ++i) {
+                std::array<int, 3> tempPath = path;
+                tempPath[i] += 1; // Increment the path for upgrade
+                if (isValidBTD6Upgrade(tempPath)) {
+                    validPaths.push_back(i); // Add the path index if it's a valid upgrade
+                }
+            }
+            return validPaths;
+        }
+
+        void upgradePath(int pathIndex) {
+            if (pathIndex < 0 || pathIndex >= 3) {
+                throw std::out_of_range("Invalid path index for upgrade");
+            }
+            if (path[pathIndex] < 5) { // Assuming max tier is 5
+                path[pathIndex]++;
+            } else {
+                throw std::runtime_error("Cannot upgrade beyond tier 5");
+            }
         }
 
         // returns towerCode for what type of tower it is (shit naming means i wrote this)
@@ -294,7 +330,7 @@ class Tower {
             return round_placed;
         }
 
-        string getTowerTypeStr() {
+        std::string getTowerTypeStr() {
             return towerTypeStr;
         }
         
@@ -311,8 +347,8 @@ class Tower {
         }
         
         //lowkey cosmetic purposes only ---------> trust me bro it'll be useful later trus trs....
-        string getCrossPathing() {
-            return to_string(path[0]) + to_string(path[1]) + to_string(path[2]);
+        std::string getCrossPathing() {
+            return std::to_string(path[0]) + std::to_string(path[1]) + std::to_string(path[2]);
         }
  
 };

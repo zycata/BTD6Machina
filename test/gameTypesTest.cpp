@@ -51,7 +51,8 @@ void testTowerClass() {
 void testActionStruct() {
     int x = 6969;
     int y = 67; // amongla swag........ (dont bash me for shitposts in code it's funny)
-    Action action{Action::PLACE, Tower(x,y, 1, 0, 0, 0, 1, 1), x, y, 1, INVALID, 1, 1};
+    Tower t = Tower(x,y, 1, 0, 0, 0, 1, 1);
+    Action action{Action::PLACE, &t, x, y, 1, INVALID, 1, 1};
     assertEquals(Action::PLACE, action.type, "Action Type should be PLACE");
     assertEquals(x, action.x, "Action X position should be 6969");
     assertEquals(y, action.y, "Action Y position should be 67");
@@ -59,7 +60,7 @@ void testActionStruct() {
     assertEquals(INVALID, action.path, "Action Path should be INVALID for placement");
     assertEquals(1, action.round, "Action Round should be 1");
     assertEquals(1, action.towerId, "Action Tower ID should be 1");
-    assertEquals(string("Dart Monkey"), action.tower.getTowerTypeStr(), "Action Tower Type String should be 'Dart Monkey'");
+    assertEquals(string("Dart Monkey"), action.tower->getTowerTypeStr(), "Action Tower Type String should be 'Dart Monkey'");
 
 }
 
@@ -85,6 +86,35 @@ void testUpgradeOptionStruct() {
 
 }
 
+void testTowerGettingPathsAllBase() {
+    Tower tower(100, 100, 1, 0, 0, 0, 1, 1);
+    
+    
+    vector<int> validPaths = tower.getValidUpgradePaths();
+
+    validPaths = tower.getValidUpgradePaths();
+    int actualSize = validPaths.size();
+    cout << "Valid upgrade paths size: " << actualSize << endl;
+    assertEquals(0, validPaths[0], "The first valid upgrade path should still be path 0");
+    assertEquals(1, validPaths[1], "The second valid upgrade path should be path 1");
+    assertEquals(2, validPaths[2], "The third valid upgrade path should be path 2");
+    assertEquals(string("000"), tower.getCrossPathing(), "Tower Cross Pathing should be '000' before any upgrades");
+    
+} 
+
+void testMaxedTower() {
+    Tower tower(100, 100, 1, 5, 2, 0, 1, 1);
+    
+    
+    vector<int> validPaths = tower.getValidUpgradePaths();
+
+    validPaths = tower.getValidUpgradePaths();
+    int actualSize = validPaths.size();
+    assertEquals(0, actualSize, "There should be 0 valid upgrade path available");
+    assertEquals(string("520"), tower.getCrossPathing(), "Tower Cross Pathing should be '520' after upgrades");
+    
+} 
+
 
 int main() {
 
@@ -100,7 +130,8 @@ int main() {
     checkTowerConsistency(3, "Bomb Shooter", 375);
     checkTowerConsistency(4, "Tack Shooter", 260);
     
-
+    testTowerGettingPathsAllBase();
+    testMaxedTower();
     return 0;
 }
 

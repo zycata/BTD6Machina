@@ -140,7 +140,7 @@ class StrategyMaker {
             return StrategyActions;
         }
 
-        bool isValidBTD6Upgrade(const int path[3]) {
+        bool isValidBTD6Upgrade(array<int,3> path) {
             int numUsedPaths = 0;
             int numHighPaths = 0;
 
@@ -158,6 +158,7 @@ class StrategyMaker {
             return static_cast<int>(5 * round(value / 5.0f));
         }
 
+        //refactor soon
         vector<UpgradeOption> getLegalUpgrades() { 
             //returns all legal upgrades for the towers placed, cost not taken into account
             vector<UpgradeOption> legalUpgrades = {};
@@ -288,6 +289,10 @@ class StrategyMaker {
             return true;
         }
 
+        // TODO --> MAKE IT SO IT A TOWER ID IS FOUND TO HAVE FAILED ENOUGH TIMES MAKE IT SO THAT IT DELETES IT OFF (FAILED TO PLACETHE TOWER WHEN THOUGHT IT DID)
+        // towers failing to place and the codfe thinking it placed is pretty rare but it's happened (enough times) where im making ts (or fixin gplace towers idk)
+        // then goes to towers and strategy actions and deletes the tower (REMOVES IT SMITES IT YEET YEET)
+        // will also need a new system to ID towers after that but das easy (j'espere)
         bool upgradeTower(int towerId, int path) {
             //implement mouse control later
             for (auto& tower : TowersPlaced) {
