@@ -26,6 +26,7 @@
 **Q: How does this thing read and know what happens in game?**  
 - unlike b2b i have a massive skill issue and am unable to directly read from ram so i just created a little mod using the help of melonloader that pretty much writes to a json file to be read by this jumble of code.  
 - but like honestly what i did is kinda prone to bugs so I will 100% need to fix it a little bit hahahahaha... (im going insane) but yes
+- I will UPPLOAD the mod when Im DONE TRUST...
 
 **Q: How does it decide what random new stuff to try?**  
 - I have 800 hours in BTD6 (I need to socialize with people in the flesh) and I just let it be more prone to choose certain upgrades that are costlier when rounds are later and vice versa during early rounds,  
