@@ -1,0 +1,90 @@
+
+#include "../../src/jsonHandlers/jsonManager.hpp"
+
+// me when writing tests, like lowkey code should just work like if i was good enuff "cries in c++" wait wtf this isn't c++ exclusive
+// would it not be kinda funny writing a fanfiction about c++ having sex with java and having oop shoved even more up my ass
+using namespace std;
+
+
+void testWritingActions() {
+    Action action = {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0};
+    JsonManager jsonManager;
+    jsonManager.writeToJson(action, "jsonHandlerTest/action.json");
+    Action readAction = jsonManager.getFromJson<Action>("jsonHandlerTest/action.json");
+    assert(readAction.type == Action::PLACE);
+    assert(readAction.x == 10);
+    assert(readAction.y == 20);
+    assert(readAction.towerType == 1);
+    assert(readAction.path == -1);
+    cout << "Action test passed!" << endl;  
+}
+
+void testWritingStrategy() {
+    std::vector<Action> actions = {
+        {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0},
+        {Action::UPGRADE, nullptr, 0, 0, 0, 2, 7, 42},
+        {Action::ABILITYUSE, nullptr, 0, 0, 0, 0, 10, 42}
+    };
+    
+    Strategy strategy = {"6-9", HARD, 420, 650, 63, actions};
+    JsonManager jsonManager;
+    jsonManager.writeToJson(strategy, "jsonHandlerTest/strategy.json");
+    
+    Strategy readStrategy = jsonManager.getFromJson<Strategy>("jsonHandlerTest/strategy.json");
+    assert(readStrategy.ID == "6-9");
+    assert(readStrategy.difficulty == HARD);
+    assert(readStrategy.score == 420);
+    assert(readStrategy.endCash == 650);
+    assert(readStrategy.roundObtained == 63);
+    assert(readStrategy.actions.size() == actions.size());
+    cout << "Strategy test passed!" << endl;
+}
+
+void testWritingGeneration() {
+    std::vector<Action> actions = {
+        {Action::PLACE, nullptr, 10, 20, 1, -1, 5, 0},
+        {Action::UPGRADE, nullptr, 0, 0, 0, 2, 7, 42},
+        {Action::ABILITYUSE, nullptr, 0, 0, 0, 0, 10, 42}
+    };
+    
+    Strategy strategy = {"6-9", HARD, 420, 650, 63, actions};
+    Strategy strategyV2 = {"6-10", HARD, 32, 42, 422, actions}; 
+
+    Generation generation6 = {6, "5-5", 5000, "6-9", 420, {strategy, strategyV2}};
+    
+    JsonManager jsonManager;
+    jsonManager.writeToJson(generation6, "jsonHandlerTest/generation_6.json");
+    
+    Generation readGeneration = jsonManager.getFromJson<Generation>("jsonHandlerTest/generation_6.json");
+    assert(readGeneration.generationNumber == 6);
+    assert(readGeneration.parentID == "5-5");
+    assert(readGeneration.parentScore == 5000);
+    assert(readGeneration.bestChildId == "6-9");
+    assert(readGeneration.children.size() == generation6.children.size());
+    cout << "Generation test passed!" << endl;
+}
+
+// I mean assert is cool but i think the shitty assertequals function i made is cool (i think im slick)
+// i like i usually don't gravitate towards rap songs, but 1-800 by bbno$ is actually fire wtf....
+// let me 1-800 blow your mind!! with this projet 
+
+void testMisc() {
+    JsonManager manHandler;
+    manHandler.setGenFilePath(6);
+    assert(manHandler.getGenFilePath() == "generations/generation_6.json");
+    cout << "Misc test passed!" << endl;
+}
+void testJsonManager() {
+    testWritingActions();
+    testWritingStrategy();
+    testWritingGeneration();
+}
+
+int main() {
+    cout << "Running JSON Handler Tests..." << endl;
+    testJsonManager();
+    cout << "All tests passed!" << std::endl;
+    testMisc();
+    
+    return 0;
+}
