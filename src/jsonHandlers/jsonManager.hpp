@@ -17,6 +17,15 @@
 
 using json = nlohmann::json;
 
+std::array<std::string, 26> kTowerNames = {
+    "Hero", "Dart Monkey", "Boomerang Monkey", "Bomb Shooter",
+    "Tack Shooter", "Ice Monkey", "Glue Gunner", "Sniper Monkey",
+    "Monkey Sub", "Monkey Buccaneer", "Monkey Ace", "Heli Pilot",
+    "Mortar Monkey", "Dartling Gunner", "Wizard Monkey", "Super Monkey",
+    "Ninja Monkey", "Alchemist", "Druid", "Mermonkey", "Banana Farm",
+    "Spike Factory", "Monkey Village", "Engineer Monkey", "Beast Handler",
+    "Desperado"
+};
 
 struct Strategy {
     
@@ -227,8 +236,26 @@ class JsonManager {
             return readActionFromJson(filePath).template get<StrategyActionOrGeneration>();
         }
 
-
-    
+        
+        std::array<int, 26> loadTowerCostsFromJson(const std::string& filePath) {
+            json jsonOpt = readActionFromJson(filePath);
+            if (jsonOpt.is_null()) {
+                throw std::runtime_error("Failed to read tower costs from JSON file: " + filePath);
+            }
+            std::array<int, 26> towerCosts;
+            for (size_t i = 0; i < 26; ++i) {
+                try {
+                    //std::cout << "Loading tower cost for: " << kTowerNames[i] << std::endl;
+                    //std::cout << "Tower cost: " << jsonOpt.at(kTowerNames[i]).get<int>() << std::endl;
+                    towerCosts[i] = jsonOpt.at(kTowerNames[i]).get<int>();
+                } catch (const nlohmann::json::out_of_range& e) {
+                    std::cerr << "Error: Tower cost for " << kTowerNames[i] << " not found in JSON file." << std::endl;
+                    towerCosts[i] = INVALID; // Set to INVALID if not found
+                }
+                
+            }
+            return towerCosts; // if i had a nickel for everytime I fucked something up cause i forgot a return, id have two nickles which means im a dumbass
+        }
         // wait template typename t is a lifehack i lied c++ is the goat i love c++ 
         // like did this shit earlier but using for this is actually an eyeopener
 
