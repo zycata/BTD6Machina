@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <array>
 
 std::map<int, std::string> towerMap = {
     {0, "Hero"},
@@ -34,6 +35,8 @@ std::map<int, std::string> towerMap = {
     {24, "Beast Handler"},
     {25, "Desperado"} //!!! implement desperado later plz
 };
+
+
 
 const int INVALID = -1;
 const int towerUpgrades[26][3][5] = {
@@ -198,7 +201,7 @@ const int towerUpgrades[26][3][5] = {
     }
 };
 
-const int towerCosts[26] = {
+std::array<int, 26> towerCosts = {
     540,  // Hero
     200, // Dart Monkey
     315, // Boomerang Monkey

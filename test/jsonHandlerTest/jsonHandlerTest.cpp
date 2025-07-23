@@ -80,11 +80,24 @@ void testJsonManager() {
     testWritingGeneration();
 }
 
+void testLoadingFromJson() {
+    JsonManager jsonManager;
+    std::array<int, 26> testCosts = jsonManager.loadTowerCostsFromJson("config/tower_costs.json");
+    cout << testCosts[0] << endl; // Print Hero cost for verification
+    assert(testCosts.size() == 26); // Ensure the array size is correct
+    assert(testCosts[0] == 540); // Hero
+    
+    assert(testCosts[1] == 200); // Dart Monkey
+    assert(testCosts[2] == 315); // Boomerang Monkey
+    assert(testCosts[3] == 375); // Bomb Shooter
+    cout << "Loading from JSON test passed!" << endl;
+}
 int main() {
     cout << "Running JSON Handler Tests..." << endl;
     testJsonManager();
-    cout << "All tests passed!" << std::endl;
     testMisc();
+    testLoadingFromJson();
+    cout << "All tests passed!" << std::endl;
     
     return 0;
 }
