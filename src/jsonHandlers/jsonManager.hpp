@@ -271,7 +271,9 @@ class JsonManager {
                 for (int p = 0; p < PATHS; ++p)
                     for (int lv = 0; lv < TIERS; ++lv)
                         upgrades[t][p][lv] = j[t][p][lv];
-
+            if (upgrades.size() != TOWERS || upgrades[0].size() != PATHS || upgrades[0][0].size() != TIERS) {
+                throw std::runtime_error("Invalid tower upgrades JSON structure.");
+            }
             return upgrades;
         }
 

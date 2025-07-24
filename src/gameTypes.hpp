@@ -39,7 +39,7 @@ std::map<int, std::string> towerMap = {
 
 
 const int INVALID = -1;
-int towerUpgrades[26][3][5] = {
+std::vector<std::vector<std::vector<int>>> towerUpgrades = {
     
     {
         // Hero (upgrading hero is not allowed)

@@ -582,7 +582,7 @@ class StrategyMaker {
 
 int main() {
     
-    string filePath = "D:\Gamesfiles\Steam\steamapps\common\BloonsTD6\gameData\gameData.json";
+    string filePath = "D:/Gamesfiles/Steam/steamapps/common/BloonsTD6/gameData/gameData.json";
 
     cout << "Script Started" << endl;
     
