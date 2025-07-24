@@ -237,7 +237,7 @@ class JsonManager {
         }
 
         
-        std::array<int, 26> loadTowerCostsFromJson(const std::string& filePath) {
+        std::array<int, 26> loadTowerCostsFromJson(const std::string& filePath = "config/tower_costs.json") {
             json jsonOpt = readActionFromJson(filePath);
             if (jsonOpt.is_null()) {
                 throw std::runtime_error("Failed to read tower costs from JSON file: " + filePath);
@@ -256,6 +256,28 @@ class JsonManager {
             }
             return towerCosts; // if i had a nickel for everytime I fucked something up cause i forgot a return, id have two nickles which means im a dumbass
         }
+
+        std::vector<std::vector<std::vector<int>>> loadTowerUpgradesFromJson(const std::string& filePath) {
+            json j = readActionFromJson(filePath);
+            
+            if (j.is_null()) {
+                throw std::runtime_error("Failed to read or parse tower upgrades JSON.");
+            }
+
+            const int TOWERS = 26, PATHS = 3, TIERS = 5;
+            std::vector<std::vector<std::vector<int>>> upgrades(TOWERS, std::vector<std::vector<int>>(PATHS, std::vector<int>(TIERS)));
+
+            for (int t = 0; t < TOWERS; ++t)
+                for (int p = 0; p < PATHS; ++p)
+                    for (int lv = 0; lv < TIERS; ++lv)
+                        upgrades[t][p][lv] = j[t][p][lv];
+
+            return upgrades;
+        }
+
+        
+
+
         // wait template typename t is a lifehack i lied c++ is the goat i love c++ 
         // like did this shit earlier but using for this is actually an eyeopener
 
