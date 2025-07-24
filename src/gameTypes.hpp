@@ -39,7 +39,7 @@ std::map<int, std::string> towerMap = {
 
 
 const int INVALID = -1;
-const int towerUpgrades[26][3][5] = {
+int towerUpgrades[26][3][5] = {
     
     {
         // Hero (upgrading hero is not allowed)
