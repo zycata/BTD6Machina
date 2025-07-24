@@ -83,7 +83,7 @@ void testJsonManager() {
 void testLoadingFromJson() {
     JsonManager jsonManager;
     std::array<int, 26> testCosts = jsonManager.loadTowerCostsFromJson("config/tower_costs.json");
-    cout << testCosts[0] << endl; // Print Hero cost for verification
+    cout << "Hero Cost: " << testCosts[0] << endl; // Print Hero cost for verification
     assert(testCosts.size() == 26); // Ensure the array size is correct
     assert(testCosts[0] == 540); // Hero
     
@@ -92,12 +92,33 @@ void testLoadingFromJson() {
     assert(testCosts[3] == 375); // Bomb Shooter
     cout << "Loading from JSON test passed!" << endl;
 }
-int main() {
+
+void testLoadingFromJsonUpgrades() {
+    JsonManager jsonManager;
+    // Test loading tower upgrades from JSON
+    cout << "Loading tower upgrades from JSON..." << endl;
+    std::vector<std::vector<std::vector<int>>> testUpgrades = jsonManager.loadTowerUpgradesFromJson("config/tower_upgrades.json");
+    assert(testUpgrades.size() == 26);
+    /*
+    cout << "Tower upgrades loaded successfully!" << endl;
+    cout << "Test upgrades size: " << testUpgrades.size() << endl;
+    cout << "Test dart path 1 tier 1: " << testUpgrades[1][0][0] << endl; // Dart Monkey Path 1 Tier 1 */
+    assert(testUpgrades[0][0][0] == -1); // Hero upgrades should be -1
+    assert(testUpgrades[1][0][0] == 140); // Dart Monkey Path 1 Tier 1
+    assert(testUpgrades[25][2][4] == 31000); // Desperado PAth 3 tier 5
+    cout << "Loading tower upgrades from JSON test passed!" << endl;
+}
+
+void runAllTests() {
     cout << "Running JSON Handler Tests..." << endl;
     testJsonManager();
     testMisc();
     testLoadingFromJson();
     cout << "All tests passed!" << std::endl;
+}
+int main() {
     
+    testLoadingFromJsonUpgrades();
+    runAllTests();
     return 0;
 }
