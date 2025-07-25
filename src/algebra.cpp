@@ -110,14 +110,22 @@ class StrategyMaker {
 
             TowersPlaced = {};
             TowersPlaced.reserve(1000);
-            //No need to reserve 1k but Justin Case (get it funny name pls laugh)
-            // will probably reserve 1k for strategy actions idk why not lmao
             StrategyActions = {};
+            StrategyActions.reserve(1000);
+            // No need to reserve 1k but Justin Case (get it funny name pls laugh)
+            // realistically tho this is never used i think i lowkey just got paranoid after accessing unsafe memory that one time 
+            
             this->currentRound = currentRound;
             
             startRound = gameInfo.getStartRound(); // games actual start round yes true true --> Literally irrelevent unless i do a funny true true but yes 
+            // so this is actually a weird btd6 feature???? but if you try getting the "startround" variable for each mode in btd6 the startRound for chimps, impoppable, or deflation you get, 3, 3 and 1 respectively.
+            // As we all are pro btd6 players, we know that both chimps and impoppable start on 6, and deflation starts on 31. So turns out how btd6 is coded there's only technically "3" difficulties.
+            // As demonstrated in the selection screen, and chimps and impoppable are subdifficulties of hard. I believe because the startRound variable represents the starting round for the main 3 difficulties, which doesn't include chimps impoppable or delfation
+            // yeah because of this i have to hard code (literally just slap more stuff) siince yk yk yk 
+            // might make a mode for deflation, since it should be ALOT easier since you only technically have one round to place stuff
             
-            totalTowers = gameInfo.getTowersPlaced();
+            totalTowers = gameInfo.getTowersPlaced(); // should always be zero.
+
             this->cash = gameInfo.getCash(); 
 
             this->type = type;
@@ -140,7 +148,7 @@ class StrategyMaker {
                     currentRound = 6;
                     break;
                 case CHIMPS:
-                    cashMultiplier = 1.2;
+                    cashMultiplier = 1.08;
                     currentRound = 6;
                     break;
             

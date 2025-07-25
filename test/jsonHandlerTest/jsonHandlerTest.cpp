@@ -82,7 +82,8 @@ void testJsonManager() {
 
 void testLoadingBaseCostsFromJson() {
     JsonManager jsonManager;
-    std::array<int, 26> testCosts = jsonManager.loadTowerCostsFromJson("config/tower_costs.json");
+    std::vector<int> testCosts = jsonManager.loadTowerCostsFromJson("config/tower_costs.json");
+    //cout << testCosts.size() << endl;
     cout << "Hero Cost: " << testCosts[0] << endl; // Print Hero cost for verification
     assert(testCosts.size() == 26); // Ensure the array size is correct
     assert(testCosts[0] == 540); // Hero

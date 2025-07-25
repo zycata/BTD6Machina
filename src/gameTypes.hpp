@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include <array>
-
+#include<functional>
 std::map<int, std::string> towerMap = {
     {0, "Hero"},
     {1, "Dart Monkey"},
@@ -201,7 +201,7 @@ std::vector<std::vector<std::vector<int>>> towerUpgrades = {
     }
 };
 
-std::array<int, 26> towerCosts = {
+std::vector<int> towerCosts = {
     540,  // Hero
     200, // Dart Monkey
     315, // Boomerang Monkey

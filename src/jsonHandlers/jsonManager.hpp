@@ -17,7 +17,7 @@
 
 using json = nlohmann::json;
 
-std::array<std::string, 26> kTowerNames = {
+std::vector<std::string> kTowerNames = {
     "Hero", "Dart Monkey", "Boomerang Monkey", "Bomb Shooter",
     "Tack Shooter", "Ice Monkey", "Glue Gunner", "Sniper Monkey",
     "Monkey Sub", "Monkey Buccaneer", "Monkey Ace", "Heli Pilot",
@@ -272,12 +272,15 @@ class JsonManager {
         }
 
         
-        std::array<int, 26> loadTowerCostsFromJson(const std::string& filePath = "config/tower_costs.json") {
+        std::vector<int> loadTowerCostsFromJson(const std::string& filePath = "config/tower_costs.json") {
             json jsonOpt = readActionFromJson(filePath);
             if (jsonOpt.is_null()) {
                 throw std::runtime_error("Failed to read tower costs from JSON file: " + filePath);
             }
-            std::array<int, 26> towerCosts;
+            int TOWERS = 26;
+            std::vector<int> towerCosts(26, INVALID); // omg you have to preallocate "26" spots before assigning by index because by default it's no spots
+            // mfw when im doing a project that could be done in python but choose c++ because I love accessing invalid ram 
+            // exit  code=3221225477 is just accessing invalid ram (Me when i want to access the wrong electrons.... pretty please windows???)
             for (size_t i = 0; i < 26; ++i) {
                 try {
                     //std::cout << "Loading tower cost for: " << kTowerNames[i] << std::endl;
