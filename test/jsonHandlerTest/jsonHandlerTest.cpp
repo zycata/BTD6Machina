@@ -80,7 +80,7 @@ void testJsonManager() {
     testWritingGeneration();
 }
 
-void testLoadingFromJson() {
+void testLoadingBaseCostsFromJson() {
     JsonManager jsonManager;
     std::array<int, 26> testCosts = jsonManager.loadTowerCostsFromJson("config/tower_costs.json");
     cout << "Hero Cost: " << testCosts[0] << endl; // Print Hero cost for verification
@@ -109,16 +109,32 @@ void testLoadingFromJsonUpgrades() {
     cout << "Loading tower upgrades from JSON test passed!" << endl;
 }
 
+void testLoadingSettings() {
+    JsonManager jsonManager;
+    AlgorithmSettings settings = jsonManager.getAlgorithmSettingsFromJson("config/settings.json");
+    
+    assert(settings.filePathToGameData == "C:/Games/MyGame/ExamplePath.json");
+    assert(settings.difficulty == HARD);
+    assert(settings.towersAllowed.size() == 3); // Assuming 3 towers are allowed
+    assert(settings.roundsCutOffPerGeneration == 5);
+    assert(settings.childrenPerGeneration == 10);
+
+    std::vector<int> expectedTowersAllowed = {0, 16, 17}; // Hero, Ninja Monkey, Alchemist
+    assert(settings.towersAllowed == expectedTowersAllowed);
+    
+    cout << "Algorithm settings test passed!" << endl;
+}
 void runAllTests() {
     cout << "Running JSON Handler Tests..." << endl;
     testJsonManager();
     testMisc();
-    testLoadingFromJson();
+    testLoadingBaseCostsFromJson();
+    testLoadingFromJsonUpgrades();
     cout << "All tests passed!" << std::endl;
 }
 int main() {
     
-    testLoadingFromJsonUpgrades();
+    testLoadingSettings();
     runAllTests();
     return 0;
 }

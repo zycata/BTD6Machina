@@ -1,5 +1,4 @@
 {
-  "ParentScore": 5000,
   "bestChildId": "6-9",
   "children": [
     {
@@ -76,5 +75,6 @@
     }
   ],
   "generationNumber": 6,
-  "parentID": "5-5"
+  "parentID": "5-5",
+  "parentScore": 5000
 }
