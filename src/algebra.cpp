@@ -11,6 +11,7 @@
 
 #include "mouseControl/mouseControl.h"
 #include "jsonHandlers/GameReader.h"
+// #include "jsonHandlers/jsonManager.hpp" --> dont include this yet 
 #include "gameTypes.hpp"
 using namespace std;
 /*
@@ -71,6 +72,37 @@ class StrategyMaker {
 
         int startRound;
         const UpgradeOption emptyUpgrade = {0, 0, 0, 0, "", false}; // Empty upgrade option to return when no upgrades are available
+
+        bool isHeroAlreadyPlaced() {
+            for ( auto& twr : TowersPlaced) {
+                if (twr.isHero() ) {
+                    return true; 
+                }
+            }
+            return false;
+
+        }
+
+        void logTowers() {
+            ofstream TowerFile("logs/towersPlaced.txt");
+            TowerFile << "Towers placed: " << TowersPlaced.size() << endl;
+            cout << "Towers placed: " << TowersPlaced.size() << endl;
+
+            for (auto& tower : TowersPlaced) {
+                // cout << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced() << endl;
+                TowerFile << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced()  << endl;
+            }
+        }
+
+        void logStrategy() {
+            ofstream StrategyFile("logs/strategyActions.txt");
+            StrategyFile << "Strategy Actions: " << StrategyActions.size() << endl;
+            for (auto& action : StrategyActions) {
+                // cout << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower.getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower.getTowerTypeStr() << ", Path: " << action.path << ", Round: " << action.round  << endl;
+                StrategyFile << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower->getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower->getTowerTypeStr()  << ", Path: " << action.path  << ", Round: " << action.round  << endl;
+            }
+        }
+
     public:
         StrategyMaker(Difficulty type, string filePath) : gameInfo(filePath)
         {
@@ -118,6 +150,11 @@ class StrategyMaker {
             
             // mouseControl::initializeMouseControls();
             srand(time(0));
+        }
+
+        void logItems() {
+            logStrategy();
+            logTowers();
         }
 
         void setCash(int cash) {
@@ -214,15 +251,7 @@ class StrategyMaker {
             return availableUpgrades;
         }
 
-        bool isHeroAlreadyPlaced() {
-            for ( auto& twr : TowersPlaced) {
-                if (twr.isHero() ) {
-                    return true; 
-                }
-            }
-            return false;
-
-        }
+        
 
         vector<PlacementOption> getTowerPlacementOptions() {
             vector<PlacementOption> newTowers = {};
@@ -328,26 +357,7 @@ class StrategyMaker {
             return false; // Tower not found
         }
 
-        void logTowers() {
-            ofstream TowerFile("logs/towersPlaced.txt");
-            TowerFile << "Towers placed: " << TowersPlaced.size() << endl;
-            cout << "Towers placed: " << TowersPlaced.size() << endl;
-
-            for (auto& tower : TowersPlaced) {
-                // cout << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced() << endl;
-                TowerFile << "Tower ID: " << tower.getTowerId() << ", Type: " << tower.getTowerTypeStr() << ", Position: (" << tower.getX() << ", " << tower.getY() << ")" << ", Cross Pathing: " << tower.getCrossPathing() << ", Round Placed: " << tower.getRoundPlaced()  << endl;
-            }
-        }
-
-        void logStrategy() {
-            ofstream StrategyFile("logs/strategyActions.txt");
-            StrategyFile << "Strategy Actions: " << StrategyActions.size() << endl;
-            for (auto& action : StrategyActions) {
-                // cout << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower.getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower.getTowerTypeStr() << ", Path: " << action.path << ", Round: " << action.round  << endl;
-                StrategyFile << "Action Type: " << actionTypeToStr(action.type) << ", Tower ID: " << action.tower->getTowerId() << ", Position: (" << action.x << ", " << action.y << ")" << ", Tower Type: " << action.tower->getTowerTypeStr()  << ", Path: " << action.path  << ", Round: " << action.round  << endl;
-            }
-        }
-
+        
         // n2 > n1
         // returns random int [n1, n2] (includes n1 and n2)
         int getRandomInt    (int n1, int n2) {
@@ -487,9 +497,25 @@ class StrategyMaker {
             return emptyUpgrade; // Return an empty UpgradeOption if no upgrade was made
         }
 
+        bool didRoundEnd() {
+            // Check if the current round has ended
+            if (gameInfo.getCurRound() > currentRound) {
+                return true; 
+            }
+            return false; 
+        }
+
+        void startNextRound() {
+            if (currentRound == startRound) {
+                    mouseControl::ClickStartNextRound();
+                    // click it twice for fast forward round 1 lmao
+                }
+                
+            mouseControl::ClickStartNextRound();
+        }
         
         // !!! TODO: make shitty ai restart the game using the restart button thing when the game is over
-        
+        // TODO: 
         GameResult runGame() {
             bool gameOver = false;
             UpgradeOption targetUpgrade = emptyUpgrade;
@@ -524,13 +550,8 @@ class StrategyMaker {
                     }
                 }
                 
-                if (currentRound == startRound) {
-                    mouseControl::ClickStartNextRound();
-                    // click it twice for fast forward round 1 lmao
-                }
                 
-                mouseControl::ClickStartNextRound();
-                
+                startNextRound();
                 cout << "Waiting for next round..." << endl;
                 
                 bool roundOver = false;
@@ -574,14 +595,94 @@ class StrategyMaker {
                 cout << "Game is still ongoing." << endl;
             }
         }
+
+        /* Okay let me think of a design process here 
+        basically it receives a vector of actions, and executes them in order pretty much, 
+        so lets start, since this must always be called right as the game starts, we can start by checking if
+        the round is active.
+        -> isroundactive? -> if true -> wait
+        -> if false -> increment the vectors -> is action current round? -> yes? -> continue
+        -> if no then wait for next round, check again 
+
+        hey that wasn't too bad, also used a pointer because i think im so cool
+        so glad no need to allocate heap i could never :sob:
+        */
+
+        // TODO: this has overlap with the previous function, so maybe make a helper or combine these two?
+        // should be possible for sure, anyways im done for the day tommorow for file gen with jsonManager finally
+        GameResult followStrategy(vector<Action>& childrenStrategy) {
+            Finalizer logOnExit{[this] { this->logItems(); }}; 
+
+            bool gameOver = false;
+            int maxPointerSize = childrenStrategy.size();
+            int pointer = 0;
+            // start pointer at the first object
+            Action *curAction = &childrenStrategy[pointer];
+            int nextRoundToAct = curAction->round;
+            while (!gameOver) {
+                bool roundOver = false; 
+
+                while (nextRoundToAct == currentRound) {
+                    if(curAction->type == Action::PLACE) {
+                        placeTower(curAction->towerType, curAction->x, curAction->y);
+
+                    } else if (curAction->type == Action::UPGRADE) {
+                        upgradeTower(curAction->towerId, curAction->path);
+                    }
+                    pointer++; // increment the pointer on the vector
+                    if (pointer >= maxPointerSize) {
+                        return FINISHEDSTRATEGY;
+                    }
+                    curAction = &childrenStrategy[pointer];
+                    nextRoundToAct = curAction->round;
+                }
+                startNextRound();
+                while (!roundOver) {
+                    gameOver = gameInfo.didGameOver();
+                    cout << "Game over? " << (gameOver ? "Yes" : "No") << endl;
+                    if (this->currentRound != gameInfo.getCurRound()) {
+                        cout << "Round changed from " << this->currentRound << " to " << gameInfo.getCurRound() << endl;
+                        this->currentRound = gameInfo.getCurRound();
+
+                        roundOver = true;
+
+                        if (gameInfo.didGameWon()) {
+                            cout << "Game Won!" << endl;
+                            
+                            return GameResult::VICTORY;
+                            //return; // exit the game loop
+                        }
+                    } 
+                    else if (gameInfo.didGameOver()) {
+                        gameOver = true;
+                        break; 
+                    }
+
+                    Sleep(200);
+
+                }
+                if (gameOver == true) {
+                    cout << "Game Over!" << endl;
+                    
+                    return GameResult::DEFEAT; 
+                    //break;
+                }
+                this->currentRound = gameInfo.getCurRound();
+                this->cash = gameInfo.getCash();
+                cout << "Current round: " << this->currentRound << endl;
+                
+                
+                cout << "Game is still ongoing." << endl;
+                 
+            }
+
+
+        }
 };
 
 
 
-
-
-int main() {
-    
+void testFunnyTHingtrueOmg() {
     string filePath = "D:/Gamesfiles/Steam/steamapps/common/BloonsTD6/gameData/gameData.json";
 
     cout << "Script Started" << endl;
@@ -591,7 +692,7 @@ int main() {
     bool found = mouseControl::findWindow(); // find the game window
     if (!mouseControl::findWindow()) {
         cerr << "Game window not found. Please ensure the game is running." << endl;
-        return 1; // Exit if the game window is not found
+        return; // Exit if the game window is not found
     }
     system("pause");
     
@@ -626,5 +727,30 @@ int main() {
     
     cout << "game has been finished" << endl;
     system("pause");
-    return 0;
+    
+}
+
+
+int main() {
+    
+    string filePath = "D:/Gamesfiles/Steam/steamapps/common/BloonsTD6/gameData/gameData.json";
+    cout << "Script Started" << endl;
+    mouseControl::initializeMouseControls();
+    mouseControl::findWindow();
+    system("pause");
+    Sleep(1000); // wait for the game to load
+    StrategyMaker strategy(Difficulty::EASY, filePath);
+    vector<Action> testChildStrategy = {
+        {Action::PLACE, nullptr, 100, 200, 1, -1, 1, 1},
+        {Action::UPGRADE, nullptr, 100, 200, 1, 0, 1, 1},
+        {Action::PLACE, nullptr, 300, 400, 5, -1, 3, 2},
+        {Action::UPGRADE, nullptr, 300, 400, 5, 0, 3, 2}
+    };
+    strategy.followStrategy(testChildStrategy);
+
+    cout << "Strategy executed successfully." << endl;
+
+    
+    
+    
 }
