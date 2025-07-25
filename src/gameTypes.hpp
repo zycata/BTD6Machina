@@ -231,7 +231,7 @@ std::array<int, 26> towerCosts = {
 };
 
 // all towers temporarily not allowed for testing purposes lol
-const int te[26] {
+std::vector<int> te {
     0, //Hero
     1, // Dart Monkey
     2, // Boomerang Monkey
@@ -260,7 +260,7 @@ const int te[26] {
     25 // Desperado
 };
 
-const int towersAllowed[3] = {0, 16, 17}; // only ninja monkey and alc atm + hero
+std::vector<int> towersAllowed = {0, 16, 17}; // only ninja monkey and alc atm + hero
 
 
 class Tower {

@@ -53,6 +53,16 @@ struct Generation {
 
 };
 
+struct AlgorithmSettings {
+    std::string filePathToGameData;
+    Difficulty difficulty;
+    std::vector<int> towersAllowed;
+
+    int roundsCutOffPerGeneration;
+    int childrenPerGeneration;
+
+};
+
 // wow function overloading for a third time??? This is certainly a code of all time
 std::string to_string(Difficulty type) {
     switch (type) {
@@ -74,6 +84,8 @@ std::string to_string(Action::ActionType type) {
         default: return "UNKNOWN";
     }
 }
+
+
 
 void to_json(json& j, const Action& action) {
     j = json{
@@ -107,7 +119,7 @@ void to_json(json& j, const Generation& generation) {
     json children = generation.children;
     j["generationNumber"] = generation.generationNumber;
     j["parentID"] = generation.parentID;
-    j["ParentScore"] = generation.parentScore;
+    j["parentScore"] = generation.parentScore;
     j["bestChildId"] = generation.bestChildId;
     j["children"] = children;
     // mewhen children...
@@ -132,16 +144,21 @@ void from_json(const json& j, Action& action) {
 
 }
 
+Difficulty difficulty_to_enum(std::string& difficulty_str) {
+    //std::string difficulty_str = j.get<std::string>();
+    if (difficulty_str == "EASY") return EASY;
+    else if (difficulty_str == "MEDIUM") return MEDIUM;
+    else if (difficulty_str == "HARD") return HARD;
+    else if (difficulty_str == "IMPOPPABLE") return IMPOPPABLE;
+    else if (difficulty_str == "CHIMPS") return  CHIMPS;
+    else throw std::runtime_error("Invalid difficulty: " + difficulty_str);
+}
+
 void from_json(const json& j, Strategy& strategy) {
     j.at("ID").get_to(strategy.ID);
     
     std::string difficulty_str = j.at("difficulty").get<std::string>();
-    if (difficulty_str == "EASY") strategy.difficulty = EASY;
-    else if (difficulty_str == "MEDIUM") strategy.difficulty = MEDIUM;
-    else if (difficulty_str == "HARD") strategy.difficulty = HARD;
-    else if (difficulty_str == "IMPOPPABLE") strategy.difficulty = IMPOPPABLE;
-    else if (difficulty_str == "CHIMPS") strategy.difficulty = CHIMPS;
-    else throw std::runtime_error("Invalid difficulty: " + difficulty_str);
+    strategy.difficulty = difficulty_to_enum(difficulty_str);
     //j.at("difficulty").get_to(strategy.difficulty); // difficulty
     j.at("endCash").get_to(strategy.endCash);
     j.at("roundObtained").get_to(strategy.roundObtained);
@@ -156,7 +173,7 @@ void from_json(const json& j, Strategy& strategy) {
 void from_json(const json& j, Generation& generation) {
     j.at("generationNumber").get_to(generation.generationNumber);
     j.at("parentID").get_to(generation.parentID);
-    j.at("ParentScore").get_to(generation.parentScore);
+    j.at("parentScore").get_to(generation.parentScore);
     j.at("bestChildId").get_to(generation.bestChildId);
     j.at("children").get_to(generation.children);
 }
@@ -165,6 +182,16 @@ void from_json(const json& j, Generation& generation) {
 // guys compilation tiome is O(1) since I only ever compile one projewct
 // I can see why people say building projects is how you learn --> hola soy admen
 
+void from_json(const json& j, AlgorithmSettings& settings) {
+    j.at("filePathToGameData").get_to(settings.filePathToGameData);
+    std::string type_str = j.at("difficulty").get<std::string>();
+    settings.difficulty = difficulty_to_enum(type_str);
+    j.at("towersAllowed").get_to(settings.towersAllowed);
+
+    j.at("roundsCutOffPerGeneration").get_to(settings.roundsCutOffPerGeneration);
+    j.at("childrenPerGeneration").get_to(settings.childrenPerGeneration);
+
+}
 
 
 // TODO: add a function to retrive the best child from a generation struct --> tommorow trust me bro
@@ -234,6 +261,14 @@ class JsonManager {
                 filePath = generationFilePath;  
             }
             return readActionFromJson(filePath).template get<StrategyActionOrGeneration>();
+        }
+
+        AlgorithmSettings getAlgorithmSettingsFromJson(const std::string& filePath = "config/settings.json") {
+            json j = readActionFromJson(filePath);
+            if (j.is_null()) {
+                throw std::runtime_error("Failed to read algorithm settings from JSON file: " + filePath);
+            }
+            return j.get<AlgorithmSettings>();
         }
 
         
