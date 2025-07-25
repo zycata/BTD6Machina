@@ -396,5 +396,21 @@ struct UpgradeOption {
 
 enum Difficulty { EASY, MEDIUM, HARD, IMPOPPABLE, CHIMPS };
 
-enum GameResult { VICTORY, DEFEAT, OTHER}; //other for crash shit code etc
+enum GameResult { VICTORY, DEFEAT, FINISHEDSTRATEGY, OTHER}; //other for crash shit code etc
+
+// wait so apparently this is like a finsiher function that stores another function, which is cool
+// and then like so when the function "returns" it's object all variables are cleaned up in reverse order
+// MEANING you should declare this first in your function
+// and then because --> ~ <-- is what declares the destructor, the destructor gets called when
+// this object is cleaned up, which calls whatever function i slapped in here
+// ts actually genius WHAT not even like a purposeful thing just like abusing order of operations
+// me when i found how to simplify x^2 + 10x + 25 without needing to shove quadratic formula momentenos
+struct Finalizer {
+    std::function<void()> func;
+    ~Finalizer() {
+        func(); // this runs automatically when the function exits
+    }
+};
+
+
 #endif 
