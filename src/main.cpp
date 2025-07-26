@@ -36,7 +36,8 @@ namespace gameInfo {f
 }
 */
 // compile using g++ src/main.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6
-
+// to compile with my COOL ass icon
+// g++ src/main.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6
 class StrategyMaker {
     private:
         vector<Tower> TowersPlaced;
@@ -671,6 +672,26 @@ class StrategyMaker {
 
 
         }
+
+
+        GameResult generateStrategy(vector<Action>& childrenStrategy) {
+            GameResult followedResult = followStrategy(childrenStrategy);
+            switch(followedResult) {
+                case(FINISHEDSTRATEGY):
+                    break;
+                case(VICTORY):
+                    return followedResult;
+                    break;
+                case(DEFEAT):
+                    return followedResult;
+                    break;
+                default:
+                    cerr << "fuking fail" << endl;
+                  
+            }
+            return runGame();
+
+        }
 };
 
 
@@ -737,7 +758,7 @@ void testFunynThing2() {
         {Action::PLACE, nullptr, 300, 400, 5, -1, 3, 2},
         {Action::UPGRADE, nullptr, 300, 400, 5, 0, 3, 2}
     };
-    strategy.followStrategy(testChildStrategy);
+    strategy.generateStrategy(testChildStrategy);
 
     cout << "Strategy executed successfully." << endl;
 }
@@ -758,7 +779,7 @@ yeah alright so and then lets see what we need after a list of actions is made
 
 class GenerationHandler {
     private:
-        int curIteration;
+        int curGeneration;
         
         JsonManager jsonManager;
         string filePathToGameData;
@@ -766,12 +787,7 @@ class GenerationHandler {
         vector<int> towersAllowed;
         int roundsCutOffPerGeneration;
         int childrenPerGeneration;
-
-    public:
-        GenerationHandler() {
-            loadSettings();
-            loadUpgradesAndTowerCosts();
-        }
+        StrategyMaker strategyMaker;
 
         void loadSettings() {
             AlgorithmSettings settings = jsonManager.getAlgorithmSettingsFromJson();
@@ -797,13 +813,58 @@ class GenerationHandler {
             cout << "Loaded tower costs and upgrades." << endl;
 
         }
+
+        int calculateScore(int endCash, int roundObtained) {
+            // Calculate the score of the strategy based on the end cash and rounds completed
+            int score = 0;
+            
+            // well we really only have two metrics to go off of and i think roundObtaiend is the most important out of the two.
+            /* 
+            Okay lets do a brainstorming
+            Rounds must be either 1 < 101 
+            but cash can be 0 < 178k BUT probably more 0 < 50k much more realistically
+            since round will be the important metric, we need to scale these two variables down or up depending on their weight.
+            OK so solution i got below, round is most important, but every 5k cash will mean an equal of +1 round
+            What does this mean? lets say one of the strategies got to round 50 with 0 dollars when they died
+            Now lets say another strategy got to round 48 with 17k left over, since 5k moneys is the equivalent to a round, the bottom one would be equivalent to one with 51 rounds and 2k cash
+            now you see the ratio below, why is roundWeight 1k and each cash equial to 5k? why not reduce those?
+            BECAUSE I WANT EVERYTHING IN INTEGER FORM GODDAMNIT
+            */
+           int RoundWeight = 1000;
+           int HowMuchCashToWeighARound = 5000; 
+
+           return (roundObtained * RoundWeight) + (endCash /  (HowMuchCashToWeighARound / RoundWeight));
+
+        }
+    
+    public:
+        GenerationHandler() 
+        : strategyMaker(gameDifficulty, filePathToGameData) 
+        {
+            loadSettings();
+            loadUpgradesAndTowerCosts();
+        }
+
+        Strategy generateStrategy(int endCash, int roundObtained, int childNumber, int generationNumber, vector<Action> &actions) {
+
+            string ID = to_string(generationNumber) + "_" + to_string(childNumber);
+            int score = calculateScore(endCash, roundObtained);
+            Strategy strategy{ID, gameDifficulty, score, endCash, roundObtained, actions};
+            return strategy;
+        }
+
+        
+        
+        void runGeneration() {
+            for (int i; i < childrenPerGeneration; ++i) {
+                
+            }
+        };
+        
 };
 
 int main() {
     
-    system("pause");
-    GenerationHandler generationHandler;
-
-    system("pause");
+    testFunynThing2();
     return 0;
 }

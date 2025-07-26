@@ -307,8 +307,8 @@ class JsonManager {
 
             for (int t = 0; t < TOWERS; ++t)
                 for (int p = 0; p < PATHS; ++p)
-                    for (int lv = 0; lv < TIERS; ++lv)
-                        upgrades[t][p][lv] = j[t][p][lv];
+                    for (int u = 0; u < TIERS; ++u) // tpu tensor processing unit moment (im so funny pls laugh)
+                        upgrades[t][p][u] = j[t][p][u];
             if (upgrades.size() != TOWERS || upgrades[0].size() != PATHS || upgrades[0][0].size() != TIERS) {
                 throw std::runtime_error("Invalid tower upgrades JSON structure.");
             }
@@ -320,6 +320,7 @@ class JsonManager {
 
         // wait template typename t is a lifehack i lied c++ is the goat i love c++ 
         // like did this shit earlier but using for this is actually an eyeopener
+        // hey everybody me from a week later this language is ass
 
         template<typename T>
         void writeToJson(const T& generation, std::string filePath = "") {
