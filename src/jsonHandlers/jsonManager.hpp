@@ -277,11 +277,11 @@ class JsonManager {
             if (jsonOpt.is_null()) {
                 throw std::runtime_error("Failed to read tower costs from JSON file: " + filePath);
             }
-            int TOWERS = 26;
-            std::vector<int> towerCosts(26, INVALID); // omg you have to preallocate "26" spots before assigning by index because by default it's no spots
+            int TOTALTOWERCOUNT = 26;
+            std::vector<int> towerCosts(TOTALTOWERCOUNT, INVALID); // omg you have to preallocate "26" spots before assigning by index because by default it's no spots
             // mfw when im doing a project that could be done in python but choose c++ because I love accessing invalid ram 
             // exit  code=3221225477 is just accessing invalid ram (Me when i want to access the wrong electrons.... pretty please windows???)
-            for (size_t i = 0; i < 26; ++i) {
+            for (size_t i = 0; i < TOTALTOWERCOUNT; ++i) {
                 try {
                     //std::cout << "Loading tower cost for: " << kTowerNames[i] << std::endl;
                     //std::cout << "Tower cost: " << jsonOpt.at(kTowerNames[i]).get<int>() << std::endl;
@@ -295,7 +295,7 @@ class JsonManager {
             return towerCosts; // if i had a nickel for everytime I fucked something up cause i forgot a return, id have two nickles which means im a dumbass
         }
 
-        std::vector<std::vector<std::vector<int>>> loadTowerUpgradesFromJson(const std::string& filePath) {
+        std::vector<std::vector<std::vector<int>>> loadTowerUpgradesFromJson(const std::string& filePath = "config/tower_upgrades.json") {
             json j = readActionFromJson(filePath);
             
             if (j.is_null()) {

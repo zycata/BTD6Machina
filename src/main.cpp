@@ -11,7 +11,7 @@
 
 #include "mouseControl/mouseControl.h"
 #include "jsonHandlers/GameReader.h"
-// #include "jsonHandlers/jsonManager.hpp" --> dont include this yet 
+#include "jsonHandlers/jsonManager.hpp" 
 #include "gameTypes.hpp"
 using namespace std;
 /*
@@ -35,22 +35,7 @@ namespace gameInfo {f
     bool isGameWon();
 }
 */
-// compile using g++ src/algebra.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6
-
-
-void printAvailableUpgrades(const vector<UpgradeOption>& upgrades) {
-    cout << "Available Upgrades:" << endl;
-    for (const auto& upgrade : upgrades) {
-        cout << "Tower Type: " << upgrade.towerTypeStr << ", Tower ID: " << upgrade.towerId << ", Path: " << upgrade.path << ", Upgrade Tier: " << upgrade.tier << ", Cost: " << upgrade.cost << endl;
-    }
-}
-
-void printTowerPlacementOptions(const vector<PlacementOption>& options) {
-    cout << "Available Tower Placement Options:" << endl;
-    for (const auto& option : options) {
-        cout << "Tower Type: " << option.towerTypeStr << ", Tower ID: " << option.towerType << ", Placement Cost: " << option.cost << endl;
-    }
-}
+// compile using g++ src/main.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6
 
 class StrategyMaker {
     private:
@@ -266,7 +251,7 @@ class StrategyMaker {
             for (auto& towerType : towersAllowed) {
                 int cost = roundToNearest5(towerCosts[towerType], cashMultiplier);
                 if (cost > cash) continue; // Skip if not enough cash
-
+                if (cost == INVALID) continue; // Invalid type of upgrade ig ig ig true true
 
                 if (towerType == 0 && isHeroAlreadyPlaced()) continue; //skip hero if already placed
 
@@ -738,9 +723,7 @@ void testFunnyTHingtrueOmg() {
     
 }
 
-
-int main() {
-    
+void testFunynThing2() {
     string filePath = "D:/Gamesfiles/Steam/steamapps/common/BloonsTD6/gameData/gameData.json";
     cout << "Script Started" << endl;
     mouseControl::initializeMouseControls();
@@ -757,8 +740,70 @@ int main() {
     strategy.followStrategy(testChildStrategy);
 
     cout << "Strategy executed successfully." << endl;
+}
+// so now we finally have ALL the components, we should now glue the entire thing together, lets do a little bit of brainstorming
+/* So, lets start at generation 0,
+because we dont have any previous generations to work on, we should just do run game, so we can either have the process check if we're on generation 0,
+then run lets say 10 random rungames, and then returns all of them, 
+so should this be in a class? Well i mean then we can easily load the settings though right?
+Yeah because settings shouldnt change across generations (THEY BETTER STAY THE SAME)
 
+yeah alright so and then lets see what we need after a list of actions is made
+
+-> Value actions (give them a score)
+-> get end cash
+-> 
+*/
+
+
+class GenerationHandler {
+    private:
+        int curIteration;
+        
+        JsonManager jsonManager;
+        string filePathToGameData;
+        Difficulty gameDifficulty;
+        vector<int> towersAllowed;
+        int roundsCutOffPerGeneration;
+        int childrenPerGeneration;
+
+    public:
+        GenerationHandler() {
+            loadSettings();
+            loadUpgradesAndTowerCosts();
+        }
+
+        void loadSettings() {
+            AlgorithmSettings settings = jsonManager.getAlgorithmSettingsFromJson();
+            // loading settings ME WHEN i have SETTINGS to LOAD
+            this->filePathToGameData = settings.filePathToGameData;
+            this->gameDifficulty = settings.difficulty;
+            this->towersAllowed = settings.towersAllowed;
+            this->roundsCutOffPerGeneration = settings.roundsCutOffPerGeneration;
+            this->childrenPerGeneration = settings.childrenPerGeneration;
+            // copilot generate code to print all these out
+            cout << "Loaded settings: " << endl;
+            cout << "File Path to Game Data: " << filePathToGameData << endl << "Game Difficulty: " << gameDifficulty << endl;
+            cout << "Towers Allowed: ";
+            for (const auto& tower : towersAllowed) {
+                cout << towerMap[tower] << " ";
+            }
+            cout << endl << "Rounds Cut Off Per Generation: " << roundsCutOffPerGeneration << endl << "Children Per Generation: " << childrenPerGeneration << endl;
+        }
+
+        void loadUpgradesAndTowerCosts() {
+            towerCosts = jsonManager.loadTowerCostsFromJson();
+            towerUpgrades = jsonManager.loadTowerUpgradesFromJson();
+            cout << "Loaded tower costs and upgrades." << endl;
+
+        }
+};
+
+int main() {
     
-    
-    
+    system("pause");
+    GenerationHandler generationHandler;
+
+    system("pause");
+    return 0;
 }
