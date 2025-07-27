@@ -36,6 +36,15 @@ std::map<int, std::string> towerMap = {
     {25, "Desperado"} //!!! implement desperado later plz
 };
 
+std::vector<std::string> kTowerNames = {
+    "Hero", "Dart Monkey", "Boomerang Monkey", "Bomb Shooter",
+    "Tack Shooter", "Ice Monkey", "Glue Gunner", "Sniper Monkey",
+    "Monkey Sub", "Monkey Buccaneer", "Monkey Ace", "Heli Pilot",
+    "Mortar Monkey", "Dartling Gunner", "Wizard Monkey", "Super Monkey",
+    "Ninja Monkey", "Alchemist", "Druid", "Mermonkey", "Banana Farm",
+    "Spike Factory", "Monkey Village", "Engineer Monkey", "Beast Handler",
+    "Desperado"
+};
 
 
 const int INVALID = -1;

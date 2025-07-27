@@ -14,27 +14,7 @@
 #include "jsonHandlers/jsonManager.hpp" 
 #include "gameTypes.hpp"
 using namespace std;
-/*
-namespace mouseControl {dddint y) {return true;};
-    void upgradeTower(int x, int y, int path) {};
-    bool findWindow() {return true;};
-    bool initializeMouseControls() {return true;};
-    void ClickStartNextRound() {};
-}
 
-namespace gameInfo {f
-    int getCash();
-    int getStartRound();
-    int getCurRound();
-    int getLives();
-    int getTowersPlaced();
-    int getTotalAbilities();
-    int getLogNumber();
-    bool roundChanged();
-    bool isGameOver();
-    bool isGameWon();
-}
-*/
 // compile using g++ src/main.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6
 // to compile with my COOL ass icon
 // g++ src/main.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6
@@ -629,7 +609,7 @@ class StrategyMaker {
                     }
                     pointer++; // increment the pointer on the vector
                     if (pointer >= maxPointerSize) {
-                        return FINISHEDSTRATEGY;
+                        return GameResult::FINISHEDSTRATEGY;
                     }
                     curAction = &childrenStrategy[pointer];
                     nextRoundToAct = curAction->round;
