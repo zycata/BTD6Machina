@@ -1,3 +1,5 @@
+
+#pragma once
 #ifndef mouseControl_H
 #define mouseControl_H
 

@@ -12,20 +12,12 @@
 #include <vector>
 #include <string>
 #include "json.hpp"
-#include "../gameTypes.hpp"
+#include "../gameTypes.h"
 
 
 using json = nlohmann::json;
 
-std::vector<std::string> kTowerNames = {
-    "Hero", "Dart Monkey", "Boomerang Monkey", "Bomb Shooter",
-    "Tack Shooter", "Ice Monkey", "Glue Gunner", "Sniper Monkey",
-    "Monkey Sub", "Monkey Buccaneer", "Monkey Ace", "Heli Pilot",
-    "Mortar Monkey", "Dartling Gunner", "Wizard Monkey", "Super Monkey",
-    "Ninja Monkey", "Alchemist", "Druid", "Mermonkey", "Banana Farm",
-    "Spike Factory", "Monkey Village", "Engineer Monkey", "Beast Handler",
-    "Desperado"
-};
+
 
 struct Strategy {
     
@@ -64,7 +56,7 @@ struct AlgorithmSettings {
 };
 
 // wow function overloading for a third time??? This is certainly a code of all time
-std::string to_string(Difficulty type) {
+inline std::string to_string(Difficulty type) {
     switch (type) {
         case EASY: return "EASY";
         case MEDIUM: return "MEDIUM";
@@ -76,7 +68,7 @@ std::string to_string(Difficulty type) {
 }
 
 
-std::string to_string(Action::ActionType type) {
+inline std::string to_string(Action::ActionType type) {
     switch (type) {
         case Action::PLACE: return "PLACE";
         case Action::UPGRADE: return "UPGRADE";
@@ -87,7 +79,7 @@ std::string to_string(Action::ActionType type) {
 
 
 
-void to_json(json& j, const Action& action) {
+inline void to_json(json& j, const Action& action) {
     j = json{
         {"type", to_string(action.type)},
         {"x", action.x},
@@ -100,7 +92,8 @@ void to_json(json& j, const Action& action) {
 }
 
 // OMG IM ATUALLY USING FUNCTION OVERLOADING  
-void to_json(json& j, const Strategy& strategy) {
+// why the fuick was there an error here and it just disappeared intellisenbse PLEAS lockk in 2025/07/27 <- adding dates to these messages because Im really funny
+inline void to_json(json& j, const Strategy& strategy) {
     json actions = strategy.actions;
     j = json{
         {"ID", strategy.ID},
@@ -115,7 +108,7 @@ void to_json(json& j, const Strategy& strategy) {
 // function overloading for a third time??? so real....
 // I mean i guess now I know when functinon overloading will actually be used..
 // soy admen
-void to_json(json& j, const Generation& generation) {
+inline void to_json(json& j, const Generation& generation) {
     json children = generation.children;
     j["generationNumber"] = generation.generationNumber;
     j["parentID"] = generation.parentID;
@@ -127,7 +120,7 @@ void to_json(json& j, const Generation& generation) {
 
 
 // gonna use function overloading for another function?? TS cannort be real
-void from_json(const json& j, Action& action) {
+inline void from_json(const json& j, Action& action) {
     std::string type_str = j.at("type").get<std::string>();
     if (type_str == "PLACE") action.type = Action::PLACE;
     else if (type_str == "UPGRADE") action.type = Action::UPGRADE;
@@ -144,17 +137,17 @@ void from_json(const json& j, Action& action) {
 
 }
 
-Difficulty difficulty_to_enum(std::string& difficulty_str) {
+inline Difficulty difficulty_to_enum(std::string& difficulty_str) {
     //std::string difficulty_str = j.get<std::string>();
-    if (difficulty_str == "EASY") return EASY;
-    else if (difficulty_str == "MEDIUM") return MEDIUM;
-    else if (difficulty_str == "HARD") return HARD;
-    else if (difficulty_str == "IMPOPPABLE") return IMPOPPABLE;
-    else if (difficulty_str == "CHIMPS") return  CHIMPS;
+    if (difficulty_str == "EASY") return Difficulty::EASY;
+    else if (difficulty_str == "MEDIUM") return Difficulty::MEDIUM;
+    else if (difficulty_str == "HARD") return Difficulty::HARD;
+    else if (difficulty_str == "IMPOPPABLE") return Difficulty::IMPOPPABLE;
+    else if (difficulty_str == "CHIMPS") return  Difficulty::CHIMPS;
     else throw std::runtime_error("Invalid difficulty: " + difficulty_str);
 }
 
-void from_json(const json& j, Strategy& strategy) {
+inline void from_json(const json& j, Strategy& strategy) {
     j.at("ID").get_to(strategy.ID);
     
     std::string difficulty_str = j.at("difficulty").get<std::string>();
@@ -170,7 +163,7 @@ void from_json(const json& j, Strategy& strategy) {
     and then she said "i feel like im third wheeling you two here despite being the girlfriend",
     GITHUB COPILOT STOP RECOMMENDING STORY SUGGESTIONS RECOMMEND ME CODE
 */
-void from_json(const json& j, Generation& generation) {
+inline void from_json(const json& j, Generation& generation) {
     j.at("generationNumber").get_to(generation.generationNumber);
     j.at("parentID").get_to(generation.parentID);
     j.at("parentScore").get_to(generation.parentScore);
@@ -182,7 +175,7 @@ void from_json(const json& j, Generation& generation) {
 // guys compilation tiome is O(1) since I only ever compile one projewct
 // I can see why people say building projects is how you learn --> hola soy admen
 
-void from_json(const json& j, AlgorithmSettings& settings) {
+inline void from_json(const json& j, AlgorithmSettings& settings) {
     j.at("filePathToGameData").get_to(settings.filePathToGameData);
     std::string type_str = j.at("difficulty").get<std::string>();
     settings.difficulty = difficulty_to_enum(type_str);

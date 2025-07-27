@@ -215,8 +215,8 @@ namespace mouseControl {
     }
 
     bool initializeMouseControls() {
-        findWindow();
-        return true;
+        return findWindow();
+        
     }
 
     void ClickStartNextRound() {
