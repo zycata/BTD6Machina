@@ -696,6 +696,12 @@ class StrategyMaker {
             return runGame();
 
         }
+        
+        // TODO: MAKE THIS CHECK IF IT"S THE START ROUND AND MODE IS CHIMPS
+        void restartGame() {
+            
+            mouseControl::restartGameWhenOver(false);
+        }
 };
 
 
@@ -887,24 +893,51 @@ class GenerationHandler {
                 StrategyMaker strategyGenerator(gameDifficulty, filePathToGameData);
                 vector<Action> actions = {}; //empty vector for now, also valid for when gen0
                 GameResult rez = strategyGenerator.generateStrategy(actions);
+
+                
+
                 vector<Action> stratActionsObtained = strategyGenerator.getStrategyActions();
                 int roundObtained = strategyGenerator.getCurrentRound();
                 int endCash = strategyGenerator.getCash();
-                
-                childrenOfThisGeneration.push_back(formatStrategy(endCash, roundObtained, i, curGeneration, stratActionsObtained));
+                Strategy stratObtained = formatStrategy(endCash, roundObtained, i, curGeneration, stratActionsObtained);
+                childrenOfThisGeneration.push_back(stratObtained);
+
+                // fix for a more logic response this time pls and tank you
+                if (rez == VICTORY) {
+                    cout << "Victory Obtained yay" << endl;
+                    jsonManager.writeToJson(stratObtained, "generations/winningStrategy.json");
+                }
+
+                strategyGenerator.restartGame();
             }
             Strategy bestStrat = findBestStrategy(childrenOfThisGeneration);
 
-            //placeholder "0-0" and 0 
-
-
-            Generation thisGen{curGeneration, "0-0", 0, bestStrat.ID, bestStrat.score, childrenOfThisGeneration};
-
+            // placeholder "-1-0", -1
+            // BUT THose two should be the parent strategy from the previous generation 
+            // Basically -1 and -1 stand for the parents of the first gen, which ig stands for god??
+            // not many people know this fun fact but I have a 10 minute youtube video i made when i was 15
+            // about the halifax citadel on youtube which is the combination of Johnny Test SFX and justmehabibi replicated editing style
+            Generation thisGen{curGeneration, "-1-0", -1, bestStrat.ID, bestStrat.score, childrenOfThisGeneration};
             return thisGen;
-            
-            
-            
         };
+
+        // incomplete, pls finish another day kinda falling asleep here
+        void mainControlLoop(int prevGen, Strategy &parentStrategy) {
+            bool victoryFound = false; // temporary Fr this time
+            int previousGeneration = prevGen;
+            while (!victoryFound) {
+                Generation gen = runGeneration();
+                jsonManager.setGenFilePath(curGeneration);
+                jsonManager.writeToJson(gen);
+                previousGeneration = curGeneration;
+                curGeneration++; // end of prev generation, so we increment to the next one
+            }
+
+            
+            
+
+
+        }
         
 };
 
