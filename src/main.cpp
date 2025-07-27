@@ -155,6 +155,10 @@ class StrategyMaker {
             this->cash = cash;
         }
 
+        int getCash() {
+            return this->cash;
+        }
+
         int getCurrentRound() {
             return currentRound;
         }
@@ -779,7 +783,7 @@ yeah alright so and then lets see what we need after a list of actions is made
 
 class GenerationHandler {
     private:
-        int curGeneration;
+        int curGeneration = 0;
         
         JsonManager jsonManager;
         string filePathToGameData;
@@ -787,7 +791,7 @@ class GenerationHandler {
         vector<int> towersAllowed;
         int roundsCutOffPerGeneration;
         int childrenPerGeneration;
-        StrategyMaker strategyMaker;
+        
 
         void loadSettings() {
             AlgorithmSettings settings = jsonManager.getAlgorithmSettingsFromJson();
@@ -838,27 +842,68 @@ class GenerationHandler {
         }
     
     public:
-        GenerationHandler() 
-        : strategyMaker(gameDifficulty, filePathToGameData) 
+        GenerationHandler(int curGen = 0) 
+        //: strategyMaker(gameDifficulty, filePathToGameData) 
+        : curGeneration(curGen)
         {
             loadSettings();
             loadUpgradesAndTowerCosts();
         }
 
-        Strategy generateStrategy(int endCash, int roundObtained, int childNumber, int generationNumber, vector<Action> &actions) {
+        Strategy formatStrategy(int endCash, int roundObtained, int childNumber, int generationNumber, vector<Action> &actions) {
 
             string ID = to_string(generationNumber) + "_" + to_string(childNumber);
             int score = calculateScore(endCash, roundObtained);
             Strategy strategy{ID, gameDifficulty, score, endCash, roundObtained, actions};
+
+            // alright so if I ever get ANY BAD FUCKING RAM ACCESS AGAIN THIS FUNCTION HERE IS PROBABLY WHY <- here for when i debug 
+
+
             return strategy;
         }
 
-        
-        
-        void runGeneration() {
-            for (int i; i < childrenPerGeneration; ++i) {
-                
+        Strategy findBestStrategy(vector<Strategy> &strategy) {
+            if (strategy.empty()) {
+                throw std::invalid_argument("Strategy list is empty.");
             }
+            int highestScoreFound = 0;
+            Strategy *bestStratFoundSoFar = nullptr;
+            for (auto &s : strategy) {
+                if (s.score > highestScoreFound)  {
+                    highestScoreFound = s.score;
+                    bestStratFoundSoFar = &s;
+                }
+            }
+            // again check THIS if there is any INVALID RAM ACCESSING
+            return *bestStratFoundSoFar;
+        }
+        
+        Generation runGeneration() {
+            vector<Strategy> childrenOfThisGeneration = {};
+            childrenOfThisGeneration.reserve(childrenPerGeneration);
+            for (int i; i < childrenPerGeneration; ++i) {
+
+
+                StrategyMaker strategyGenerator(gameDifficulty, filePathToGameData);
+                vector<Action> actions = {}; //empty vector for now, also valid for when gen0
+                GameResult rez = strategyGenerator.generateStrategy(actions);
+                vector<Action> stratActionsObtained = strategyGenerator.getStrategyActions();
+                int roundObtained = strategyGenerator.getCurrentRound();
+                int endCash = strategyGenerator.getCash();
+                
+                childrenOfThisGeneration.push_back(formatStrategy(endCash, roundObtained, i, curGeneration, stratActionsObtained));
+            }
+            Strategy bestStrat = findBestStrategy(childrenOfThisGeneration);
+
+            //placeholder "0-0" and 0 
+
+
+            Generation thisGen{curGeneration, "0-0", 0, bestStrat.ID, bestStrat.score, childrenOfThisGeneration};
+
+            return thisGen;
+            
+            
+            
         };
         
 };

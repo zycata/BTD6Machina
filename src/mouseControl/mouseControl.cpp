@@ -4,6 +4,7 @@
 #include <cctype>
 #include "mouseControl.h"
 #include <map>
+#include <stdexcept>
 using namespace std;
 
 struct towerLocation {
@@ -52,36 +53,7 @@ map<int, BYTE> towerKeyScan = {
     {25, 0x19} // DESPERADO NOT SET PLEASE CHANGE jk i did change it it's P allegedly... P diddy haha im so funny
 };
 
-void addTowers(){
-    towerLocations[0][0] = heroLocation[0];
-    towerLocations[0][1] = heroLocation[1]; 
-    int side = 1; // 1 for right, -1 for left
-    int verticalOffset;
-    for (int i = 1; i < page1Towers; i++) {
-        if (i % 2 == 0) {
-            side = -1; // left
-            verticalOffset = cardHeight;
-        } else {
-            side = 1; // right
-            verticalOffset = 0;
-        }
-        towerLocations[i][0] = towerLocations[i-1][0] + side*cardWidth ;
-        towerLocations[i][1] = towerLocations[i-1][1] + verticalOffset ;
-    }
-    towerLocations[page1Towers][0] = heroLocation[0];
-    towerLocations[page1Towers][1] = heroLocation[1]; 
-    for (int i = page1Towers + 1; i < totalTowers; i++) {
-        if (i % 2 == 0) {
-            side = -1; // left
-            verticalOffset = cardHeight;
-        } else {
-            side = 1; // right
-            verticalOffset = 0;
-        }
-        towerLocations[i][0] = towerLocations[i-1][0] + side*cardWidth ;
-        towerLocations[i][1] = towerLocations[i-1][1] + verticalOffset ;
-    }
-}
+
 
 void moveMouse(int x, int y) {
     // Set the cursor position
@@ -120,73 +92,8 @@ void pressKeyScan(BYTE scanCode) {
     SendInput(2, input, sizeof(INPUT));
 }
 
-void scrollMouse(int direction) {
-    // direction = 1 for up, -1 for down
-    CONST int x = heroLocation[0];
-    CONST int y = heroLocation[1];
-    CONST int amount = 16 * direction; // 16 is the scroll amount per tick
-    moveMouse(x, y);
-    Sleep(300);
-    INPUT input = {};
-    input.type = INPUT_MOUSE;
-    input.mi.dwFlags = MOUSEEVENTF_WHEEL;
-    input.mi.mouseData = amount;  // 120 units = 1 scroll "tick"
-    for (int i = 0; i < abs(amount); ++i) {
-        SendInput(1, &input, sizeof(INPUT));
-    }
-    //SendInput(1, &input, sizeof(INPUT));
-}
 
-void pagedown() {
-    scrollMouse(-1);
-    pageState = 1;
-}
 
-void pageup() {
-    scrollMouse(1);
-    pageState = 0;
-}
-
-void testListMake() {
-    for (int i = 0; i < totalTowers; ++i) {
-        cout << "Row " << i << ": ";
-        for (int j = 0; j < 2; ++j) {
-            cout << towerLocations[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
-bool placeTowerOld(int tower, int x, int y) {
-        
-
-        if (tower >= page1Towers) {
-            if (pageState == 0) {
-                pagedown();
-            }
-        } else {
-            if (pageState == 1) {
-                pageup();
-            }
-        }
-        CONST int delay = 50;
-        Sleep(delay*10);
-        int towerX = towerLocations[tower][0];
-        int towerY = towerLocations[tower][1];
-        moveMouse(towerX, towerY);
-        Sleep(delay);
-        clickMouse();
-        Sleep(delay);
-        moveMouse(x, y);
-        Sleep(delay);
-        unclickMouse();
-        Sleep(delay);
-        moveMouse(heroLocation[0], heroLocation[1]);
-        Sleep(delay*3);
-        return true;
-    }
-// add something to check if the pixels given are valid
-// return false when pixels are not valid
 
 void placeHero( int x, int y) {
         
@@ -221,6 +128,11 @@ namespace mouseControl {
             placeHero(x,y);
             return true;
         }
+
+        if (tower >= towerKeyScan.size()) {
+            throw std::runtime_error("Invalid tower code (probably too big)");
+        }
+
         CONST int delay = 50;
         moveMouse(1075, 107); // Intiailize the window
         Sleep(delay);
@@ -304,7 +216,6 @@ namespace mouseControl {
 
     bool initializeMouseControls() {
         findWindow();
-        addTowers();
         return true;
     }
 
