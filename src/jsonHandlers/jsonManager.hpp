@@ -114,6 +114,7 @@ inline void to_json(json& j, const Generation& generation) {
     j["parentID"] = generation.parentID;
     j["parentScore"] = generation.parentScore;
     j["bestChildId"] = generation.bestChildId;
+    j["bestChildScore"] = generation.bestChildScore; // mfw when i forget to add this  
     j["children"] = children;
     // mewhen children...
 }
@@ -167,6 +168,7 @@ inline void from_json(const json& j, Generation& generation) {
     j.at("generationNumber").get_to(generation.generationNumber);
     j.at("parentID").get_to(generation.parentID);
     j.at("parentScore").get_to(generation.parentScore);
+    j.at("bestChildScore").get_to(generation.bestChildScore);
     j.at("bestChildId").get_to(generation.bestChildId);
     j.at("children").get_to(generation.children);
 }
