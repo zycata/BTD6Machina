@@ -91,20 +91,23 @@ void GameReader::updateValues() {
 
 void GameReader::didLogFileChange() {
     updateValues();
-    int iterations = 0;
-    int maxIterations = 10;
-
-    while (logNumber == prevLogNumber && iterations <= maxIterations) {
-        Sleep(100);
-        iterations++;
-        updateValues();
-        if (iterations <= maxIterations) {
-            std::cerr << "Max attempts to read json file reached, returning previously found values" << endl;
-        }
-        
-    }
     
+    // 15 times 1.5 seconds to check right??? should be enuffs
+    const int maxIterations = 15;
+    int iterations = 0;
+
+    while (logNumber == prevLogNumber && iterations < maxIterations) {
+        Sleep(100);
+        updateValues();
+        iterations++;
+    }
+
+    // use this to get rtid of level up or something
+    if (logNumber == prevLogNumber) {
+        std::cerr << "Max attempts to read json file reached, returning previously found values" << std::endl;
+    }
 }
+
 
 void GameReader::initialize() {
     updateValues();

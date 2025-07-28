@@ -1,4 +1,5 @@
 .vscode/
 *.exe
 *.BTD6
+
 src/mouseControl/mouse.cpp
