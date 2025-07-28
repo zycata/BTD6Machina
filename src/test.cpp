@@ -9,13 +9,15 @@ using namespace std;
 #include"jsonHandlers/jsonManager.hpp"
 
 //g++ src/test.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6v2
-
-
+// TO compile with the SICKASS icon use:
+// g++ src/test.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6v2
+// g++ src/test.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -static -o ATestSetting/aitd6v2
 void testingriyal() {
     string filePath = "D:/Gamesfiles/Steam/steamapps/common/BloonsTD6/gameData/gameData.json";
     cout << "Script Started" << endl;
 
     if(!mouseControl::initializeMouseControls()) {
+        system("pause");
         return;
     }
     system("pause");
@@ -39,5 +41,6 @@ int main() {
     cout << "hey so this thing works btw it compiled" << endl;
 
     testingriyal();
+    system("pause");
     return 0;
 }
