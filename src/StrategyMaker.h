@@ -21,7 +21,7 @@ private:
     int totalTowers;
     int cash;
     Difficulty type;
-
+    int towerIdCounter; // Counter for unique tower IDs
     float cashMultiplier;
 
     GameReader gameInfo;

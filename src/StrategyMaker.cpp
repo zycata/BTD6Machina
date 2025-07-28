@@ -23,6 +23,7 @@ namespace {
 StrategyMaker::StrategyMaker(Difficulty type, std::string filePath) : gameInfo(filePath),
     emptyUpgrade{0, 0, 0, 0, "", false} // Initialize emptyUpgrade here
 {
+    towerIdCounter = 0; // Initialize towerIdCounter
     gameInfo.initialize();
 
     TowersPlaced = {};
@@ -74,7 +75,7 @@ StrategyMaker::StrategyMaker(Difficulty type, std::string filePath) : gameInfo(f
             break;
     }
 
-    std::cout << "Starting at Current round: " << currentRound << "Difficulty: " << type << std::endl;
+    std::cout << "Starting at Current round: " << currentRound << " Difficulty: " << to_string(type) << std::endl;
 
     // mouseControl::initializeMouseControls();
     srand(time(0));
@@ -247,36 +248,36 @@ const char* StrategyMaker::actionTypeToStr(Action::ActionType type) {
 bool StrategyMaker::checkIfSuccessfullyPlaced() {
     //checks if the new gameinfo::getTowersPlaced() is greater than the previous one by a factor of 1
     int curTowers = gameInfo.getTowersPlaced();
-    totalTowers++;
-    return (totalTowers) == curTowers; // check if the number of towers placed has increased
+    bool success = (totalTowers + 1) == curTowers; // check if the number of towers placed has increased
+    bool cashChanged = (cash > gameInfo.getCash());
+    return success && cashChanged; // Ensure both conditions are met
 }
-
 bool StrategyMaker::placeTower(int towerCode, int x, int y) {
     //implement mouse control later
     mouseControl::placeTower(towerCode, x, y);
     Sleep(200); // wait for the tower to be placed
     // check if placement was successful
-    totalTowers++;
-    int curTowers = gameInfo.getTowersPlaced();
-    std::cout << "Total Towers: " << totalTowers << ", Current Towers: " << curTowers << std::endl;
-    bool success = (totalTowers) == curTowers; // check if the number of towers placed has increased
+
+    
+    bool success = checkIfSuccessfullyPlaced(); // Check if the placement was successful
 
     // bool success = getInput(); // manually tell ai if the placement was successful
     if (!success) {
-        totalTowers--; // revert the total towers count if placement failed
-
+        this->cash = gameInfo.getCash(); 
         std::cerr << "Tower placement failed." << std::endl;
         return false; // Placement failed
     }
+    totalTowers = gameInfo.getTowersPlaced(); // update total towers placed
 
-    Tower newTower( x, y, towerCode, 0, 0, 0, currentRound, totalTowers );
+    Tower newTower( x, y, towerCode, 0, 0, 0, currentRound, towerIdCounter );
     TowersPlaced.push_back(newTower);
     Tower* ptrToStoredTower = &TowersPlaced.back();
     // FUck i did the thing where i accessed invalid ram :sob: shoulda did this in scratch instead
 
-    StrategyActions.push_back({Action::PLACE, ptrToStoredTower, x, y, towerCode, INVALID, currentRound, totalTowers});
+    StrategyActions.push_back({Action::PLACE, ptrToStoredTower, x, y, towerCode, INVALID, currentRound, towerIdCounter});
+    towerIdCounter++;
     //std::cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << std::endl;
-    this->cash = gameInfo.getCash(); // update cash after placement
+    this->cash = gameInfo.getCash(); 
 
     return true;
 }
@@ -350,7 +351,7 @@ bool StrategyMaker::placeRandomTower(PlacementOption &selectedTower) {
 
 // pretty much places at most 5 towers randomly, but only if the towers are affordable immediately.
 void StrategyMaker::placementAlgorithmOne() {
-
+    this->cash = gameInfo.getCash(); // update cash before placement
     int maxattempts = 5;
     for (int i = 0; i < maxattempts; i++) {
 
@@ -377,6 +378,7 @@ void StrategyMaker::upgradeAlgorithmOne() {
 
 
     for (int j = 0; j < maxAttempts; j++) {
+        this->cash = gameInfo.getCash(); // update cash before upgrade
         std::vector<UpgradeOption> availableUpgrades = getAvailableUpgrades();
         if (availableUpgrades.size() == 0) {
             std::cout << "No upgrades available." << std::endl;
@@ -440,6 +442,7 @@ UpgradeOption StrategyMaker::upgradeAlgorithmTwo() {
     int maxAttempts = 7;
     for (int j = 0; j < maxAttempts; j++) {
         UpgradeOption targetUpgrade = getTargetUpgrade();
+        this->cash = gameInfo.getCash(); // update cash before upgrade
         if (targetUpgrade.isAllowed && targetUpgrade.cost <= cash) {
             if (upgradeTower(targetUpgrade.towerId, targetUpgrade.path)) {
                 std::cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << std::endl;
@@ -478,6 +481,8 @@ void StrategyMaker::startNextRound() {
 // !!! TODO: make shitty ai restart the game using the restart button thing when the game is over
 // TODO:
 GameResult StrategyMaker::runGame() {
+    Finalizer logOnExit{[this] { this->logItems(); }};
+
     bool gameOver = false;
     UpgradeOption targetUpgrade = emptyUpgrade;
 
@@ -519,16 +524,15 @@ GameResult StrategyMaker::runGame() {
         while (!roundOver) {
             gameOver = gameInfo.didGameOver();
             std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
-            if (this->currentRound != gameInfo.getCurRound()) {
-                std::cout << "Round changed from " << this->currentRound << " to " << gameInfo.getCurRound() << std::endl;
-                this->currentRound = gameInfo.getCurRound();
+            int newRound = gameInfo.getCurRound();
+            if (this->currentRound != newRound) {
+                std::cout << "Round changed from " << this->currentRound << " to " << newRound << std::endl;
+                this->currentRound = newRound;
 
                 roundOver = true;
 
                 if (gameInfo.didGameWon()) {
                     std::cout << "Game Won!" << std::endl;
-                    logStrategy();
-                    logTowers();
                     return GameResult::VICTORY;
                     //return; // exit the game loop
                 }
@@ -540,11 +544,9 @@ GameResult StrategyMaker::runGame() {
             Sleep(200);
 
         }
-        // gameOver = getInput(); // manually tell ai if the game is over
+
         if (gameOver == true) {
             std::cout << "Game Over!" << std::endl;
-            logStrategy();
-            logTowers();
             return GameResult::DEFEAT;
             //break;
         }
@@ -574,6 +576,10 @@ so glad no need to allocate heap i could never :sob:
 // should be possible for sure, anyways im done for the day tommorow for file gen with jsonManager finally
 GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) {
     Finalizer logOnExit{[this] { this->logItems(); }};
+
+    if (childrenStrategy.empty()) {
+        return GameResult::FINISHEDSTRATEGY;
+    }
 
     bool gameOver = false;
     std::size_t maxPointerSize = childrenStrategy.size(); // Use std::size_t for size
