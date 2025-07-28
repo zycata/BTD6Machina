@@ -1,5 +1,5 @@
 .vscode/
 *.exe
 *.BTD6
-
+ATestSetting/
 src/mouseControl/mouse.cpp
