@@ -1,9 +1,10 @@
 #include "StrategyMaker.h"
 #include "gameTypes.h"
 #include "jsonHandlers/jsonManager.hpp"
-
+#include "mouseControl/mouseControl.h"
 #include<vector>
 #include<string>
+#include<windows.h>
 
 using namespace std;
 class GenerationHandler {
@@ -71,8 +72,9 @@ class GenerationHandler {
         //: strategyMaker(gameDifficulty, filePathToGameData) 
         : curGeneration(curGen)
         {
-            loadSettings();
             loadUpgradesAndTowerCosts();
+            loadSettings();
+            
         }
 
         Strategy formatStrategy(int endCash, int roundObtained, int childNumber, int generationNumber, vector<Action> &actions) {
@@ -103,12 +105,17 @@ class GenerationHandler {
             return *bestStratFoundSoFar;
         }
         
+        // params should be runGeneration(Strategy& parent) 
         Generation runGeneration() {
             vector<Strategy> childrenOfThisGeneration = {};
             childrenOfThisGeneration.reserve(childrenPerGeneration);
-            for (int i; i < childrenPerGeneration; ++i) {
+            cout << "runGeneration runs" << endl;
 
+            // shit language because i accidentally did int i; instead if int i = 0; and wondered why shit wasnt working
+            // intellisense do ur job :pray:
+            for (int i = 0; i < childrenPerGeneration; ++i) {
 
+                cout << "this is child: " << i << endl; // debug oh myt ruKicnF gOGODOWIUADOIJiawjfd
                 StrategyMaker strategyGenerator(gameDifficulty, filePathToGameData);
                 vector<Action> actions = {}; //empty vector for now, also valid for when gen0
                 GameResult rez = strategyGenerator.generateStrategy(actions);
@@ -138,6 +145,7 @@ class GenerationHandler {
             // not many people know this fun fact but I have a 10 minute youtube video i made when i was 15
             // about the halifax citadel on youtube which is the combination of Johnny Test SFX and justmehabibi replicated editing style
             Generation thisGen{curGeneration, "-1-0", -1, bestStrat.ID, bestStrat.score, childrenOfThisGeneration};
+            //Generation thisGen{curGeneration, "-1-0", -1, "bestStrat.ID", 32, childrenOfThisGeneration};
             return thisGen;
         };
 
@@ -152,11 +160,25 @@ class GenerationHandler {
                 previousGeneration = curGeneration;
                 curGeneration++; // end of prev generation, so we increment to the next one
             }
-
-            
-            
-
-
+            // mainControlLoop(previousGeneration, )
         }
         
 };
+
+// g++ src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6v3
+int main() {
+
+    GenerationHandler naturalSelection;
+    // oh ym fcking god i forgot the ! sign so i was wondering why ts kept closing
+    if (!mouseControl::initializeMouseControls()) {
+        cout << "mouise control fails" << endl;
+        system("pause");
+        return 1;
+    }
+    JsonManager theOneAndOnlyWriter;
+    theOneAndOnlyWriter.setGenFilePath(0); // set the generation file path to generation 0
+    // naturalSelection.runGeneration();
+    theOneAndOnlyWriter.writeToJson(naturalSelection.runGeneration());
+    system("pause");
+    return 0;
+}
