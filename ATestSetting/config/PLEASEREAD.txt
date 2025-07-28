@@ -1,4 +1,13 @@
 Important things
+
+With the funny way I implemented how mouseControls work, it only works right now if the game is 720x1280, if your device is unable to do that, uhhhhhhh F in chats??
+
+
+
+
+
+
+
 -> For tower_costs.json you may update those values to be accurate to the game
 Use the tower costs in MEDIUM <- i cannot stress this enough
 
