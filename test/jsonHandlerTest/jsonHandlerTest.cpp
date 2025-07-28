@@ -3,6 +3,7 @@
 
 // me when writing tests, like lowkey code should just work like if i was good enuff "cries in c++" wait wtf this isn't c++ exclusive
 // would it not be kinda funny writing a fanfiction about c++ having sex with java and having oop shoved even more up my ass
+// compile test using g++ test/jsonHandlerTest/jsonHandlerTest.cpp src/gameTypes.cpp -o test/jsonHandlerTest/jsonHandlerTest
 using namespace std;
 
 

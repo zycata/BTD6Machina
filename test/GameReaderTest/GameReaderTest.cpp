@@ -41,8 +41,11 @@ void func() {
 
 void testEmptyStr() {
     GameReader reader("testJsons/Invalid.json");
+    reader.didGameOver();
     cout << "Test Passed: is able to not immediately fail an empty json" << endl;
     // if thing faikls here then test doesnt pass (infinite iq testing strat)
+    // actually such a bad way to do this, but like i mean... how else??
+    // also probably will add something to click exp when level ups happen or something
 
 }
 
@@ -50,6 +53,6 @@ void testEmptyStr() {
 int main() {
     testReaderValues();
     testEmptyStr();
-
+    system("pause");
     return 0;
 }

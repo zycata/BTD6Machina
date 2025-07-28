@@ -1,10 +1,10 @@
 #include <iostream>
 
 
-#include "../src/gameTypes.hpp"
+#include "../src/gameTypes.h"
 #include <string>
 using namespace std;
-
+// g++ src/gameTypes.cpp test/gameTypesTest.cpp -o gameTypesTest
 template<typename T>
 bool assertEquals(const T& expected, const T& actual, const string& message) {
     if (expected != actual) {
