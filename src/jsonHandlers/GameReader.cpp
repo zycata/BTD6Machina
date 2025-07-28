@@ -63,11 +63,15 @@ void GameReader::updateValues() {
     // the intent to run until it succeeds, and probably will, because of the nature of space exploration, they impose a max limit to prevent infinite loops from fuckass bugs idk
     // omg wait am i nasa coder nopw???
     
-    while (gameDataJson.is_null() && attempts < maxAttempts) {
+    while (gameDataJson.is_null() && attempts <= maxAttempts) {
         Sleep(100);
         std::cerr << "Failed to read valid JSON. Retrying in 100ms..." << std::endl;
         gameDataJson = readJsonFile();
         attempts++;
+        
+        if (attempts <= maxAttempts) {
+            return;
+        }
     }
 
     prevRound = curRound;
@@ -90,11 +94,16 @@ void GameReader::didLogFileChange() {
     int iterations = 0;
     int maxIterations = 10;
 
-    while (logNumber == prevLogNumber && iterations < maxIterations) {
+    while (logNumber == prevLogNumber && iterations <= maxIterations) {
         Sleep(100);
         iterations++;
         updateValues();
+        if (iterations <= maxIterations) {
+            std::cerr << "Max attempts to read json file reached, returning previously found values" << endl;
+        }
+        
     }
+    
 }
 
 void GameReader::initialize() {
