@@ -333,8 +333,36 @@ class JsonManager {
             }
         }
 
-        Generation findPrevGenerationFromFolder() {
-            
+        void writeGenerationToFile(const Generation &generation,  std::string genInfoFilePath = "") {
+
+            if (genInfoFilePath.empty()) {
+                genInfoFilePath = "generations/currentGenInformation.json";
+            }
+            writeToJson(generation);
+            int currentGenerationNumber = generation.generationNumber;
+            json j_array;
+            j_array["generationNumber"] = currentGenerationNumber;
+            std::ofstream out_file(genInfoFilePath);
+            if (out_file.is_open()) {
+                out_file << j_array.dump(2); // Pretty print with 2-space indentation
+                out_file.close();
+            } else {
+                std::cerr << "Error: Could not open file for writing!" << std::endl;
+                
+            }
+        }
+
+        int getCurrentGenerationNumber(std::string genInfoFilePath = "generations/currentGenInformation.json") {
+            json j = readActionFromJson(genInfoFilePath);
+            if (j == nullptr) {
+                std::cerr << "No previously made generations, making something completely new.. This filePath is empty -> " << genInfoFilePath << std::endl;
+                return 0;
+            }
+            else if (j.is_null()) {
+                std::cerr << "Error: Could not read current generation information from " << genInfoFilePath << std::endl;
+                return -1; // Indicate failure to read
+            }
+            return j.at("generationNumber").get<int>();
         }
 };
 

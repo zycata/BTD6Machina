@@ -1,22 +1,28 @@
-#include<iostream>
 
-#include<filesystem>
-#include<string>
-using namespace std;
+#include <iostream>
+#include <windows.h>
 
-void soyadmen() {
-    cout << "hey" << endl;
+void listFilesInFolder(const std::string& folderPath) {
+    std::string searchPath = folderPath + "\\*";
+    WIN32_FIND_DATA findData;
+    HANDLE hFind = FindFirstFile(searchPath.c_str(), &findData);
+
+    if (hFind == INVALID_HANDLE_VALUE) {
+        std::cerr << "Error: Cannot open directory " << folderPath << std::endl;
+        return;
+    }
+
+    do {
+        std::string name = findData.cFileName;
+        if (name != "." && name != "..") {
+            std::cout << name << std::endl;
+        }
+    } while (FindNextFile(hFind, &findData) != 0);
+
+    FindClose(hFind);
 }
-int main() {
-    //Finalizer logOnExit{[] { soyadmen(); }}; 
-    string folderDirectory = "testincludingotherfiles";
 
-     if (!std::filesystem::exists(folderDirectory) || !std::filesystem::is_directory(folderDirectory)) {
-        std::cerr << "Error: Directory does not exist or is not a directory." << std::endl;
-        return 1;
-    }
-    for (const auto &file : filesystem::directory_iterator(folderDirectory)) {
-        
-    }
+int main() {
+    listFilesInFolder("bruteforcefile"); // Change "folder" to your target directory
     return 0;
 }
