@@ -24,7 +24,9 @@ class GenerationHandler {
             // loading settings ME WHEN i have SETTINGS to LOAD
             this->filePathToGameData = settings.filePathToGameData;
             this->gameDifficulty = settings.difficulty;
+            // add param in constructor of strategy maker to allow towers
             this->towersAllowed = settings.towersAllowed;
+            
             this->roundsCutOffPerGeneration = settings.roundsCutOffPerGeneration;
             this->childrenPerGeneration = settings.childrenPerGeneration;
             // copilot generate code to print all these out
@@ -116,7 +118,7 @@ class GenerationHandler {
             for (int i = 0; i < childrenPerGeneration; ++i) {
 
                 cout << "this is child: " << i << endl; // debug oh myt ruKicnF gOGODOWIUADOIJiawjfd
-                StrategyMaker strategyGenerator(gameDifficulty, filePathToGameData);
+                StrategyMaker strategyGenerator(gameDifficulty, filePathToGameData, towersAllowed);
                 vector<Action> actions = {}; //empty vector for now, also valid for when gen0
                 GameResult rez = strategyGenerator.generateStrategy(actions);
 

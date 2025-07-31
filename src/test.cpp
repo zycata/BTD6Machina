@@ -23,14 +23,15 @@ void testingriyal() {
     }
     system("pause");
     Sleep(1000); // wait for the game to load
-    StrategyMaker strategy(Difficulty::EASY, filePath);
+    vector<int> towersAllowed = {0, 1, 2, 16, 17, 15};
+    StrategyMaker strategy(Difficulty::EASY, filePath, towersAllowed);
     // lets give it a sample stratgegy to follow, dart then ice then boomer
     vector<Action> testChildStrategy = {
         {Action::PLACE, nullptr, 100, 250, 1, -1, 1, 1},
-        {Action::UPGRADE, nullptr, 100, 200, 1, 0, 1, 1},
+        {Action::UPGRADE, nullptr, 100, 250, 1, 0, 1, 1},
         {Action::PLACE, nullptr, 300, 400, 5, -1, 3, 2},
         {Action::UPGRADE, nullptr, 300, 400, 5, 2, 3, 2},
-        {Action::PLACE, nullptr, 200, 400, 3, -1, 5, 2}
+        {Action::PLACE, nullptr, 200, 400, 3, -1, 5, 3}
 
     };
     strategy.generateStrategy(testChildStrategy);
