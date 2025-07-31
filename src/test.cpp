@@ -22,10 +22,18 @@ void testingriyal() {
         return;
     }
     system("pause");
-    Sleep(1000); // wait for the game to load
+    //Sleep(1000); // wait for the game to load   
+
+
+    
     vector<int> towersAllowed = {0, 1, 2, 16, 17, 15};
     StrategyMaker strategy(Difficulty::EASY, filePath, towersAllowed);
-    // lets give it a sample stratgegy to follow, dart then ice then boomer
+    
+    Sleep(1000);
+
+    strategy.restartGame();
+    system("pause");
+    // lets give it a sample stratgegy to follow, dart then ice then bombaclat
     vector<Action> testChildStrategy = {
         {Action::PLACE, nullptr, 100, 250, 1, -1, 1, 1},
         {Action::UPGRADE, nullptr, 100, 250, 1, 0, 1, 1},
@@ -42,6 +50,7 @@ void testingriyal() {
 int main() {
     cout << "hey so this thing works btw it compiled" << endl;
     
+    system("pause");
     testingriyal();
     system("pause");
     return 0;

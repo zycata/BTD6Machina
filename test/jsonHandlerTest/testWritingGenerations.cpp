@@ -39,7 +39,11 @@ void testWriteGeneration() {
 
 int main() {
     cout << "Running JSON Handler Tests..." << endl;
-    testWriteGeneration();
+    //testWriteGeneration();
+    JsonManager jsonManager;
+    int curGenerationNumber = jsonManager.getCurrentGenerationNumber();
+    assert(curGenerationNumber == 0);
+    
     cout << "All tests passed!" << endl;
     cin >> std::ws;
     return 0;

@@ -34,6 +34,9 @@ bool towerPlacedSuccessfully() {
 }
 
 
+
+// reminder for me to refactor ts, using a struct or something, or atleast for some round info stuffss..
+
 json readJsonFile(){
     string filePath = "C:/Users/yanxi/Documents/Btd6Machine/Cpppractice/src/gameInfo/gameData.json";
     ifstream file(filePath);
