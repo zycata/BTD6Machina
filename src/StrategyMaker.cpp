@@ -253,19 +253,23 @@ bool StrategyMaker::checkIfSuccessfullyPlaced() {
     return success && cashChanged; // Ensure both conditions are met
 }
 bool StrategyMaker::placeTower(int towerCode, int x, int y) {
-    //implement mouse control later
+
+    totalTowers = gameInfo.getTowersPlaced();
     mouseControl::placeTower(towerCode, x, y);
-    Sleep(200); // wait for the tower to be placed
-    // check if placement was successful
+    Sleep(300); 
+    int curTowers = gameInfo.getTowersPlaced();
+
+    bool success = (curTowers == (totalTowers + 1)) && (this->cash != gameInfo.getCash()); 
 
     
-    bool success = checkIfSuccessfullyPlaced(); // Check if the placement was successful
 
-    // bool success = getInput(); // manually tell ai if the placement was successful
+    
+    // bool success = checkIfSuccessfullyPlaced(); // Check if the placement was successful
+
     if (!success) {
         this->cash = gameInfo.getCash(); 
         std::cerr << "Tower placement failed." << std::endl;
-        return false; // Placement failed
+        return false; 
     }
     totalTowers = gameInfo.getTowersPlaced(); // update total towers placed
 
@@ -276,7 +280,7 @@ bool StrategyMaker::placeTower(int towerCode, int x, int y) {
 
     StrategyActions.push_back({Action::PLACE, ptrToStoredTower, x, y, towerCode, INVALID, currentRound, towerIdCounter});
     towerIdCounter++;
-    //std::cout << "Placed tower of type " << newTower.towerType << " at (" << x << ", " << y << ")" << std::endl;
+
     this->cash = gameInfo.getCash(); 
 
     return true;
