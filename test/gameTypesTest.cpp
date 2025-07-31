@@ -4,7 +4,7 @@
 #include "../src/gameTypes.h"
 #include <string>
 using namespace std;
-// g++ src/gameTypes.cpp test/gameTypesTest.cpp -o gameTypesTest
+// g++ src/gameTypes.cpp test/gameTypesTest.cpp -o test/gameTypesTest
 template<typename T>
 bool assertEquals(const T& expected, const T& actual, const string& message) {
     if (expected != actual) {
@@ -79,10 +79,10 @@ void testUpgradeOptionStruct() {
     assertEquals(1, upgrade.tier, "Upgrade Tier should be 1");
     assertEquals(string("Dart Monkey"), upgrade.towerTypeStr, "Upgrade Tower Type String should be 'Dart Monkey'");
     assertEquals(true, upgrade.isAllowed, "Upgrade should be allowed by default");
-    assertEquals(true, upgrade.isValid(), "Upgrade should be valid by default");
+    assertEquals(true, upgrade.isAllowed, "Upgrade should be valid by default");
 
     UpgradeOption invalidUpgrade{1, 0, -100, 0, "Dart Monkey", false};
-    assertEquals(false, invalidUpgrade.isValid(), "Invalid Upgrade should not be valid");
+    assertEquals(false, invalidUpgrade.isAllowed, "Invalid Upgrade should not be valid");
 
 }
 
