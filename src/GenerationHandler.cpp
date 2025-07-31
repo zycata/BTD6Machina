@@ -34,7 +34,7 @@ class GenerationHandler {
             cout << "File Path to Game Data: " << filePathToGameData << endl << "Game Difficulty: " << gameDifficulty << endl;
             cout << "Towers Allowed: ";
             for (const auto& tower : towersAllowed) {
-                cout << towerMap[tower] << " ";
+                cout << towerMap[tower] << ", ";
             }
             cout << endl << "Rounds Cut Off Per Generation: " << roundsCutOffPerGeneration << endl << "Children Per Generation: " << childrenPerGeneration << endl;
         }
@@ -135,10 +135,16 @@ class GenerationHandler {
                 if (rez == VICTORY) {
                     cout << "Victory Obtained yay" << endl;
                     jsonManager.writeToJson(stratObtained, "generations/winningStrategy.json");
+                    // make it return the generation even though it hasnt had enough children im fucking lazy today (hi im lazy)
+                } else {
+                    cout << "restarting the game.." << endl;
+                    Sleep(400);
+                    strategyGenerator.restartGame();
                 }
-
-                strategyGenerator.restartGame();
+                
             }
+
+            // make the remaining things into a helper function :ohhhhh:
             Strategy bestStrat = findBestStrategy(childrenOfThisGeneration);
 
             // placeholder "-1-0", -1
@@ -178,6 +184,7 @@ int main() {
         return 1;
     }
     JsonManager theOneAndOnlyWriter;
+    system("pause");
     theOneAndOnlyWriter.setGenFilePath(0); // set the generation file path to generation 0
     // naturalSelection.runGeneration();
     theOneAndOnlyWriter.writeToJson(naturalSelection.runGeneration());
