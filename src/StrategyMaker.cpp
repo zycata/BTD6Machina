@@ -393,7 +393,8 @@ void StrategyMaker::upgradeAlgorithmOne() {
         int randomNum = rand() % availableUpgrades.size(); // Randomly select an upgrade
 
         UpgradeOption selectedUpgrade = availableUpgrades[randomNum];
-        for (int i = 0; i < maxAttempts; i++) {
+        int maxtriestoupgrade;
+        for (int i = 0; i < maxtriestoupgrade; i++) {
             if (upgradeTower(selectedUpgrade.towerId, selectedUpgrade.path)) {
                 std::cout << "Upgraded tower ID " << selectedUpgrade.towerId << " on path " << selectedUpgrade.path << " to tier " << selectedUpgrade.tier << std::endl;
                 break;
@@ -496,7 +497,7 @@ GameResult StrategyMaker::runGame() {
             singleRoundLoopAlgorithmOne();
         } else {
             int choice = getRandomInt(1, 4); // Randomly choose between placing a tower or upgrading a tower --> higher chacne of upgrading a tower
-            if (choice == 1) { // if total towers is less than 5, always place a tower
+            if (choice == 1) { 
                 // Placement algorithm two guys trust me imma lock tf in
                 std::cout << "Placing towers" << std::endl;
                 placementAlgorithmOne(); // guys im siorry but plcaement algorithm one is cracked...
@@ -677,8 +678,12 @@ GameResult StrategyMaker::generateStrategy(std::vector<Action>& childrenStrategy
 
 }
 
-// TODO: MAKE THIS CHECK IF IT"S THE START ROUND AND MODE IS CHIMPS
+// check if the gamemode is chimps if it is the starting round, the restart button is in a diff position
+// idk honestly kinda wack but not a huge difference
 void StrategyMaker::restartGame() {
-
-    mouseControl::restartGameWhenOver(false);
+    if (this->currentRound == startRound && this->type == Difficulty::CHIMPS) {
+        mouseControl::restartGameWhenOver(true);
+    } else {
+        mouseControl::restartGameWhenOver(false);
+    }
 }

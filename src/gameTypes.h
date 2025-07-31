@@ -68,8 +68,8 @@ struct UpgradeOption {
     int cost;
     int tier;
     std::string towerTypeStr;
-    bool isAllowed = true; // Default initialization is fine in header
-    bool isValid() const; // Declaration here, definition in .cpp or inline
+    bool isAllowed = true; 
+    bool isValid() const; 
 };
 
 // Finalizer struct (can be in header as it's a struct definition)
@@ -86,7 +86,6 @@ extern std::vector<std::string> kTowerNames;
 extern const int INVALID; // If it's a global const, extern is good
 extern std::vector<std::vector<std::vector<int>>> towerUpgrades;
 extern std::vector<int> towerCosts;
-extern std::vector<int> te;
-extern std::vector<int> towersAllowed;
+
 
 #endif // GAMETYPES_H
