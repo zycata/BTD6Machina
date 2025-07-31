@@ -23,7 +23,7 @@ private:
     Difficulty type;
     int towerIdCounter; // Counter for unique tower IDs
     float cashMultiplier;
-
+    std::vector<int> towersAllowed;
     GameReader gameInfo;
 
     const int xMAx = 1000;
@@ -39,7 +39,7 @@ private:
     void logStrategy();
 
 public:
-    StrategyMaker(Difficulty type, std::string filePath);
+    StrategyMaker(Difficulty type, std::string filePath, std::vector<int> towersAllowed);
 
     // Using a struct for cleanup, similar to how RAII works for resources
     // This will ensure logItems() is called when StrategyMaker goes out of scope

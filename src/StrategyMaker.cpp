@@ -11,6 +11,7 @@
 #include <ctime>
 #include <windows.h> // For Sleep
 
+
 // Using an anonymous namespace for global constants that are only used in this file
 namespace {
     // Assuming towerUpgrades, towerCosts, towerMap, towersAllowed, and INVALID are defined globally
@@ -20,16 +21,17 @@ namespace {
 }
 
 
-StrategyMaker::StrategyMaker(Difficulty type, std::string filePath) : gameInfo(filePath),
+StrategyMaker::StrategyMaker(Difficulty type, std::string filePath, std::vector<int> towersAllowed) : gameInfo(filePath),
     emptyUpgrade{0, 0, 0, 0, "", false} // Initialize emptyUpgrade here
 {
-    towerIdCounter = 0; // Initialize towerIdCounter
+    towerIdCounter = 1; // Initialize towerIdCounter
     gameInfo.initialize();
 
     TowersPlaced = {};
     TowersPlaced.reserve(1000);
     StrategyActions = {};
     StrategyActions.reserve(1000);
+    this->towersAllowed = towersAllowed;
     // No need to reserve 1k but Justin Case (get it funny name pls laugh)
     // realistically tho this is never used i think i lowkey just got paranoid after accessing unsafe memory that one time
 
@@ -604,9 +606,12 @@ GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) 
 
         while (nextRoundToAct == currentRound) {
             if(curAction->type == Action::PLACE) {
-                placeTower(static_cast<int>(curAction->towerType), curAction->x, curAction->y);
+                std::cout << "Placing towers from strategy" << std::endl;
+                placeTower(curAction->towerType, curAction->x, curAction->y);
 
             } else if (curAction->type == Action::UPGRADE) {
+                std::cout << "Upgrading towers from strategy" << std::endl;
+
                 upgradeTower(curAction->towerId, curAction->path);
             }
             pointer++; // increment the pointer on the vector
