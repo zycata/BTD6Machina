@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../src/mouseControl/mouseControl.h"q,/
+#include "../src/mouseControl/mouseControl.h"
 #include <ctime>
 #include <windows.h>
 //impoppable mode on monkey meadows btw...

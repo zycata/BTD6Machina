@@ -1,5 +1,7 @@
 #include<iostream>
-#include"../src/gameTypes.hpp"
+
+#include<filesystem>
+#include<string>
 using namespace std;
 
 void soyadmen() {
@@ -7,7 +9,14 @@ void soyadmen() {
 }
 int main() {
     //Finalizer logOnExit{[] { soyadmen(); }}; 
-    int byteSize = sizeof(Action);
-    cout << "size of Action struct: " << byteSize << endl;
+    string folderDirectory = "testincludingotherfiles";
+
+     if (!std::filesystem::exists(folderDirectory) || !std::filesystem::is_directory(folderDirectory)) {
+        std::cerr << "Error: Directory does not exist or is not a directory." << std::endl;
+        return 1;
+    }
+    for (const auto &file : filesystem::directory_iterator(folderDirectory)) {
+        
+    }
     return 0;
 }

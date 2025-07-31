@@ -332,6 +332,10 @@ class JsonManager {
                 
             }
         }
+
+        Generation findPrevGenerationFromFolder() {
+            
+        }
 };
 
 
