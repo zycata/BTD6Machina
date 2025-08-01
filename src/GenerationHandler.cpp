@@ -9,7 +9,7 @@
 using namespace std;
 class GenerationHandler {
     private:
-        int curGeneration = 0;
+        int curGeneration;
         
         JsonManager jsonManager;
         string filePathToGameData;
@@ -70,7 +70,7 @@ class GenerationHandler {
         }
     
     public:
-        GenerationHandler(int curGen = 0) 
+        GenerationHandler(int curGen = 1) 
         //: strategyMaker(gameDifficulty, filePathToGameData) 
         : curGeneration(curGen)
         {
@@ -108,10 +108,12 @@ class GenerationHandler {
         }
         
         // params should be runGeneration(Strategy& parent) 
-        Generation runGeneration() {
+        Generation runGeneration(Strategy &parentStrategy) {
             vector<Strategy> childrenOfThisGeneration = {};
             childrenOfThisGeneration.reserve(childrenPerGeneration);
             cout << "runGeneration runs" << endl;
+
+            vector<Action> actions = shaveOffRoundsInActions(parentStrategy.actions, this->roundsCutOffPerGeneration);
 
             // shit language because i accidentally did int i; instead if int i = 0; and wondered why shit wasnt working
             // intellisense do ur job :pray:
@@ -119,7 +121,7 @@ class GenerationHandler {
 
                 cout << "this is child: " << i << endl; // debug oh myt ruKicnF gOGODOWIUADOIJiawjfd
                 StrategyMaker strategyGenerator(gameDifficulty, filePathToGameData, towersAllowed);
-                vector<Action> actions = {}; //empty vector for now, also valid for when gen0
+                
                 GameResult rez = strategyGenerator.generateStrategy(actions);
 
                 
@@ -135,10 +137,11 @@ class GenerationHandler {
                 if (rez == VICTORY) {
                     cout << "Victory Obtained yay" << endl;
                     jsonManager.writeToJson(stratObtained, "generations/winningStrategy.json");
+                    system("pause");
                     // make it return the generation even though it hasnt had enough children im fucking lazy today (hi im lazy)
                 } else {
                     cout << "restarting the game.." << endl;
-                    Sleep(400);
+                    Sleep(600);
                     strategyGenerator.restartGame();
                 }
                 
@@ -152,30 +155,105 @@ class GenerationHandler {
             // Basically -1 and -1 stand for the parents of the first gen, which ig stands for god??
             // not many people know this fun fact but I have a 10 minute youtube video i made when i was 15
             // about the halifax citadel on youtube which is the combination of Johnny Test SFX and justmehabibi replicated editing style
-            Generation thisGen{curGeneration, "-1-0", -1, bestStrat.ID, bestStrat.score, childrenOfThisGeneration};
+            Generation thisGen{curGeneration, parentStrategy.ID,  parentStrategy.score, bestStrat.ID, bestStrat.score, childrenOfThisGeneration};
             //Generation thisGen{curGeneration, "-1-0", -1, "bestStrat.ID", 32, childrenOfThisGeneration};
             return thisGen;
         };
 
+        vector<Action> shaveOffRoundsInActions(vector<Action> &actions, int roundsToShaveOff = 5) {
+            if (actions.empty()) {
+                std::cout << "actions are empty... " << endl;
+                return {}; // Return an empty vector
+            }
+            int highestRound = actions.back().round;
+            int roundToStartCutting = highestRound - roundsToShaveOff;
+
+            vector<Action> actionsToBeBasedOffof = {};
+
+            if (roundToStartCutting <= 0) {
+                return actionsToBeBasedOffof;
+            }
+            
+            for (const auto &act : actions) {
+                if (act.round >= roundToStartCutting) {
+                    break;
+                }
+                // yes this should be a completely empty vect.
+                actionsToBeBasedOffof.push_back(act);
+
+            }
+            return actionsToBeBasedOffof;
+        }
+
+        
+        
         // incomplete, pls finish another day kinda falling asleep here
-        void mainControlLoop(int prevGen, Strategy &parentStrategy) {
+        void mainControlLoop(int prevGen, Generation &parentGeneration) {
             bool victoryFound = false; // temporary Fr this time
             int previousGeneration = prevGen;
+            
+
+
+            
+            Generation currentParentGeneration = parentGeneration;
+            
+
             while (!victoryFound) {
-                Generation gen = runGeneration();
+
+                Strategy currentParentStrategy = findBestStrategy(currentParentGeneration.children);
+                //vector<Action> actionsToBeBasedOffof = shaveOffRoundsInActions(currentParentStrategy.actions, this->roundsCutOffPerGeneration);
+
+                Generation gen = runGeneration(currentParentStrategy);
                 jsonManager.setGenFilePath(curGeneration);
                 jsonManager.writeToJson(gen);
                 previousGeneration = curGeneration;
                 curGeneration++; // end of prev generation, so we increment to the next one
+                currentParentGeneration = gen;
+
+
             }
-            // mainControlLoop(previousGeneration, )
+            
+        }
+
+        void startTheAI() {
+            int previouslyDoneGeneration = jsonManager.getCurrentGenerationNumber();
+
+            if (previouslyDoneGeneration <= 0) {
+                // This is the first time the AI is being run.
+                std::cout << "Starting new AI run from Generation 1..." << std::endl;
+
+                this->curGeneration = 1;
+                // HOLY SHIT PATIENT ZERO?? YO LA TENGOOOO
+                
+                // Define a base strategy for the first generation.
+                // FUCKL ASS INT BEING CAST AS A STRING THIS IS SO FUCKING STU
+                Strategy dummyStrategy{"0-0", this->gameDifficulty, 0, 0, 0, {}};
+                
+                Generation patientZero = runGeneration(dummyStrategy);
+                
+                jsonManager.writeGenerationToFile(patientZero);
+                this->curGeneration++; //increment the current generation
+                // Now, proceed to the main loop with the newly created generation.
+                mainControlLoop(1, patientZero);
+                
+            } else {
+                std::cout << "Resuming AI from Generation " << previouslyDoneGeneration << "..." << std::endl;
+
+                jsonManager.setGenFilePath(previouslyDoneGeneration);
+                
+                Generation latestGeneration = jsonManager.getGenerationFromJson();
+
+                this->curGeneration = previouslyDoneGeneration + 1;
+                
+                mainControlLoop(previouslyDoneGeneration, latestGeneration);
+            }
         }
         
 };
 
 // g++ src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6v3
 int main() {
-
+    Strategy dummyStrategy{"0-0", Difficulty::HARD, 0, 0, 0, {}};
     GenerationHandler naturalSelection;
     // oh ym fcking god i forgot the ! sign so i was wondering why ts kept closing
     if (!mouseControl::initializeMouseControls()) {
@@ -187,7 +265,7 @@ int main() {
     system("pause");
     theOneAndOnlyWriter.setGenFilePath(0); // set the generation file path to generation 0
     // naturalSelection.runGeneration();
-    theOneAndOnlyWriter.writeToJson(naturalSelection.runGeneration());
-    system("pause");
+    theOneAndOnlyWriter.writeToJson(naturalSelection.runGeneration(dummyStrategy));
+    system("pause"); 
     return 0;
 }
