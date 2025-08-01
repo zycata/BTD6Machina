@@ -28,7 +28,7 @@ private:
 
     const int xMAx = 1000;
     const int yMax = 720;
-    const int yMin = 40;
+    const int yMin = 60;
     const int xMin = 25;
 
     int startRound;

@@ -258,6 +258,13 @@ class JsonManager {
             return readActionFromJson(filePath).template get<StrategyActionOrGeneration>();
         }
 
+        Generation getGenerationFromJson(std::string filePath = "") {
+            if (filePath.empty()) {
+                filePath = generationFilePath;  
+            }
+            return readActionFromJson(filePath).template get<Generation>();
+        }
+
         AlgorithmSettings getAlgorithmSettingsFromJson(const std::string& filePath = "config/settings.json") {
             json j = readActionFromJson(filePath);
             if (j.is_null()) {

@@ -395,7 +395,7 @@ void StrategyMaker::upgradeAlgorithmOne() {
         int randomNum = rand() % availableUpgrades.size(); // Randomly select an upgrade
 
         UpgradeOption selectedUpgrade = availableUpgrades[randomNum];
-        int maxtriestoupgrade;
+        int maxtriestoupgrade = 3; // OH MY FUCKING GOD JUNK MEMORY CAN KYS
         for (int i = 0; i < maxtriestoupgrade; i++) {
             if (upgradeTower(selectedUpgrade.towerId, selectedUpgrade.path)) {
                 std::cout << "Upgraded tower ID " << selectedUpgrade.towerId << " on path " << selectedUpgrade.path << " to tier " << selectedUpgrade.tier << std::endl;
@@ -529,7 +529,6 @@ GameResult StrategyMaker::runGame() {
 
         bool roundOver = false;
         while (!roundOver) {
-            gameOver = gameInfo.didGameOver();
             std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
             int newRound = gameInfo.getCurRound();
             if (this->currentRound != newRound) {
@@ -545,18 +544,14 @@ GameResult StrategyMaker::runGame() {
                 }
             }
             else if (gameInfo.didGameOver()) {
-                gameOver = true;
-                break;
+                std::cout << "Game Over!" << std::endl;
+                return GameResult::DEFEAT;
             }
             Sleep(200);
 
         }
 
-        if (gameOver == true) {
-            std::cout << "Game Over!" << std::endl;
-            return GameResult::DEFEAT;
-            //break;
-        }
+
         this->currentRound = gameInfo.getCurRound();
         this->cash = gameInfo.getCash();
         std::cout << "Current round: " << this->currentRound << std::endl;
@@ -623,11 +618,11 @@ GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) 
         }
         startNextRound();
         while (!roundOver) {
-            gameOver = gameInfo.didGameOver();
             std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
-            if (this->currentRound != gameInfo.getCurRound()) {
-                std::cout << "Round changed from " << this->currentRound << " to " << gameInfo.getCurRound() << std::endl;
-                this->currentRound = gameInfo.getCurRound();
+            int newRound = gameInfo.getCurRound();
+            if (this->currentRound != newRound) {
+                std::cout << "Round changed from " << this->currentRound << " to " << newRound << std::endl;
+                this->currentRound = newRound;
 
                 roundOver = true;
 
@@ -639,19 +634,15 @@ GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) 
                 }
             }
             else if (gameInfo.didGameOver()) {
-                gameOver = true;
-                break;
+                std::cout << "Game Over!" << std::endl;
+
+                return GameResult::DEFEAT;
             }
 
             Sleep(200);
 
         }
-        if (gameOver == true) {
-            std::cout << "Game Over!" << std::endl;
-
-            return GameResult::DEFEAT;
-            //break;
-        }
+        
         this->currentRound = gameInfo.getCurRound();
         this->cash = gameInfo.getCash();
         std::cout << "Current round: " << this->currentRound << std::endl;
