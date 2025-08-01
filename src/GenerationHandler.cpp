@@ -17,7 +17,7 @@ class GenerationHandler {
         vector<int> towersAllowed;
         int roundsCutOffPerGeneration;
         int childrenPerGeneration;
-        
+        bool victoryFound = false;
 
         void loadSettings() {
             AlgorithmSettings settings = jsonManager.getAlgorithmSettingsFromJson();
@@ -31,7 +31,7 @@ class GenerationHandler {
             this->childrenPerGeneration = settings.childrenPerGeneration;
             // copilot generate code to print all these out
             cout << "Loaded settings: " << endl;
-            cout << "File Path to Game Data: " << filePathToGameData << endl << "Game Difficulty: " << gameDifficulty << endl;
+            cout << "File Path to Game Data: " << filePathToGameData << endl << "Game Difficulty: " << to_string(gameDifficulty) << endl;
             cout << "Towers Allowed: ";
             for (const auto& tower : towersAllowed) {
                 cout << towerMap[tower] << ", ";
@@ -141,7 +141,7 @@ class GenerationHandler {
                     // make it return the generation even though it hasnt had enough children im fucking lazy today (hi im lazy)
                 } else {
                     cout << "restarting the game.." << endl;
-                    Sleep(600);
+                    Sleep(2000); // restart menu takes a while to pop up sometimes
                     strategyGenerator.restartGame();
                 }
                 
@@ -160,6 +160,7 @@ class GenerationHandler {
             return thisGen;
         };
 
+        // set default to five rounds to shave off, changable by plr tho
         vector<Action> shaveOffRoundsInActions(vector<Action> &actions, int roundsToShaveOff = 5) {
             if (actions.empty()) {
                 std::cout << "actions are empty... " << endl;
@@ -187,9 +188,7 @@ class GenerationHandler {
 
         
         
-        // incomplete, pls finish another day kinda falling asleep here
         void mainControlLoop(int prevGen, Generation &parentGeneration) {
-            bool victoryFound = false; // temporary Fr this time
             int previousGeneration = prevGen;
             
 
@@ -205,13 +204,14 @@ class GenerationHandler {
 
                 Generation gen = runGeneration(currentParentStrategy);
                 jsonManager.setGenFilePath(curGeneration);
-                jsonManager.writeToJson(gen);
+                jsonManager.writeGenerationToFile(gen);
                 previousGeneration = curGeneration;
                 curGeneration++; // end of prev generation, so we increment to the next one
                 currentParentGeneration = gen;
 
 
             }
+            cout << "Victory had been obtained, writing the last generation done... then stopping the ai." << endl;
             
         }
 
@@ -251,21 +251,35 @@ class GenerationHandler {
         
 };
 
-// g++ src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6v3
+// g++ src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6v4
 int main() {
+    if (!mouseControl::initializeMouseControls()) {
+        cout << "mouise control fails" << endl;
+        system("pause");
+        return 1;
+    }
+    GenerationHandler naturalSelection;
+    system("pause");
+    naturalSelection.startTheAI();
+
+
+    return 0;
+}
+
+
+void testStuff() {
     Strategy dummyStrategy{"0-0", Difficulty::HARD, 0, 0, 0, {}};
     GenerationHandler naturalSelection;
     // oh ym fcking god i forgot the ! sign so i was wondering why ts kept closing
     if (!mouseControl::initializeMouseControls()) {
         cout << "mouise control fails" << endl;
         system("pause");
-        return 1;
+        return;
     }
     JsonManager theOneAndOnlyWriter;
     system("pause");
     theOneAndOnlyWriter.setGenFilePath(0); // set the generation file path to generation 0
     // naturalSelection.runGeneration();
     theOneAndOnlyWriter.writeToJson(naturalSelection.runGeneration(dummyStrategy));
-    system("pause"); 
-    return 0;
+    system("pause");
 }
