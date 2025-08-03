@@ -110,6 +110,7 @@ class GenerationHandler {
         
         // params should be runGeneration(Strategy& parent) 
         Generation runGeneration(Strategy &parentStrategy) {
+            int delayBeforeRestartingGame = 2000; // why so high you ask? idk apparently because I have a speed up mod the game realizes you lose before the menu pops up at lower time intervals
             vector<Strategy> childrenOfThisGeneration = {};
             childrenOfThisGeneration.reserve(childrenPerGeneration);
             cout << "runGeneration runs" << endl;
@@ -138,11 +139,12 @@ class GenerationHandler {
                 if (rez == VICTORY) {
                     cout << "Victory Obtained yay" << endl;
                     jsonManager.writeToJson(stratObtained, "generations/winningStrategy.json");
-                    system("pause");
+                    victoryFound = true;
+                    break; 
                     // make it return the generation even though it hasnt had enough children im fucking lazy today (hi im lazy)
                 } else {
                     cout << "restarting the game.." << endl;
-                    Sleep(2000); // restart menu takes a while to pop up sometimes
+                    Sleep(delayBeforeRestartingGame); // restart menu takes a while to pop up sometimes
                     strategyGenerator.restartGame();
                 }
                 
@@ -253,7 +255,7 @@ class GenerationHandler {
         
 };
 
-// g++ src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6v4
+// g++  -static src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6v4
 int main() {
     if (!mouseControl::initializeMouseControls()) {
         cout << "mouise control fails" << endl;
