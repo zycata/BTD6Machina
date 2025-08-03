@@ -226,14 +226,19 @@ class GenerationHandler {
                 // This is the first time the AI is being run.
                 std::cout << "Starting new AI run from Generation 1..." << std::endl;
 
-                this->curGeneration = 1;
-                // HOLY SHIT PATIENT ZERO?? YO LA TENGOOOO -> just kidding it's patient one fuck zero indexing i love lua
-                
-                // Define a base strategy for the first generation.
-                // FUCKL ASS INT BEING CAST AS A STRING THIS IS SO FUCKING STU
+                Strategy *startingStrategy = jsonManager.getStartingStrategy();
                 Strategy dummyStrategy{"0-0", this->gameDifficulty, 0, 0, 0, {}};
+                this->curGeneration = 1;
                 jsonManager.setGenFilePath(curGeneration);
-                Generation patientZero = runGeneration(dummyStrategy);
+                Generation patientZero;
+                if (startingStrategy == nullptr) {
+                    patientZero = runGeneration(dummyStrategy);
+                } else {
+                    patientZero = runGeneration(*startingStrategy);
+                    delete startingStrategy;
+                }
+
+                
                 
                 jsonManager.writeGenerationToFile(patientZero);
                 this->curGeneration++; //increment the current generation

@@ -371,6 +371,15 @@ class JsonManager {
             }
             return j.at("generationNumber").get<int>();
         }
+
+        Strategy *getStartingStrategy() {
+            json j = readActionFromJson("generations/FirstStrategy.json");
+            if (j == nullptr) {
+                return nullptr;
+            } 
+            Strategy s = j.get<Strategy>();
+            return new Strategy(s);
+        }
 };
 
 
