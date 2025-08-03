@@ -3,3 +3,4 @@
 *.BTD6
 ATestSetting/
 src/mouseControl/mouse.cpp
+src/test.cpp
