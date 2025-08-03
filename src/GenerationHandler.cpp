@@ -104,6 +104,7 @@ class GenerationHandler {
                 }
             }
             // again check THIS if there is any INVALID RAM ACCESSING
+            // ok update 2025-08-02 i am genuinely surprised this worked pretty much first try but like lowkey if i didnt code nothing wrong it has to work ofc ofc
             return *bestStratFoundSoFar;
         }
         
@@ -215,6 +216,7 @@ class GenerationHandler {
             
         }
 
+        // TODO: Make option for a initial dummy strategy (like playing the hero first)
         void startTheAI() {
             int previouslyDoneGeneration = jsonManager.getCurrentGenerationNumber();
 
@@ -223,12 +225,12 @@ class GenerationHandler {
                 std::cout << "Starting new AI run from Generation 1..." << std::endl;
 
                 this->curGeneration = 1;
-                // HOLY SHIT PATIENT ZERO?? YO LA TENGOOOO
+                // HOLY SHIT PATIENT ZERO?? YO LA TENGOOOO -> just kidding it's patient one fuck zero indexing i love lua
                 
                 // Define a base strategy for the first generation.
                 // FUCKL ASS INT BEING CAST AS A STRING THIS IS SO FUCKING STU
                 Strategy dummyStrategy{"0-0", this->gameDifficulty, 0, 0, 0, {}};
-                
+                jsonManager.setGenFilePath(curGeneration);
                 Generation patientZero = runGeneration(dummyStrategy);
                 
                 jsonManager.writeGenerationToFile(patientZero);
