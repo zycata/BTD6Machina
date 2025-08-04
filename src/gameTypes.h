@@ -70,6 +70,7 @@ struct UpgradeOption {
     int tier;
     std::string towerTypeStr;
     bool isAllowed = true; 
+    bool isValid() const; 
 };
 
 // Finalizer struct (can be in header as it's a struct definition)
