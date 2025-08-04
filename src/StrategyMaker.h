@@ -27,9 +27,9 @@ private:
     GameReader gameInfo;
 
     const int xMAx = 1000;
-    const int yMax = 720;
+    const int yMax = 690;
     const int yMin = 60;
-    const int xMin = 25;
+    const int xMin = 40;
 
     int startRound;
     const UpgradeOption emptyUpgrade; // Empty upgrade option to return when no upgrades are available
