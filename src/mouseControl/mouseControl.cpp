@@ -134,7 +134,7 @@ void placeHero( int x, int y) {
 namespace mouseControl {
 
 
-
+    // only works with abilities 0 - 9, nothing more
     void useAbility(int abilityIndex) {
         pressKeyScan(numberScanCodes[abilityIndex]);
         
