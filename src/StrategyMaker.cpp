@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <windows.h> // For Sleep
+#include <algorithm>
 
 
 // Using an anonymous namespace for global constants that are only used in this file
@@ -65,10 +66,12 @@ StrategyMaker::StrategyMaker(Difficulty type, std::string filePath, std::vector<
             break;
         case IMPOPPABLE:
             cashMultiplier = 1.2;
+            startRound = 6;
             currentRound = 6;
             break;
         case CHIMPS:
             cashMultiplier = 1.08;
+            startRound = 6;
             currentRound = 6;
             break;
         default: // Handle unknown or uninitialized cases
@@ -355,11 +358,11 @@ bool StrategyMaker::placeRandomTower(PlacementOption &selectedTower) {
     return false;
 }
 
-// pretty much places at most 5 towers randomly, but only if the towers are affordable immediately.
-void StrategyMaker::placementAlgorithmOne() {
+// pretty much places at most x towers randomly, but only if the towers are affordable immediately.
+void StrategyMaker::placementAlgorithmOne(int maxAttempts) {
     this->cash = gameInfo.getCash(); // update cash before placement
-    int maxattempts = 4;
-    for (int i = 0; i < maxattempts; i++) {
+    //int maxattempts = 4;
+    for (int i = 0; i < maxAttempts; i++) {
 
         std::vector<PlacementOption> newTowers = getTowerPlacementOptions();
         if(newTowers.size() == 0) {
@@ -415,7 +418,7 @@ void StrategyMaker::upgradeAlgorithmOne() {
 
 void StrategyMaker::singleRoundLoopAlgorithmOne() {
     // make it slightly more prone to placing towers than upgrading
-    int choice = getRandomInt(1, 5); // Randomly choose between placing a tower or upgrading a tower
+    int choice = getRandomInt(1, 7); // Randomly choose between placing a tower or upgrading a tower
     if (choice <= 3 || totalTowers < 5) { // if total towers is less than 5, always place a tower
         std::cout << "Placing towers..." << std::endl;
         placementAlgorithmOne();
@@ -510,6 +513,26 @@ void StrategyMaker::useAbilities() {
 
 }
 
+
+int StrategyMaker::getPlacementChance(int curRound) {
+    const int MIN_ROUND = 30;
+    const int MAX_ROUND = 100;
+    const int MAX_PLACEMENT_CHANCE = 30; // percent
+    const int MIN_PLACEMENT_CHANCE = 1;  // percent
+
+    int placementRange = MAX_ROUND - MIN_ROUND;
+    int chanceRange = MAX_PLACEMENT_CHANCE - MIN_PLACEMENT_CHANCE;
+
+    double ratio = static_cast<double>(curRound - MIN_ROUND) / placementRange;
+    int placementChance = MAX_PLACEMENT_CHANCE - static_cast<int>(ratio * chanceRange);
+
+    // Clamp placementChance between MIN_PLACEMENT_CHANCE and MAX_PLACEMENT_CHANCE
+    if (placementChance < MIN_PLACEMENT_CHANCE) placementChance = MIN_PLACEMENT_CHANCE;
+    else if (placementChance > MAX_PLACEMENT_CHANCE) placementChance = MAX_PLACEMENT_CHANCE;
+
+    return placementChance;
+}
+
 GameResult StrategyMaker::runGame() {
     Finalizer logOnExit{[this] { this->logItems(); }};
 
@@ -521,8 +544,9 @@ GameResult StrategyMaker::runGame() {
         if (this->currentRound < 30) {
             singleRoundLoopAlgorithmOne();
         } else {
-            int choice = getRandomInt(1, 4); // Randomly choose between placing a tower or upgrading a tower --> higher chacne of upgrading a tower
-            if (choice == 1) { 
+            int roll = getRandomInt(1, 100);
+            int placementChance = getPlacementChance(this->currentRound);
+            if (roll <= placementChance) { 
                 // Placement algorithm two guys trust me imma lock tf in
                 std::cout << "Placing towers" << std::endl;
                 placementAlgorithmOne(); // guys im siorry but plcaement algorithm one is cracked...
@@ -534,7 +558,8 @@ GameResult StrategyMaker::runGame() {
                     upgradeTower(targetUpgrade.towerId, targetUpgrade.path);
                     std::cout << "UPGRADING TOWER THAT HAS BEEN SAVED UP FOR" << std::endl;
                     std::cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << std::endl;
-                    targetUpgrade = emptyUpgrade;
+                    // targetUpgrade = emptyUpgrade;
+                    targetUpgrade = upgradeAlgorithmTwo();
                 } else if (targetUpgrade.isAllowed && targetUpgrade.cost > cash) {
                     std::cout << "Not enough cash to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
                     std::cout << "saving for the target upgrade...." << std::endl;
@@ -552,7 +577,7 @@ GameResult StrategyMaker::runGame() {
 
         bool roundOver = false;
         while (!roundOver) {
-            std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
+            // std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
             int newRound = gameInfo.getCurRound();
             if (this->currentRound != newRound) {
                 std::cout << "Round changed from " << this->currentRound << " to " << newRound << std::endl;
@@ -601,22 +626,23 @@ so glad no need to allocate heap i could never :sob:
 
 // TODO: this has overlap with the previous function, so maybe make a helper or combine these two?
 // should be possible for sure, anyways im done for the day tommorow for file gen with jsonManager finally
-GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) {
+GameResult StrategyMaker::followStrategy(const std::vector<Action>& parentStrategy) {
     Finalizer logOnExit{[this] { this->logItems(); }};
 
-    if (childrenStrategy.empty()) {
+    if (parentStrategy.empty()) {
         return GameResult::FINISHEDSTRATEGY;
     }
 
     bool gameOver = false;
-    std::size_t maxPointerSize = childrenStrategy.size(); // Use std::size_t for size
+    std::size_t maxPointerSize = parentStrategy.size(); // Use std::size_t for size
     int pointer = 0;
     // start pointer at the first object
-    Action *curAction = nullptr; // Initialize to nullptr
+    const Action *curAction = nullptr; // Initialize to nullptr
     if (maxPointerSize > 0) {
-        curAction = &childrenStrategy[pointer];
+        curAction = &parentStrategy[pointer];
     } else {
         // If there's no strategy, just return FINISHEDSTRATEGY
+        // i just realiezd my empty guard does that already but it does not hurt to be safe amirite guys
         return GameResult::FINISHEDSTRATEGY;
     }
 
@@ -638,12 +664,13 @@ GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) 
             if (pointer >= maxPointerSize) {
                 return GameResult::FINISHEDSTRATEGY;
             }
-            curAction = &childrenStrategy[pointer];
+            curAction = &parentStrategy[pointer];
             nextRoundToAct = curAction->round;
         }
         startNextRound();
+        std::cout << "waiting for round to be over..." << std::endl;
         while (!roundOver) {
-            std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
+            // std::cout << "Game over? " << (gameOver ? "Yes" : "No") << std::endl;
             int newRound = gameInfo.getCurRound();
             if (this->currentRound != newRound) {
                 std::cout << "Round changed from " << this->currentRound << " to " << newRound << std::endl;
@@ -682,8 +709,8 @@ GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) 
 }
 
 
-GameResult StrategyMaker::generateStrategy(std::vector<Action>& childrenStrategy) {
-    GameResult followedResult = followStrategy(childrenStrategy);
+GameResult StrategyMaker::generateStrategy(std::vector<Action>& parentStrategy) {
+    GameResult followedResult = followStrategy(parentStrategy);
     switch(followedResult) {
         case(FINISHEDSTRATEGY):
             break;
@@ -695,6 +722,7 @@ GameResult StrategyMaker::generateStrategy(std::vector<Action>& childrenStrategy
             break;
         default:
             std::cerr << "fuking fail" << std::endl;
+            break;
 
     }
     return runGame();

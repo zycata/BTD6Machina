@@ -37,6 +37,7 @@ private:
     bool isHeroAlreadyPlaced();
     void logTowers();
     void logStrategy();
+    int getPlacementChance(int curRound);
 
 public:
     StrategyMaker(Difficulty type, std::string filePath, std::vector<int> towersAllowed);
@@ -84,8 +85,8 @@ public:
     // places a random tower... tries 5 times to place it before trying a new tower or giving up lmao
     bool placeRandomTower(PlacementOption &selectedTower);
 
-    // pretty much places at most 5 towers randomly, but only if the towers are affordable immediately.
-    void placementAlgorithmOne();
+    // pretty much places at most x towers randomly, but only if the towers are affordable immediately.
+    void placementAlgorithmOne(int maxAttempts = 4);
 
     void upgradeAlgorithmOne();
 
@@ -122,9 +123,9 @@ public:
 
     // TODO: this has overlap with the previous function, so maybe make a helper or combine these two?
     // should be possible for sure, anyways im done for the day tommorow for file gen with jsonManager finally
-    GameResult followStrategy(std::vector<Action>& childrenStrategy);
+    GameResult followStrategy(const std::vector<Action>& parentStrategy);
 
-    GameResult generateStrategy(std::vector<Action>& childrenStrategy);
+    GameResult generateStrategy(std::vector<Action>& parentStrategy);
 
     // TODO: MAKE THIS CHECK IF IT"S THE START ROUND AND MODE IS CHIMPS
     void restartGame();
