@@ -49,6 +49,8 @@ public:
         ~Finalizer() { cleanup(); }
     };
 
+    void useAbilities();
+
 
     void logItems();
     void setCash(int cash);

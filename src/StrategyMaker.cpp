@@ -335,8 +335,8 @@ int StrategyMaker::getRandomInt(int n1, int n2) {
 
 // places a random tower... tries 5 times to place it before trying a new tower or giving up lmao
 bool StrategyMaker::placeRandomTower(PlacementOption &selectedTower) {
-    int maxAttempts = 3;
-    // 5 attempts to place a tower
+    int maxAttempts = 6;
+    // 6 attempts to place a tower 3 was wayyyy to low
     for (int i = 0; i < maxAttempts; i++) {
         int x = getRandomInt(xMin, xMAx);
         int y = getRandomInt(yMin, yMax);
@@ -358,7 +358,7 @@ bool StrategyMaker::placeRandomTower(PlacementOption &selectedTower) {
 // pretty much places at most 5 towers randomly, but only if the towers are affordable immediately.
 void StrategyMaker::placementAlgorithmOne() {
     this->cash = gameInfo.getCash(); // update cash before placement
-    int maxattempts = 5;
+    int maxattempts = 4;
     for (int i = 0; i < maxattempts; i++) {
 
         std::vector<PlacementOption> newTowers = getTowerPlacementOptions();
@@ -485,8 +485,31 @@ void StrategyMaker::startNextRound() {
     mouseControl::ClickStartNextRound();
 }
 
-// !!! TODO: make shitty ai restart the game using the restart button thing when the game is over
-// TODO:
+void StrategyMaker::useAbilities() {
+    // std::cout << "Checking for Abilities that can be used..." << std::endl;
+    int MAX_ABILITIES_THAT_CAN_BE_USED = 10;
+    int DELAY_BETWEEN_ABILITIES = 150;
+    std::vector<int> abilitiesAtOurDisposal = gameInfo.getAbilities();
+    if (abilitiesAtOurDisposal.size() > MAX_ABILITIES_THAT_CAN_BE_USED) {
+        for (int i = 0; i < MAX_ABILITIES_THAT_CAN_BE_USED; i++) {
+            if (abilitiesAtOurDisposal[i] <= 0) {
+                mouseControl::useAbility((i+1)%MAX_ABILITIES_THAT_CAN_BE_USED);
+                std::cout << "Using Ability: " << (i+1) << std::endl;
+                Sleep(DELAY_BETWEEN_ABILITIES);
+            }
+        }
+    } else {
+        for (int i = 0; i < abilitiesAtOurDisposal.size(); i++) {
+            if (abilitiesAtOurDisposal[i] <= 0) {
+                mouseControl::useAbility((i+1)%MAX_ABILITIES_THAT_CAN_BE_USED);
+                std::cout << "Using Ability: " << (i+1) << std::endl;
+                Sleep(DELAY_BETWEEN_ABILITIES);
+            }
+        }
+    }
+
+}
+
 GameResult StrategyMaker::runGame() {
     Finalizer logOnExit{[this] { this->logItems(); }};
 
@@ -546,8 +569,10 @@ GameResult StrategyMaker::runGame() {
             else if (gameInfo.didGameOver()) {
                 std::cout << "Game Over!" << std::endl;
                 return GameResult::DEFEAT;
+            } else {
+                useAbilities();
             }
-            Sleep(200);
+            Sleep(300);
 
         }
 
@@ -637,9 +662,11 @@ GameResult StrategyMaker::followStrategy(std::vector<Action>& childrenStrategy) 
                 std::cout << "Game Over!" << std::endl;
 
                 return GameResult::DEFEAT;
+            } else {
+                useAbilities();
             }
 
-            Sleep(200);
+            Sleep(300);
 
         }
         
