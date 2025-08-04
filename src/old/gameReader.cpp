@@ -5,6 +5,7 @@ using namespace std;
 #include <fstream>
 #include <windows.h>
 #include <string>
+#include<vector>
 using json = nlohmann::json;
 
 #include "gameReader.h"
@@ -22,7 +23,7 @@ int prevRound = 0;
 int prevLogNumber = 0;
 int prevTowerPlaced = 0;
 int startRound = -1; // riyal or fakeh
-
+vector<int> AbilityList;
 
 bool towerPlacedSuccessfully() {
     
@@ -91,6 +92,8 @@ void updateValues() {
     totalAbilities = gameDataJson["TotalAbilities"];
     logNumber = gameDataJson["LogNumber"];
     startRound = gameDataJson["StartRound"];
+    AbilityList = gameDataJson["Abilities"].get<std::vector<int>>();
+
 
     
 }
@@ -120,6 +123,11 @@ void didLogFileChange() {
 }
 bool soy = false;
 namespace gameInfo {
+
+    std::vector<int> getAbilities() {
+        return AbilityList;
+    }
+
     void initialize() {
         updateValues();
     }

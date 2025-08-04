@@ -6,7 +6,9 @@
   "Lives": 200,
   "TowersPlaced": 2,
   "TotalAbilities": 0,
-  "LogNumber": 1,
-  "StartRound": 1
+  "LogNumber": 4,
+  "StartRound": 1,
+  "Abilities": [
+  ]
 }
 

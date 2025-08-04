@@ -60,7 +60,7 @@ public:
     bool isValidBTD6Upgrade(std::array<int, 3> path);
     int roundToNearest5(int num, float multiplier);
 
-    //refactor soon
+    //refactor soon 2025-08-03 -> jk it works so fucking well why would I refactor it works perfectly 
     std::vector<UpgradeOption> getLegalUpgrades();
     std::vector<UpgradeOption> getAvailableUpgrades();
     std::vector<PlacementOption> getTowerPlacementOptions();

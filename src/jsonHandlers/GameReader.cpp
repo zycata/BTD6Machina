@@ -87,6 +87,7 @@ void GameReader::updateValues() {
     totalAbilities = gameDataJson["TotalAbilities"];
     logNumber = gameDataJson["LogNumber"];
     startRound = gameDataJson["StartRound"];
+    Abilities = gameDataJson["Abilities"].get<std::vector<int>>();
 }
 
 void GameReader::didLogFileChange() {
@@ -111,6 +112,10 @@ void GameReader::didLogFileChange() {
 
 void GameReader::initialize() {
     updateValues();
+}
+
+std::vector<int> GameReader::getAbilities() {
+    return Abilities;
 }
 
 void GameReader::changeFilePath(const std::string& newPath) {

@@ -53,7 +53,18 @@ map<int, BYTE> towerKeyScan = {
     {25, 0x19} // DESPERADO NOT SET PLEASE CHANGE jk i did change it it's P allegedly... P diddy haha im so funny
 };
 
-
+std::map<int, BYTE> numberScanCodes = {
+    {1, 0x02}, // '1'
+    {2, 0x03}, // '2'
+    {3, 0x04}, // '3'
+    {4, 0x05}, // '4'
+    {5, 0x06}, // '5'
+    {6, 0x07}, // '6'
+    {7, 0x08}, // '7'
+    {8, 0x09}, // '8'
+    {9, 0x0A}, // '9'
+    {0, 0x0B}  // '0'
+};
 
 void moveMouse(int x, int y) {
     // Set the cursor position
@@ -121,6 +132,13 @@ void placeHero( int x, int y) {
 
 
 namespace mouseControl {
+
+
+
+    void useAbility(int abilityIndex) {
+        pressKeyScan(numberScanCodes[abilityIndex]);
+        
+    }
 
     bool placeTower(int tower, int x, int y) {
         // hero key scan doesnt work because fuckass game :sob: 
@@ -256,23 +274,7 @@ namespace mouseControl {
 using namespace mouseControl;
 int main() {
     cout << "Script Started" << endl;
-
-    addTowers(); 
-    findWindow();
-    
-    
-    placeHero( 100, 200);
-    placeTower(17, 300, 400); 
-    placeTower(13, 300, 690);
-    upgradeTower(300, 690, 2);
-    upgradeTower(300, 690, 2);
-    upgradeTower(300, 690, 1);
-    upgradeTower(300, 690, 1);
-    upgradeTower(300, 690, 1);
-    upgradeTower(300, 690, 1); 
-    upgradeTower(300, 690, 1); 
-
-
-    moveMouse(0, 0);
+    Sleep(1000 );
+    useAbility(1);
     return 0;
 } */

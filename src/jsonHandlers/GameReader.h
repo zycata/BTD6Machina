@@ -22,7 +22,7 @@ private:
     int prevLogNumber = 0;
     int prevTowerPlaced = 0;
     int startRound = -1;
-
+    std::vector<int> Abilities = {};
     // Private helper functions
     json readJsonFile();
 
@@ -35,6 +35,7 @@ public:
     GameReader();
 
     // Public interface
+    std::vector<int> getAbilities();
     void changeFilePath(const std::string& newPath);
     void initialize();
     int getCash();

@@ -2,6 +2,7 @@
 #define gameReader_H
 
 namespace gameInfo {
+    std::vector<int> getAbilities();
     void initialize();
     int getCash();
     int getStartRound();

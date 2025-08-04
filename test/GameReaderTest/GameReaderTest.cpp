@@ -5,6 +5,7 @@
 #include <string>
 #include <windows.h>
 #include <thread>
+#include <vector>
 using namespace std;
 // 
 // in this folder ofc bevause im the goat
@@ -24,11 +25,16 @@ bool assertEquals(const T& expected, const T& actual, const string& message) {
 
 void testReaderValues() {
     GameReader reader("testJsons/test1.json");
+    assertEquals(0, static_cast<int>(reader.getAbilities().size()), "First Ability offColdown");
     assertEquals(false, reader.didGameOver(), "Game is not over here");
+
     assertEquals(false, reader.didGameWon(), "Game has not been won yet...");
     assertEquals(650, reader.getCash(), "Cash should be at 650");
     reader.changeFilePath("testJsons/test2.json");
-    assertEquals(1234, reader.getCash(), "Cash should be at 1234");
+    assertEquals(9954834, reader.getCash(), "Cash should be at 9954834");
+    assertEquals(3, static_cast<int>(reader.getAbilities().size()), "Ability should have 3 of em now");
+    
+    
 
 
 
@@ -38,6 +44,8 @@ void func() {
     Sleep(2000);
     system("pause");
 }
+
+
 
 void testEmptyStr() {
     GameReader reader("testJsons/Invalid.json");
@@ -49,10 +57,19 @@ void testEmptyStr() {
 
 }
 
-
+void testGettingAbilities() {
+    GameReader reader("testJsons/test2.json");
+    cout << "here works" << endl;
+    reader.getCash();
+    vector<int> s = reader.getAbilities();
+    for (const auto &h : s) {
+        cout << h << endl;
+    }
+}
 int main() {
     testReaderValues();
-    testEmptyStr();
+    //testEmptyStr();
+    testGettingAbilities();
     system("pause");
     return 0;
 }
