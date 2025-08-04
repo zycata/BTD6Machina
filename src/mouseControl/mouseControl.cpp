@@ -133,7 +133,15 @@ void placeHero( int x, int y) {
 
 namespace mouseControl {
 
-
+    void initializeWindow() {
+        CONST int delay = 50;
+        moveMouse(1075, 107); // Intiailize the window
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+    }
     // only works with abilities 0 - 9, nothing more
     void useAbility(int abilityIndex) {
         pressKeyScan(numberScanCodes[abilityIndex]);

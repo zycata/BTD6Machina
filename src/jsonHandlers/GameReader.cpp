@@ -8,6 +8,7 @@ using namespace std;
 using namespace std;
 using json = nlohmann::json;
 #include "GameReader.h"
+#include "../mouseControl/mouseControl.h"
 
 
 
@@ -57,7 +58,7 @@ json GameReader::readJsonFile(){
 
 void GameReader::updateValues() {
     json gameDataJson = readJsonFile();
-    int maxAttempts = 10;
+    int maxAttempts = 15;
     int attempts = 0;
     // fun fact nasa code has to always have max attempts to do x or like an exit condition that has to hit, even tho true "while x" usually are coded with
     // the intent to run until it succeeds, and probably will, because of the nature of space exploration, they impose a max limit to prevent infinite loops from fuckass bugs idk
@@ -70,6 +71,7 @@ void GameReader::updateValues() {
         attempts++;
         
         if (attempts <= maxAttempts) {
+            
             return;
         }
     }
@@ -93,18 +95,20 @@ void GameReader::updateValues() {
 void GameReader::didLogFileChange() {
     updateValues();
     
-    // 15 times 1.5 seconds to check right??? should be enuffs
-    const int maxIterations = 15;
+    // 25 times 2.5 seconds to check right??? should be enuffs
+    const int maxIterations = 25;
     int iterations = 0;
 
     while (logNumber == prevLogNumber && iterations < maxIterations) {
         Sleep(100);
         updateValues();
         iterations++;
+
     }
 
     // use this to get rtid of level up or something
     if (logNumber == prevLogNumber) {
+        mouseControl::initializeWindow(); // to get rid of level ups tru tru
         std::cerr << "Max attempts to read json file reached, returning previously found values" << std::endl;
     }
 }
