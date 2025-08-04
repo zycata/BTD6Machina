@@ -18,9 +18,10 @@ class GenerationHandler {
         int roundsCutOffPerGeneration;
         int childrenPerGeneration;
         bool victoryFound = false;
+        AlgorithmSettings settings;
 
         void loadSettings() {
-            AlgorithmSettings settings = jsonManager.getAlgorithmSettingsFromJson();
+            this->settings = jsonManager.getAlgorithmSettingsFromJson();
             // loading settings ME WHEN i have SETTINGS to LOAD
             this->filePathToGameData = settings.filePathToGameData;
             this->gameDifficulty = settings.difficulty;
@@ -231,10 +232,18 @@ class GenerationHandler {
                 this->curGeneration = 1;
                 jsonManager.setGenFilePath(curGeneration);
                 Generation patientZero;
+                cout << "Choosing what type of strategy to do \n \n \n" << endl;
+                system("pause");
                 if (startingStrategy == nullptr) {
+                    cout << "Starting Completely from scratch" << endl;
                     patientZero = runGeneration(dummyStrategy);
                 } else {
+                    cout << "Starting with given first strategy" << endl;
+                    cout << "Size of starting strategy: " << startingStrategy->actions.size() << endl;
+                    //Strategy temp = *startingStrategy;
+                    roundsCutOffPerGeneration = -1;
                     patientZero = runGeneration(*startingStrategy);
+                    roundsCutOffPerGeneration = settings.roundsCutOffPerGeneration;
                     delete startingStrategy;
                 }
 
@@ -270,7 +279,7 @@ int main() {
     GenerationHandler naturalSelection;
     system("pause");
     naturalSelection.startTheAI();
-
+    system("pause");
 
     return 0;
 }
