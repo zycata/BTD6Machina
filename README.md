@@ -12,7 +12,6 @@
 - guyss i had to mod btd6 to reliably get game data to feed to this thing
 - yeah probaly will also link the btd6 mod (questionably made???) i made soon^tm
 - what's an if statement
-- I will try to make some goofy ahh youtube video about this just like b2b but std::err motivation not found
 - I have this habit of writign random ass life stories in my code i would rather yall not look for them
 
 
@@ -29,5 +28,9 @@
 - I will UPPLOAD the mod when Im DONE TRUST...
 
 **Q: How does it decide what random new stuff to try?**  
-- I have 800 hours in BTD6 (I need to socialize with people in the flesh) and I just let it be more prone to choose certain upgrades that are costlier when rounds are later and vice versa during early rounds,  
+- I have 800 hours in BTD6 (I need to socialize with people and touch grass) and I just let it be more prone to choose certain upgrades that are costlier when rounds are later and vice versa during early rounds, 
 - this is also unsupervised type learning (IM PRETTY SURE) so like i kinda want it to randomly try shit and then learn for itself
+
+**Q: Will a video be made on this?**
+- yes yes yes yes im putting this to remind me to do that i have a bunch of clips in davinci and some shit shoved into a poorly made script but YES i will get onto that
+- unfortunately im not too familiar with davinci i used to use kapwing and some capcut but those now have an ugly watermark
