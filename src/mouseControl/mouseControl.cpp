@@ -133,6 +133,16 @@ void placeHero( int x, int y) {
 
 namespace mouseControl {
 
+    void clickOnTower(int x, int y) {
+        CONST int delay = 80;
+        moveMouse(x, y);
+        Sleep(delay);
+        clickMouse();
+        Sleep(delay);
+        unclickMouse();
+        Sleep(delay);
+    }
+
     void initializeWindow() {
         CONST int delay = 50;
         moveMouse(1075, 107); // Intiailize the window

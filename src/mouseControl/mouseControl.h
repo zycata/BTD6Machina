@@ -4,6 +4,7 @@
 #define mouseControl_H
 
 namespace mouseControl {
+    void clickOnTower(int x, int y);
     void initializeWindow();
     void useAbility(int abilityIndex);
     bool placeTower(int tower, int x, int y);
