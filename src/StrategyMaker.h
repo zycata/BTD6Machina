@@ -26,10 +26,11 @@ private:
     std::vector<int> towersAllowed;
     GameReader gameInfo;
 
-    const int xMAx = 1000;
-    const int yMax = 690;
+    // gonna make these bounds closer to the screen cause the ai really likes to put things near the edge
+    const int xMAx = 980;
+    const int yMax = 670;
     const int yMin = 60;
-    const int xMin = 40;
+    const int xMin = 50;
 
     int startRound;
     const UpgradeOption emptyUpgrade; // Empty upgrade option to return when no upgrades are available

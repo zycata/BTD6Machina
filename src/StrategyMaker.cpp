@@ -559,34 +559,27 @@ GameResult StrategyMaker::runGame() {
             int roll = getRandomInt(1, 100);
             int placementChance = getPlacementChance(this->currentRound);
 
+            // general flow chart:
+            // isThere a target upgrade? yes -> upgrade it no? save up 
+            // after yes, check roll for placing or upgrading for another target upgrade.
             if (targetUpgrade.isValid() && targetUpgrade.cost <= cash) {
                 std::cout << "UPGRADING TOWER THAT HAS BEEN SAVED UP FOR" << std::endl;
                 std::cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << std::endl;
                 targetUpgrade = emptyUpgrade;
             }
-            if (roll <= placementChance) { 
+
+            if (targetUpgrade.isValid() && targetUpgrade.cost > cash) {
+                std::cout << "Still saving up to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
+                std::cout << "saving for the target upgrade...." << std::endl;
+                    // do nothing, save up for the target upgrade
+            }
+            else if (roll <= placementChance) { 
                 // Placement algorithm two guys trust me imma lock tf in
                 std::cout << "Placing towers" << std::endl;
                 placementAlgorithmOne(); // guys im siorry but plcaement algorithm one is cracked...
             }
             else {
-                // pretty much selec ts a target upgrade yes yes true true....
-                // if (targetUpgrade) pretty much just checks if it is null
-                /*if (targetUpgrade.isValid() && targetUpgrade.cost <= cash) {
-                    upgradeTower(targetUpgrade.towerId, targetUpgrade.path);
-                    std::cout << "UPGRADING TOWER THAT HAS BEEN SAVED UP FOR" << std::endl;
-                    std::cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << std::endl;
-                    // targetUpgrade = emptyUpgrade;
-                    targetUpgrade = upgradeAlgorithmTwo();
-                } else*/
-                if (targetUpgrade.isValid() && targetUpgrade.cost > cash) {
-                    std::cout << "Still saving up to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
-                    std::cout << "saving for the target upgrade...." << std::endl;
-                    // do nothing, save up for the target upgrade
-                }
-                else {
-                    targetUpgrade = upgradeAlgorithmTwo(); // get a new target upgrade
-                }
+                targetUpgrade = upgradeAlgorithmTwo(); 
             }
         }
 
