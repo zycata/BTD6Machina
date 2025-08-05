@@ -417,7 +417,8 @@ void StrategyMaker::upgradeAlgorithmOne() {
 
 void StrategyMaker::singleRoundLoopAlgorithmOne() {
     // make it slightly more prone to placing towers than upgrading
-    int choice = getRandomInt(1, 7); // Randomly choose between placing a tower or upgrading a tower
+    // Ik magic numbers are bad but ill unmagic them soon^tm
+    int choice = getRandomInt(1, 6); // Randomly choose between placing a tower or upgrading a tower
     if (choice <= 3 || totalTowers < 5) { // if total towers is less than 5, always place a tower
         std::cout << "Placing towers..." << std::endl;
         placementAlgorithmOne();
@@ -448,8 +449,8 @@ UpgradeOption StrategyMaker::getTargetUpgrade() {
 // remember to add chedk if it returns a valid upgrade
 // add something to reason with the price lmao yes true true amongla swag....
 UpgradeOption StrategyMaker::upgradeAlgorithmTwo() {
-    int maxAttempts = 7;
-    for (int j = 0; j < maxAttempts; j++) {
+    int maxTowersUpgradedARound = 7;
+    for (int j = 0; j < maxTowersUpgradedARound; j++) {
         UpgradeOption targetUpgrade = getTargetUpgrade();
         this->cash = gameInfo.getCash(); // update cash before upgrade
         if (targetUpgrade.isAllowed && targetUpgrade.cost <= cash) {
@@ -481,7 +482,7 @@ bool StrategyMaker::didRoundEnd() {
 void StrategyMaker::startNextRound() {
     if (currentRound == startRound) {
         mouseControl::ClickStartNextRound();
-        // click it twice for fast forward round 1 lmao
+        // click it twice for fast forward round 1 lmao not round one i meant if it was the first round 
     }
 
     mouseControl::ClickStartNextRound();
@@ -492,21 +493,33 @@ void StrategyMaker::useAbilities() {
     int MAX_ABILITIES_THAT_CAN_BE_USED = 10;
     int DELAY_BETWEEN_ABILITIES = 150;
     std::vector<int> abilitiesAtOurDisposal = gameInfo.getAbilities();
-    if (abilitiesAtOurDisposal.size() > MAX_ABILITIES_THAT_CAN_BE_USED) {
-        for (int i = 0; i < MAX_ABILITIES_THAT_CAN_BE_USED; i++) {
-            if (abilitiesAtOurDisposal[i] <= 0) {
-                mouseControl::useAbility((i+1)%MAX_ABILITIES_THAT_CAN_BE_USED);
-                std::cout << "Using Ability: " << (i+1) << std::endl;
-                Sleep(DELAY_BETWEEN_ABILITIES);
-            }
+
+    // Determine the number of abilities to check, using the smaller of the two values.
+    int abilitiesToCheck =  (MAX_ABILITIES_THAT_CAN_BE_USED < abilitiesAtOurDisposal.size()) ? MAX_ABILITIES_THAT_CAN_BE_USED : abilitiesAtOurDisposal.size();
+    std::vector<int> prevAbilities = abilitiesAtOurDisposal;
+    
+    for (int i = 0; i < abilitiesToCheck; ++i) {
+        
+        if (abilitiesAtOurDisposal[i] <= 0) {
+            mouseControl::useAbility((i + 1) % MAX_ABILITIES_THAT_CAN_BE_USED);
+            std::cout << "Using Ability: " << (i + 1) << std::endl;
+            Sleep(DELAY_BETWEEN_ABILITIES);
         }
-    } else {
-        for (int i = 0; i < abilitiesAtOurDisposal.size(); i++) {
-            if (abilitiesAtOurDisposal[i] <= 0) {
-                mouseControl::useAbility((i+1)%MAX_ABILITIES_THAT_CAN_BE_USED);
-                std::cout << "Using Ability: " << (i+1) << std::endl;
-                Sleep(DELAY_BETWEEN_ABILITIES);
-            }
+    }
+    Sleep(DELAY_BETWEEN_ABILITIES);
+    this->cash = gameInfo.getCash(); // to anybody reading this im doing this just to update the json (im lazy to make a better way)
+    abilitiesAtOurDisposal = gameInfo.getAbilities();
+    int firstTowerX = TowersPlaced.front().getX();
+    int firstTowerY = TowersPlaced.front().getY();
+    for (int i = 0; i < abilitiesToCheck; ++i) {
+        
+        if (abilitiesAtOurDisposal[i] <= 0 && prevAbilities[i] == abilitiesAtOurDisposal[i]) {
+            // std::cout << "Ability cooldown: " << abilitiesAtOurDisposal[i] << std::endl;
+            // mouseControl::useAbility((i + 1) % MAX_ABILITIES_THAT_CAN_BE_USED);
+            Sleep(DELAY_BETWEEN_ABILITIES);
+            mouseControl::clickOnTower(firstTowerX, firstTowerY);
+            std::cout << "Using Ability: " << (i + 1) << std::endl;
+            Sleep(DELAY_BETWEEN_ABILITIES);
         }
     }
 
@@ -545,6 +558,12 @@ GameResult StrategyMaker::runGame() {
         } else {
             int roll = getRandomInt(1, 100);
             int placementChance = getPlacementChance(this->currentRound);
+
+            if (targetUpgrade.isValid() && targetUpgrade.cost <= cash) {
+                std::cout << "UPGRADING TOWER THAT HAS BEEN SAVED UP FOR" << std::endl;
+                std::cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << std::endl;
+                targetUpgrade = emptyUpgrade;
+            }
             if (roll <= placementChance) { 
                 // Placement algorithm two guys trust me imma lock tf in
                 std::cout << "Placing towers" << std::endl;
@@ -553,14 +572,15 @@ GameResult StrategyMaker::runGame() {
             else {
                 // pretty much selec ts a target upgrade yes yes true true....
                 // if (targetUpgrade) pretty much just checks if it is null
-                if (targetUpgrade.isAllowed && targetUpgrade.cost <= cash) {
+                /*if (targetUpgrade.isValid() && targetUpgrade.cost <= cash) {
                     upgradeTower(targetUpgrade.towerId, targetUpgrade.path);
                     std::cout << "UPGRADING TOWER THAT HAS BEEN SAVED UP FOR" << std::endl;
                     std::cout << "Upgraded tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << " to tier " << targetUpgrade.tier << std::endl;
                     // targetUpgrade = emptyUpgrade;
                     targetUpgrade = upgradeAlgorithmTwo();
-                } else if (targetUpgrade.isAllowed && targetUpgrade.cost > cash) {
-                    std::cout << "Not enough cash to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
+                } else*/
+                if (targetUpgrade.isValid() && targetUpgrade.cost > cash) {
+                    std::cout << "Still saving up to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
                     std::cout << "saving for the target upgrade...." << std::endl;
                     // do nothing, save up for the target upgrade
                 }
@@ -596,7 +616,7 @@ GameResult StrategyMaker::runGame() {
             } else {
                 useAbilities();
             }
-            Sleep(300);
+            Sleep(500);
 
         }
 
@@ -692,7 +712,7 @@ GameResult StrategyMaker::followStrategy(const std::vector<Action>& parentStrate
                 useAbilities();
             }
 
-            Sleep(300);
+            Sleep(500);
 
         }
         
