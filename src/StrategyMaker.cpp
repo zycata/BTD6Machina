@@ -1,7 +1,6 @@
 #include "StrategyMaker.h"
 #include "mouseControl/mouseControl.h"
 #include "jsonHandlers/GameReader.h"
-#include "jsonHandlers/jsonManager.hpp"
 #include "gameTypes.h" // Contains Difficulty, GameResult, Tower, Action, UpgradeOption, PlacementOption, towerUpgrades, towerCosts, towerMap, towersAllowed, INVALID
 
 #include <iostream>
@@ -80,7 +79,7 @@ StrategyMaker::StrategyMaker(Difficulty type, std::string filePath, std::vector<
             break;
     }
 
-    std::cout << "Starting at Current round: " << currentRound << " Difficulty: " << to_string(type) << std::endl;
+    //std::cout << "Starting at Current round: " << currentRound << " Difficulty: " << to_string(type) << std::endl;
 
     // mouseControl::initializeMouseControls();
     srand(time(0));
