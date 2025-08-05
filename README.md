@@ -5,6 +5,14 @@
 - Hopefully it works eventually
 - First actual big cpp project
 
+
+# FlowChart & include hierarchy below
+
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/4be4b520-ddb0-4b02-be17-e75336d3e701" />
+
+
+
+
 ## This is a personal project done on my free time because I thought it'd be very interesting
 - So far I need to actually make the ai make decisions
 - Most complicated math I've used is multiplication (not even division yet)
