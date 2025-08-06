@@ -27,10 +27,12 @@ private:
     GameReader gameInfo;
 
     // gonna make these bounds closer to the screen cause the ai really likes to put things near the edge
-    const int xMAx = 980;
-    const int yMax = 670;
-    const int yMin = 60;
-    const int xMin = 50;
+    // no but like actually why the fuck does the ai always fuck up the placement on good spots but always chooses near the outer edge?
+    // CAUSE LIKE IK COMPUTERS R PSUEODRANDOM BUT LIKE IT SHOULD BE UNIFORM
+    const int xMAx = 950;
+    const int yMax = 650;
+    const int yMin = 70;
+    const int xMin = 60;
 
     int startRound;
     const UpgradeOption emptyUpgrade; // Empty upgrade option to return when no upgrades are available

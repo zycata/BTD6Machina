@@ -298,12 +298,13 @@ bool StrategyMaker::upgradeTower(int towerId, int path) {
     //implement mouse control later
     for (auto& tower : TowersPlaced) {
         if (tower.getTowerId() == towerId) {
+            this->cash = gameInfo.getCash();
             tower.path[path]++;
             mouseControl::upgradeTower(tower.getX(), tower.getY(), path);
 
 
             int cost = roundToNearest5(towerUpgrades[tower.getTowerType()][path][tower.path[path]], cashMultiplier);
-            Sleep(200); // wait for the upgrade to be applied
+            Sleep(250); // wait for the upgrade to be applied
             if (cash > gameInfo.getCash()) {
                 this->cash = gameInfo.getCash(); // update cash after upgrade
                 StrategyActions.push_back({Action::UPGRADE, &tower, tower.getX(), tower.getY(), tower.getTowerType(), path, currentRound, towerId});
@@ -364,6 +365,9 @@ void StrategyMaker::placementAlgorithmOne(int maxAttempts) {
     for (int i = 0; i < maxAttempts; i++) {
 
         std::vector<PlacementOption> newTowers = getTowerPlacementOptions();
+
+
+
         if(newTowers.size() == 0) {
             std::cout << "No towers available for placement." << std::endl;
             return;
@@ -371,7 +375,17 @@ void StrategyMaker::placementAlgorithmOne(int maxAttempts) {
             std::cout << "Towers available for placement: " << newTowers.size() << std::endl;
         }
         int randomNum = rand() % newTowers.size();
+
+        // place hero if affordable and already not placed (getTowerPlacementOptionsChecks for if hero is placed)
+        for (int i = 0; i < newTowers.size(); i++) {
+            if (newTowers[i].towerType == 0) {
+                randomNum = i;
+                break;
+            }
+        }
+
         PlacementOption selectedTower = newTowers[randomNum];
+
         placeRandomTower(selectedTower);
         std::cout << "Cash after placement: " << cash << std::endl;
     }
@@ -418,7 +432,7 @@ void StrategyMaker::upgradeAlgorithmOne() {
 void StrategyMaker::singleRoundLoopAlgorithmOne() {
     // make it slightly more prone to placing towers than upgrading
     // Ik magic numbers are bad but ill unmagic them soon^tm
-    int choice = getRandomInt(1, 6); // Randomly choose between placing a tower or upgrading a tower
+    int choice = getRandomInt(1, 5); // Randomly choose between placing a tower or upgrading a tower
     if (choice <= 3 || totalTowers < 5) { // if total towers is less than 5, always place a tower
         std::cout << "Placing towers..." << std::endl;
         placementAlgorithmOne();
@@ -569,9 +583,10 @@ GameResult StrategyMaker::runGame() {
             }
 
             if (targetUpgrade.isValid() && targetUpgrade.cost > cash) {
-                std::cout << "Still saving up to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
+                std::cout << "Still saving up to upgrade tower ID " << targetUpgrade.towerId << " on path " << targetUpgrade.path << "tier: " << targetUpgrade.tier << ". Required: " << targetUpgrade.cost << ", Available: " << cash << std::endl;
                 std::cout << "saving for the target upgrade...." << std::endl;
                     // do nothing, save up for the target upgrade
+                
             }
             else if (roll <= placementChance) { 
                 // Placement algorithm two guys trust me imma lock tf in
