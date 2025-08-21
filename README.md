@@ -29,9 +29,8 @@
 - Quick Summary of a Genetic Algorithm -> Pretty much tries a bunch of shit and see which ones do the best, and then makes variations of the best, until it succeeds/fails forever
 
 **Q: How does this thing read and know what happens in game?**  
-- unlike b2b i have a massive skill issue and am unable to directly read from ram so i just created a little mod using the help of melonloader that pretty much writes to a json file to be read by this jumble of code.  
-- but like honestly what i did is kinda prone to bugs so I will 100% need to fix it a little bit hahahahaha... (im going insane) but yes
-- I will UPPLOAD the mod when Im DONE TRUST...
+- Being unable to read from the ram, or that process being extremely difficult, I created a mod with melonloader to effectively be able interpret game values.
+- This works by sending out json files periodically to update the AI on what's happening.
 
 **Q: How does it decide what random new stuff to try?**  
 - I have 800 hours in BTD6  and I just let it be more prone to choose certain upgrades that are costlier when rounds are later and vice versa during early rounds, 
