@@ -1,9 +1,7 @@
-# BTD6 AI TRUST
+# BTD6 AI 
 
-- very very basic algorithm (honestly sorta even brute force to some part) to try to beat btd6
+- Algorithm using genetic evolution learning to learn how to play the game
 - inspired by b2b studio's video about 3 years ago
-- Hopefully it works eventually
-- First actual big cpp project
 
 
 # FlowChart & include hierarchy below
@@ -36,9 +34,9 @@
 - I will UPPLOAD the mod when Im DONE TRUST...
 
 **Q: How does it decide what random new stuff to try?**  
-- I have 800 hours in BTD6 (I need to socialize with people and touch grass) and I just let it be more prone to choose certain upgrades that are costlier when rounds are later and vice versa during early rounds, 
+- I have 800 hours in BTD6  and I just let it be more prone to choose certain upgrades that are costlier when rounds are later and vice versa during early rounds, 
 - this is also unsupervised type learning (IM PRETTY SURE) so like i kinda want it to randomly try shit and then learn for itself
 
 **Q: Will a video be made on this?**
-- yes yes yes yes im putting this to remind me to do that i have a bunch of clips in davinci and some shit shoved into a poorly made script but YES i will get onto that
-- unfortunately im not too familiar with davinci i used to use kapwing and some capcut but those now have an ugly watermark
+- yes yes yes yes im putting this to remind me to do that i have a bunch of clips in davinci and will hopefully finish that soon
+- unfortunately im not too familiar with davinci i used to use kapwing and some capcut but those now have a watermark for free use
