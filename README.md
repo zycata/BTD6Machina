@@ -2,7 +2,7 @@
 
 - Algorithm using genetic evolution learning to learn how to play the game
 - inspired by b2b studio's video about 3 years ago
-
+- link to video of it beating chimps: https://www.youtube.com/watch?v=b4V2-yvDnXA
 
 # FlowChart & include hierarchy below
 
