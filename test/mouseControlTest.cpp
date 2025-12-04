@@ -3,7 +3,7 @@
 #include <ctime>
 #include <windows.h>
 //impoppable mode on monkey meadows btw...
-// g++ test/mouseControlTest.cpp src/mouseControl/mouseControl.cpp -o mouseControlTest.exe
+// g++ test/mouseControlTest.cpp src/mouseControl/mouseControl.cpp -o test/mouseControlTest.exe
 // since it controls map you gotta like open the game yeah yeah bruh momentenoes
 
 using namespace mouseControl;
