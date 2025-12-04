@@ -21,7 +21,7 @@ TEST_GAMETYPES_SOURCES = src\gameTypes.cpp test\gameTypesTest.cpp
 TEST_GAMETYPES_TARGET = test\gameTypesTest.exe
 TEST_GAMETYPES_OBJS = $(TEST_GAMETYPES_SOURCES:.cpp=.o) 
 
-
+# omg why do you have to use \ instead of / bruh
 test_gametypes: $(TEST_GAMETYPES_TARGET)
 $(TEST_GAMETYPES_TARGET): $(TEST_GAMETYPES_OBJS)
 	$(CC) $(CFLAGS) $(TEST_GAMETYPES_OBJS) -o $(TEST_GAMETYPES_TARGET) $(LDFLAGS)
