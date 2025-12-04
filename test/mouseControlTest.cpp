@@ -4,6 +4,7 @@
 #include <windows.h>
 //impoppable mode on monkey meadows btw...
 // g++ test/mouseControlTest.cpp src/mouseControl/mouseControl.cpp -o test/mouseControlTest.exe
+// clang  test/mouseControlTest.cpp src/mouseControl/mouseControl.cpp -o test/mouseControlTest.exe -lUser32
 // since it controls map you gotta like open the game yeah yeah bruh momentenoes
 
 using namespace mouseControl;

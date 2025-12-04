@@ -270,6 +270,7 @@ class GenerationHandler {
 };
 
 // g++  -static src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp resource.o -o ATestSetting/aitd6v4
+// clang src/GenerationHandler.cpp src/gameTypes.cpp src/StrategyMaker.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o ATestSetting/aitd6v5  -lUser32
 int main() {
     if (!mouseControl::initializeMouseControls()) {
         cout << "mouise control fails" << endl;

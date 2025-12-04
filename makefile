@@ -1,10 +1,11 @@
-CC = g++
+CC = g++ #clang
+#CXX = clang
 # gcc you need to include the fuckass linked to folders n shit because gcc is real
 # clang works too i think
 CFLAGS = -Wall -Wextra -g
 
 # -lstdc++ to manually link standard c library for gcc compiler
-LDFLAGS =  #-lstdc++
+LDFLAGS =  -lstdc++ -lUser32
 
 TARGET = # todo
 SOURCES = # todo
