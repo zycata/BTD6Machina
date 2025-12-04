@@ -283,7 +283,7 @@ class JsonManager {
             std::vector<int> towerCosts(TOTALTOWERCOUNT, INVALID); // omg you have to preallocate "26" spots before assigning by index because by default it's no spots
             // mfw when im doing a project that could be done in python but choose c++ because I love accessing invalid ram 
             // exit  code=3221225477 is just accessing invalid ram (Me when i want to access the wrong electrons.... pretty please windows???)
-            for (size_t i = 0; i < TOTALTOWERCOUNT; ++i) {
+            for (int i = 0; i < TOTALTOWERCOUNT; ++i) {
                 try {
                     //std::cout << "Loading tower cost for: " << kTowerNames[i] << std::endl;
                     //std::cout << "Tower cost: " << jsonOpt.at(kTowerNames[i]).get<int>() << std::endl;

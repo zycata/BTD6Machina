@@ -4,7 +4,7 @@
 #include "../src/gameTypes.h"
 #include <string>
 using namespace std;
-// g++ src/gameTypes.cpp test/gameTypesTest.cpp -o test/gameTypesTest
+// g++ src/gameTypes.cpp test/gameTypesTest.cpp -o test/gameTypesTest.exe
 template<typename T>
 bool assertEquals(const T& expected, const T& actual, const string& message) {
     if (expected != actual) {

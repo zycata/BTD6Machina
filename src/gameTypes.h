@@ -21,13 +21,16 @@ enum GameResult { VICTORY, DEFEAT, FINISHEDSTRATEGY, OTHER };
 // Struct and Class Definitions (These define types and can be in headers)
 class Tower {
 private:
-    int towerId; // which tower it is for upgrading
+    int x;
+    int y; // for placement
     int tower;
-    std::string towerTypeStr;
-    int round_placed;
-    int x, y; // for placement
 
     bool isValidBTD6Upgrade(std::array<int, 3> path); // Declaration here, definition in .cpp or inline
+    int round_placed; 
+
+    int towerId; // which tower it is for upgrading
+    std::string towerTypeStr;
+
 
 public:
     std::array<int, 3> path = {0, 0, 0}; // represent cross pathing

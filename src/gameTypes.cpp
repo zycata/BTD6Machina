@@ -268,7 +268,7 @@ std::vector<int> towersAllowed = {0, 16, 17}; // only ninja monkey and alc atm +
 
 // Tower Class Member Function Definitions
 Tower::Tower(int xPos, int yPos, int towerCode, int path0, int path1, int path2, int roundPlaced, int id)
-    : towerTypeStr(towerMap[towerCode]), x(xPos), y(yPos), tower(towerCode), round_placed(roundPlaced), towerId(id)
+    : x(xPos), y(yPos), tower(towerCode), round_placed(roundPlaced), towerId(id),towerTypeStr(towerMap[towerCode])
 {
     path[0] = path0;
     path[1] = path1;
