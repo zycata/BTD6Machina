@@ -26,21 +26,29 @@ test_gametypes: $(TEST_GAMETYPES_TARGET)
 $(TEST_GAMETYPES_TARGET): $(TEST_GAMETYPES_OBJS)
 	$(CC) $(CFLAGS) $(TEST_GAMETYPES_OBJS) -o $(TEST_GAMETYPES_TARGET) $(LDFLAGS)
 
+clean_gametypes: 	# idk why it doesnt work
+	del $(TEST_GAMETYPES_OBJS) $(TEST_GAMETYPES_TARGET)
 
 #--------------------------Test tbd-----------------------------------# 
-TEST_SOURCES = test.cpp my_heap.cpp
-TEST_TARGET = test/test.exe
-test_test: $(TEST_TARGET)
+# g++ test/jsonHandlerTest/jsonHandlerTest.cpp src/gameTypes.cpp -o test/jsonHandlerTest/jsonHandlerTest
+TEST_JSONHANDLERS = test\jsonHandlerTest\jsonHandlerTest.cpp src\gameTypes.cpp
+TEST_JSONHANDLERS_TARGET = test\jsonHandlerTest\jsonHandlerTest.exe
+TEST_JSONHANDLERS_OBJS = $(TEST_JSONHANDLERS:.cpp=.o)
 
-$(TEST_TARGET): $(TEST_SOURCES)
-	$(CC) $(CFLAGS) $(TEST_SOURCES) -o $(TEST_TARGET) $(LDFLAGS)
+test_jsonhandler: $(TEST_JSONHANDLERS_TARGET)
+$(TEST_JSONHANDLERS_TARGET): $(TEST_JSONHANDLERS_OBJS)
+	$(CC) $(CFLAGS) $(TEST_JSONHANDLERS_OBJS) -o $(TEST_JSONHANDLERS_TARGET) $(LDFLAGS)
+
+clean_jsonhandler:
+	del $(TEST_JSONHANDLERS_OBJS) $(TEST_JSONHANDLERS_TARGET) 
 #--------------------------Clean-----------------------------------# 
 
 
 
 clean:
 	del $(TARGET)
-clean_gametypes: 	# idk why it doesnt work
-	del $(TEST_GAMETYPES_OBJS) $(TEST_GAMETYPES_TARGET)
-clean_test:
-	del $(TEST_TARGET)
+
+
+
+clean_all: clean_gametypes clean_jsonhandler
+	@echo "----cleaning all----"
