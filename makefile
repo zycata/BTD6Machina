@@ -2,19 +2,26 @@ CC = gcc #clang
 #CXX = clang
 # gcc you need to include the fuckass linked to folders n shit because gcc is real
 # clang works too i think
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g # -static 
 
 # -lstdc++ to manually link standard c library for gcc compiler
 LDFLAGS =  -lstdc++ -lUser32
 
-TARGET_MAIN = # todo
-SOURCES = # todo
+TARGET_MAIN = release\aitd6.exe
+SOURCES = src\GenerationHandler.cpp src\gameTypes.cpp src\StrategyMaker.cpp src\jsonHandlers\GameReader.cpp src\mouseControl\mouseControl.cpp
+SOURCES_MAIN_OBJS = $(SOURCES:.cpp=.o)
 
+ICON_SOURCE = resource.o
 
-all: $(TARGET_MAIN)
-
-$(TARGET_MAIN): $(SOURCES)
-	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET_MAIN) $(LDFLAGS)
+aitd6: $(TARGET_MAIN)
+$(TARGET_MAIN): $(SOURCES_MAIN_OBJS)
+	$(CC) $(CFLAGS) $(SOURCES_MAIN_OBJS) -o $(TARGET_MAIN) $(LDFLAGS)
+clean_main:
+	del $(TARGET_MAIN)
+clean_objs:
+	del $(SOURCES_MAIN_OBJS)
+clean_all: clean_objs clean_main
+	@echo "-------- Cleaned all -----------"
 
 
 #--------------------------Test GameTypes-----------------------------------# 
@@ -56,10 +63,8 @@ clean_gamereader:
 
 
 
-clean:
-	del $(TARGET_MAIN)
+tests: test_gamereader test_jsonhandler test_gametypes
+	@echo "----all tests built----"
 
-
-
-clean_all: clean_gametypes clean_jsonhandler clean_gamereader
+clean_tests: clean_gametypes clean_jsonhandler clean_gamereader
 	@echo "----cleaning all----"
