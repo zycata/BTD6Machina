@@ -15,11 +15,11 @@ TARGET_MAIN = release\aitd6.exe
 SOURCES = src\GenerationHandler.cpp src\gameTypes.cpp src\StrategyMaker.cpp src\jsonHandlers\GameReader.cpp src\mouseControl\mouseControl.cpp
 SOURCES_MAIN_OBJS = $(SOURCES:.cpp=.o)
 
-ICON_SOURCE = resource.o
+ICON_SOURCE = crossbowmaster.res
 
 aitd6: $(TARGET_MAIN)
 $(TARGET_MAIN): $(SOURCES_MAIN_OBJS)
-	$(CC) $(CFLAGS) $(SOURCES_MAIN_OBJS) -o $(TARGET_MAIN) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(SOURCES_MAIN_OBJS) $(ICON_SOURCE) -o $(TARGET_MAIN) $(LDFLAGS)
 clean_main:
 	del $(TARGET_MAIN)
 clean_objs:
