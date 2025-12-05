@@ -4,6 +4,14 @@
 - inspired by b2b studio's video about 3 years ago
 - link to video of it beating chimps: https://www.youtube.com/watch?v=b4V2-yvDnXA
 
+Requirements to compile:
+- make
+- gcc >= 6.3.0 (clang also should work)
+
+Compile with `make aitd6`
+Compile tests with `make tests`
+
+
 # FlowChart & include hierarchy below
 
 <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/4be4b520-ddb0-4b02-be17-e75336d3e701" />
