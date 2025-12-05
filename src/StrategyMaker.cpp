@@ -377,7 +377,7 @@ void StrategyMaker::placementAlgorithmOne(int maxAttempts) {
         int randomNum = rand() % newTowers.size();
 
         // place hero if affordable and already not placed (getTowerPlacementOptionsChecks for if hero is placed)
-        for (int i = 0; i < newTowers.size(); i++) {
+        for (unsigned int i = 0; i < newTowers.size(); i++) {
             if (newTowers[i].towerType == 0) {
                 randomNum = i;
                 break;
@@ -504,8 +504,8 @@ void StrategyMaker::startNextRound() {
 
 void StrategyMaker::useAbilities() {
     // std::cout << "Checking for Abilities that can be used..." << std::endl;
-    int MAX_ABILITIES_THAT_CAN_BE_USED = 10;
-    int DELAY_BETWEEN_ABILITIES = 150;
+    unsigned int MAX_ABILITIES_THAT_CAN_BE_USED = 10;
+    unsigned int DELAY_BETWEEN_ABILITIES = 150;
     std::vector<int> abilitiesAtOurDisposal = gameInfo.getAbilities();
 
     // Determine the number of abilities to check, using the smaller of the two values.
@@ -662,7 +662,7 @@ GameResult StrategyMaker::followStrategy(const std::vector<Action>& parentStrate
 
     bool gameOver = false;
     std::size_t maxPointerSize = parentStrategy.size(); // Use std::size_t for size
-    int pointer = 0;
+    unsigned int pointer = 0;
     // start pointer at the first object
     const Action *curAction = nullptr; // Initialize to nullptr
     if (maxPointerSize > 0) {

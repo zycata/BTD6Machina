@@ -65,8 +65,8 @@ class GenerationHandler {
             */
            int RoundWeight = 1000;
            int HowMuchCashToWeighARound = 5000; 
-
-           return (roundObtained * RoundWeight) + (endCash /  (HowMuchCashToWeighARound / RoundWeight));
+           score = (roundObtained * RoundWeight) + (endCash /  (HowMuchCashToWeighARound / RoundWeight));
+           return score;
 
         }
     
@@ -193,14 +193,10 @@ class GenerationHandler {
         
         
         void mainControlLoop(int prevGen, Generation &parentGeneration) {
-            int previousGeneration = prevGen;
-            
-
-
             
             Generation currentParentGeneration = parentGeneration;
             
-
+            int previousGeneration = prevGen; 
             while (!victoryFound) {
 
                 Strategy currentParentStrategy = findBestStrategy(currentParentGeneration.children);
@@ -209,7 +205,9 @@ class GenerationHandler {
                 Generation gen = runGeneration(currentParentStrategy);
                 jsonManager.setGenFilePath(curGeneration);
                 jsonManager.writeGenerationToFile(gen);
+                
                 previousGeneration = curGeneration;
+                
                 curGeneration++; // end of prev generation, so we increment to the next one
                 currentParentGeneration = gen;
 
