@@ -164,8 +164,8 @@ namespace mouseControl {
             placeHero(x,y);
             return true;
         }
-
-        if (tower >= towerKeyScan.size()) {
+        
+        if ((unsigned int) tower >= towerKeyScan.size()) {
             throw std::runtime_error("Invalid tower code (probably too big)");
         }
 

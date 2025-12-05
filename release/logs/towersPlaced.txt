@@ -1,0 +1,54 @@
+Towers placed: 53
+Tower ID: 1, Type: Hero, Position: (417, 397), Cross Pathing: 000, Round Placed: 6
+Tower ID: 2, Type: Dart Monkey, Position: (793, 162), Cross Pathing: 042, Round Placed: 7
+Tower ID: 3, Type: Boomerang Monkey, Position: (324, 368), Cross Pathing: 103, Round Placed: 9
+Tower ID: 4, Type: Glue Gunner, Position: (692, 193), Cross Pathing: 011, Round Placed: 10
+Tower ID: 5, Type: Wizard Monkey, Position: (145, 690), Cross Pathing: 102, Round Placed: 11
+Tower ID: 6, Type: Dart Monkey, Position: (912, 666), Cross Pathing: 011, Round Placed: 12
+Tower ID: 7, Type: Dart Monkey, Position: (82, 506), Cross Pathing: 032, Round Placed: 13
+Tower ID: 8, Type: Tack Shooter, Position: (701, 87), Cross Pathing: 011, Round Placed: 20
+Tower ID: 9, Type: Glue Gunner, Position: (184, 595), Cross Pathing: 420, Round Placed: 23
+Tower ID: 10, Type: Dart Monkey, Position: (933, 375), Cross Pathing: 402, Round Placed: 24
+Tower ID: 11, Type: Dart Monkey, Position: (106, 130), Cross Pathing: 210, Round Placed: 25
+Tower ID: 12, Type: Wizard Monkey, Position: (819, 708), Cross Pathing: 012, Round Placed: 26
+Tower ID: 13, Type: Boomerang Monkey, Position: (332, 183), Cross Pathing: 011, Round Placed: 27
+Tower ID: 14, Type: Druid, Position: (926, 594), Cross Pathing: 002, Round Placed: 31
+Tower ID: 15, Type: Mermonkey, Position: (71, 218), Cross Pathing: 110, Round Placed: 37
+Tower ID: 16, Type: Wizard Monkey, Position: (173, 517), Cross Pathing: 200, Round Placed: 37
+Tower ID: 17, Type: Wizard Monkey, Position: (366, 81), Cross Pathing: 202, Round Placed: 37
+Tower ID: 18, Type: Dartling Gunner, Position: (851, 129), Cross Pathing: 101, Round Placed: 39
+Tower ID: 19, Type: Spike Factory, Position: (627, 700), Cross Pathing: 320, Round Placed: 39
+Tower ID: 20, Type: Boomerang Monkey, Position: (418, 129), Cross Pathing: 031, Round Placed: 40
+Tower ID: 21, Type: Wizard Monkey, Position: (749, 511), Cross Pathing: 024, Round Placed: 40
+Tower ID: 22, Type: Monkey Buccaneer, Position: (541, 401), Cross Pathing: 120, Round Placed: 40
+Tower ID: 23, Type: Desperado, Position: (769, 83), Cross Pathing: 000, Round Placed: 44
+Tower ID: 24, Type: Ice Monkey, Position: (205, 684), Cross Pathing: 110, Round Placed: 44
+Tower ID: 25, Type: Glue Gunner, Position: (141, 78), Cross Pathing: 011, Round Placed: 44
+Tower ID: 26, Type: Desperado, Position: (393, 712), Cross Pathing: 100, Round Placed: 44
+Tower ID: 27, Type: Glue Gunner, Position: (328, 418), Cross Pathing: 000, Round Placed: 47
+Tower ID: 28, Type: Bomb Shooter, Position: (129, 482), Cross Pathing: 100, Round Placed: 47
+Tower ID: 29, Type: Ninja Monkey, Position: (58, 423), Cross Pathing: 020, Round Placed: 48
+Tower ID: 30, Type: Tack Shooter, Position: (266, 77), Cross Pathing: 103, Round Placed: 48
+Tower ID: 31, Type: Tack Shooter, Position: (755, 402), Cross Pathing: 000, Round Placed: 50
+Tower ID: 32, Type: Spike Factory, Position: (549, 89), Cross Pathing: 001, Round Placed: 52
+Tower ID: 33, Type: Druid, Position: (212, 133), Cross Pathing: 000, Round Placed: 52
+Tower ID: 34, Type: Desperado, Position: (398, 248), Cross Pathing: 010, Round Placed: 53
+Tower ID: 35, Type: Alchemist, Position: (548, 716), Cross Pathing: 000, Round Placed: 53
+Tower ID: 36, Type: Ice Monkey, Position: (945, 77), Cross Pathing: 000, Round Placed: 53
+Tower ID: 37, Type: Glue Gunner, Position: (197, 86), Cross Pathing: 000, Round Placed: 55
+Tower ID: 38, Type: Druid, Position: (61, 90), Cross Pathing: 001, Round Placed: 55
+Tower ID: 39, Type: Alchemist, Position: (990, 84), Cross Pathing: 000, Round Placed: 56
+Tower ID: 40, Type: Desperado, Position: (335, 696), Cross Pathing: 000, Round Placed: 56
+Tower ID: 41, Type: Sniper Monkey, Position: (788, 374), Cross Pathing: 000, Round Placed: 59
+Tower ID: 42, Type: Wizard Monkey, Position: (228, 217), Cross Pathing: 000, Round Placed: 59
+Tower ID: 43, Type: Monkey Village, Position: (583, 606), Cross Pathing: 000, Round Placed: 63
+Tower ID: 44, Type: Druid, Position: (298, 144), Cross Pathing: 001, Round Placed: 63
+Tower ID: 45, Type: Glue Gunner, Position: (696, 256), Cross Pathing: 000, Round Placed: 63
+Tower ID: 46, Type: Ice Monkey, Position: (547, 260), Cross Pathing: 000, Round Placed: 63
+Tower ID: 47, Type: Ninja Monkey, Position: (706, 343), Cross Pathing: 000, Round Placed: 64
+Tower ID: 48, Type: Boomerang Monkey, Position: (683, 493), Cross Pathing: 001, Round Placed: 64
+Tower ID: 49, Type: Ninja Monkey, Position: (432, 522), Cross Pathing: 000, Round Placed: 64
+Tower ID: 50, Type: Monkey Village, Position: (69, 282), Cross Pathing: 000, Round Placed: 65
+Tower ID: 51, Type: Alchemist, Position: (938, 129), Cross Pathing: 100, Round Placed: 65
+Tower ID: 52, Type: Spike Factory, Position: (89, 688), Cross Pathing: 000, Round Placed: 67
+Tower ID: 53, Type: Bomb Shooter, Position: (906, 720), Cross Pathing: 010, Round Placed: 68

@@ -1,10 +1,8 @@
 #include <iostream>
-using namespace std;
 #include <string>
 #include "json.hpp"
 #include <fstream>
 #include <windows.h>
-#include <string>
 using namespace std;
 using json = nlohmann::json;
 #include "GameReader.h"

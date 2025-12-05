@@ -1,0 +1,147 @@
+Strategy Actions: 146
+Action Type: PLACE, Tower ID: 1, Position: (417, 397), Tower Type: Hero, Path: -1, Round: 6
+Action Type: PLACE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: -1, Round: 7
+Action Type: PLACE, Tower ID: 3, Position: (324, 368), Tower Type: Boomerang Monkey, Path: -1, Round: 9
+Action Type: PLACE, Tower ID: 4, Position: (692, 193), Tower Type: Glue Gunner, Path: -1, Round: 10
+Action Type: PLACE, Tower ID: 5, Position: (145, 690), Tower Type: Wizard Monkey, Path: -1, Round: 11
+Action Type: PLACE, Tower ID: 6, Position: (912, 666), Tower Type: Dart Monkey, Path: -1, Round: 12
+Action Type: PLACE, Tower ID: 7, Position: (82, 506), Tower Type: Dart Monkey, Path: -1, Round: 13
+Action Type: UPGRADE, Tower ID: 6, Position: (912, 666), Tower Type: Dart Monkey, Path: 1, Round: 14
+Action Type: UPGRADE, Tower ID: 7, Position: (82, 506), Tower Type: Dart Monkey, Path: 1, Round: 14
+Action Type: UPGRADE, Tower ID: 7, Position: (82, 506), Tower Type: Dart Monkey, Path: 1, Round: 15
+Action Type: UPGRADE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: 2, Round: 15
+Action Type: UPGRADE, Tower ID: 4, Position: (692, 193), Tower Type: Glue Gunner, Path: 1, Round: 16
+Action Type: UPGRADE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: 1, Round: 16
+Action Type: UPGRADE, Tower ID: 6, Position: (912, 666), Tower Type: Dart Monkey, Path: 2, Round: 17
+Action Type: UPGRADE, Tower ID: 3, Position: (324, 368), Tower Type: Boomerang Monkey, Path: 2, Round: 17
+Action Type: UPGRADE, Tower ID: 7, Position: (82, 506), Tower Type: Dart Monkey, Path: 2, Round: 17
+Action Type: UPGRADE, Tower ID: 4, Position: (692, 193), Tower Type: Glue Gunner, Path: 2, Round: 19
+Action Type: UPGRADE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: 1, Round: 19
+Action Type: PLACE, Tower ID: 8, Position: (701, 87), Tower Type: Tack Shooter, Path: -1, Round: 20
+Action Type: UPGRADE, Tower ID: 7, Position: (82, 506), Tower Type: Dart Monkey, Path: 2, Round: 21
+Action Type: UPGRADE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: 2, Round: 22
+Action Type: UPGRADE, Tower ID: 8, Position: (701, 87), Tower Type: Tack Shooter, Path: 2, Round: 22
+Action Type: PLACE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: -1, Round: 23
+Action Type: PLACE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: -1, Round: 24
+Action Type: PLACE, Tower ID: 11, Position: (106, 130), Tower Type: Dart Monkey, Path: -1, Round: 25
+Action Type: PLACE, Tower ID: 12, Position: (819, 708), Tower Type: Wizard Monkey, Path: -1, Round: 26
+Action Type: PLACE, Tower ID: 13, Position: (332, 183), Tower Type: Boomerang Monkey, Path: -1, Round: 27
+Action Type: UPGRADE, Tower ID: 3, Position: (324, 368), Tower Type: Boomerang Monkey, Path: 2, Round: 28
+Action Type: UPGRADE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: 1, Round: 28
+Action Type: UPGRADE, Tower ID: 12, Position: (819, 708), Tower Type: Wizard Monkey, Path: 2, Round: 28
+Action Type: UPGRADE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: 0, Round: 29
+Action Type: UPGRADE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: 2, Round: 29
+Action Type: UPGRADE, Tower ID: 5, Position: (145, 690), Tower Type: Wizard Monkey, Path: 2, Round: 30
+Action Type: PLACE, Tower ID: 14, Position: (926, 594), Tower Type: Druid, Path: -1, Round: 31
+Action Type: UPGRADE, Tower ID: 12, Position: (819, 708), Tower Type: Wizard Monkey, Path: 1, Round: 32
+Action Type: UPGRADE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: 0, Round: 33
+Action Type: UPGRADE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: 1, Round: 35
+Action Type: UPGRADE, Tower ID: 11, Position: (106, 130), Tower Type: Dart Monkey, Path: 0, Round: 36
+Action Type: UPGRADE, Tower ID: 7, Position: (82, 506), Tower Type: Dart Monkey, Path: 1, Round: 36
+Action Type: UPGRADE, Tower ID: 14, Position: (926, 594), Tower Type: Druid, Path: 2, Round: 36
+Action Type: UPGRADE, Tower ID: 13, Position: (332, 183), Tower Type: Boomerang Monkey, Path: 1, Round: 36
+Action Type: UPGRADE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: 1, Round: 36
+Action Type: UPGRADE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: 0, Round: 36
+Action Type: UPGRADE, Tower ID: 8, Position: (701, 87), Tower Type: Tack Shooter, Path: 1, Round: 36
+Action Type: PLACE, Tower ID: 15, Position: (71, 218), Tower Type: Mermonkey, Path: -1, Round: 37
+Action Type: PLACE, Tower ID: 16, Position: (173, 517), Tower Type: Wizard Monkey, Path: -1, Round: 37
+Action Type: PLACE, Tower ID: 17, Position: (366, 81), Tower Type: Wizard Monkey, Path: -1, Round: 37
+Action Type: UPGRADE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: 0, Round: 38
+Action Type: PLACE, Tower ID: 18, Position: (851, 129), Tower Type: Dartling Gunner, Path: -1, Round: 39
+Action Type: PLACE, Tower ID: 19, Position: (627, 700), Tower Type: Spike Factory, Path: -1, Round: 39
+Action Type: PLACE, Tower ID: 20, Position: (418, 129), Tower Type: Boomerang Monkey, Path: -1, Round: 40
+Action Type: PLACE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: -1, Round: 40
+Action Type: PLACE, Tower ID: 22, Position: (541, 401), Tower Type: Monkey Buccaneer, Path: -1, Round: 40
+Action Type: UPGRADE, Tower ID: 15, Position: (71, 218), Tower Type: Mermonkey, Path: 1, Round: 41
+Action Type: UPGRADE, Tower ID: 5, Position: (145, 690), Tower Type: Wizard Monkey, Path: 2, Round: 41
+Action Type: UPGRADE, Tower ID: 19, Position: (627, 700), Tower Type: Spike Factory, Path: 1, Round: 41
+Action Type: UPGRADE, Tower ID: 13, Position: (332, 183), Tower Type: Boomerang Monkey, Path: 2, Round: 41
+Action Type: UPGRADE, Tower ID: 16, Position: (173, 517), Tower Type: Wizard Monkey, Path: 0, Round: 41
+Action Type: UPGRADE, Tower ID: 3, Position: (324, 368), Tower Type: Boomerang Monkey, Path: 0, Round: 42
+Action Type: UPGRADE, Tower ID: 15, Position: (71, 218), Tower Type: Mermonkey, Path: 0, Round: 43
+Action Type: UPGRADE, Tower ID: 20, Position: (418, 129), Tower Type: Boomerang Monkey, Path: 1, Round: 43
+Action Type: UPGRADE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: 2, Round: 43
+Action Type: UPGRADE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: 1, Round: 43
+Action Type: UPGRADE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: 2, Round: 43
+Action Type: UPGRADE, Tower ID: 14, Position: (926, 594), Tower Type: Druid, Path: 2, Round: 43
+Action Type: UPGRADE, Tower ID: 19, Position: (627, 700), Tower Type: Spike Factory, Path: 0, Round: 43
+Action Type: UPGRADE, Tower ID: 18, Position: (851, 129), Tower Type: Dartling Gunner, Path: 2, Round: 43
+Action Type: PLACE, Tower ID: 23, Position: (769, 83), Tower Type: Desperado, Path: -1, Round: 44
+Action Type: PLACE, Tower ID: 24, Position: (205, 684), Tower Type: Ice Monkey, Path: -1, Round: 44
+Action Type: PLACE, Tower ID: 25, Position: (141, 78), Tower Type: Glue Gunner, Path: -1, Round: 44
+Action Type: PLACE, Tower ID: 26, Position: (393, 712), Tower Type: Desperado, Path: -1, Round: 44
+Action Type: UPGRADE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: 2, Round: 45
+Action Type: UPGRADE, Tower ID: 19, Position: (627, 700), Tower Type: Spike Factory, Path: 0, Round: 45
+Action Type: UPGRADE, Tower ID: 17, Position: (366, 81), Tower Type: Wizard Monkey, Path: 0, Round: 45
+Action Type: UPGRADE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: 0, Round: 46
+Action Type: PLACE, Tower ID: 27, Position: (328, 418), Tower Type: Glue Gunner, Path: -1, Round: 47
+Action Type: PLACE, Tower ID: 28, Position: (129, 482), Tower Type: Bomb Shooter, Path: -1, Round: 47
+Action Type: PLACE, Tower ID: 29, Position: (58, 423), Tower Type: Ninja Monkey, Path: -1, Round: 48
+Action Type: PLACE, Tower ID: 30, Position: (266, 77), Tower Type: Tack Shooter, Path: -1, Round: 48
+Action Type: UPGRADE, Tower ID: 25, Position: (141, 78), Tower Type: Glue Gunner, Path: 1, Round: 49
+Action Type: UPGRADE, Tower ID: 19, Position: (627, 700), Tower Type: Spike Factory, Path: 0, Round: 49
+Action Type: UPGRADE, Tower ID: 11, Position: (106, 130), Tower Type: Dart Monkey, Path: 1, Round: 49
+Action Type: UPGRADE, Tower ID: 17, Position: (366, 81), Tower Type: Wizard Monkey, Path: 2, Round: 49
+Action Type: UPGRADE, Tower ID: 18, Position: (851, 129), Tower Type: Dartling Gunner, Path: 0, Round: 49
+Action Type: UPGRADE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: 0, Round: 49
+Action Type: UPGRADE, Tower ID: 5, Position: (145, 690), Tower Type: Wizard Monkey, Path: 0, Round: 49
+Action Type: PLACE, Tower ID: 31, Position: (755, 402), Tower Type: Tack Shooter, Path: -1, Round: 50
+Action Type: UPGRADE, Tower ID: 30, Position: (266, 77), Tower Type: Tack Shooter, Path: 2, Round: 51
+Action Type: UPGRADE, Tower ID: 24, Position: (205, 684), Tower Type: Ice Monkey, Path: 1, Round: 51
+Action Type: UPGRADE, Tower ID: 30, Position: (266, 77), Tower Type: Tack Shooter, Path: 2, Round: 51
+Action Type: UPGRADE, Tower ID: 22, Position: (541, 401), Tower Type: Monkey Buccaneer, Path: 1, Round: 51
+Action Type: UPGRADE, Tower ID: 22, Position: (541, 401), Tower Type: Monkey Buccaneer, Path: 0, Round: 51
+Action Type: UPGRADE, Tower ID: 26, Position: (393, 712), Tower Type: Desperado, Path: 0, Round: 51
+Action Type: UPGRADE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: 2, Round: 51
+Action Type: PLACE, Tower ID: 32, Position: (549, 89), Tower Type: Spike Factory, Path: -1, Round: 52
+Action Type: PLACE, Tower ID: 33, Position: (212, 133), Tower Type: Druid, Path: -1, Round: 52
+Action Type: PLACE, Tower ID: 34, Position: (398, 248), Tower Type: Desperado, Path: -1, Round: 53
+Action Type: PLACE, Tower ID: 35, Position: (548, 716), Tower Type: Alchemist, Path: -1, Round: 53
+Action Type: PLACE, Tower ID: 36, Position: (945, 77), Tower Type: Ice Monkey, Path: -1, Round: 53
+Action Type: UPGRADE, Tower ID: 34, Position: (398, 248), Tower Type: Desperado, Path: 1, Round: 54
+Action Type: UPGRADE, Tower ID: 24, Position: (205, 684), Tower Type: Ice Monkey, Path: 0, Round: 54
+Action Type: UPGRADE, Tower ID: 32, Position: (549, 89), Tower Type: Spike Factory, Path: 2, Round: 54
+Action Type: UPGRADE, Tower ID: 25, Position: (141, 78), Tower Type: Glue Gunner, Path: 2, Round: 54
+Action Type: UPGRADE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: 1, Round: 54
+Action Type: UPGRADE, Tower ID: 19, Position: (627, 700), Tower Type: Spike Factory, Path: 1, Round: 54
+Action Type: UPGRADE, Tower ID: 10, Position: (933, 375), Tower Type: Dart Monkey, Path: 0, Round: 54
+Action Type: PLACE, Tower ID: 37, Position: (197, 86), Tower Type: Glue Gunner, Path: -1, Round: 55
+Action Type: PLACE, Tower ID: 38, Position: (61, 90), Tower Type: Druid, Path: -1, Round: 55
+Action Type: PLACE, Tower ID: 39, Position: (990, 84), Tower Type: Alchemist, Path: -1, Round: 56
+Action Type: PLACE, Tower ID: 40, Position: (335, 696), Tower Type: Desperado, Path: -1, Round: 56
+Action Type: UPGRADE, Tower ID: 20, Position: (418, 129), Tower Type: Boomerang Monkey, Path: 2, Round: 57
+Action Type: UPGRADE, Tower ID: 28, Position: (129, 482), Tower Type: Bomb Shooter, Path: 0, Round: 57
+Action Type: UPGRADE, Tower ID: 9, Position: (184, 595), Tower Type: Glue Gunner, Path: 0, Round: 58
+Action Type: PLACE, Tower ID: 41, Position: (788, 374), Tower Type: Sniper Monkey, Path: -1, Round: 59
+Action Type: PLACE, Tower ID: 42, Position: (228, 217), Tower Type: Wizard Monkey, Path: -1, Round: 59
+Action Type: UPGRADE, Tower ID: 20, Position: (418, 129), Tower Type: Boomerang Monkey, Path: 1, Round: 60
+Action Type: UPGRADE, Tower ID: 17, Position: (366, 81), Tower Type: Wizard Monkey, Path: 2, Round: 60
+Action Type: UPGRADE, Tower ID: 3, Position: (324, 368), Tower Type: Boomerang Monkey, Path: 2, Round: 60
+Action Type: UPGRADE, Tower ID: 30, Position: (266, 77), Tower Type: Tack Shooter, Path: 0, Round: 60
+Action Type: PLACE, Tower ID: 43, Position: (583, 606), Tower Type: Monkey Village, Path: -1, Round: 63
+Action Type: PLACE, Tower ID: 44, Position: (298, 144), Tower Type: Druid, Path: -1, Round: 63
+Action Type: PLACE, Tower ID: 45, Position: (696, 256), Tower Type: Glue Gunner, Path: -1, Round: 63
+Action Type: PLACE, Tower ID: 46, Position: (547, 260), Tower Type: Ice Monkey, Path: -1, Round: 63
+Action Type: PLACE, Tower ID: 47, Position: (706, 343), Tower Type: Ninja Monkey, Path: -1, Round: 64
+Action Type: PLACE, Tower ID: 48, Position: (683, 493), Tower Type: Boomerang Monkey, Path: -1, Round: 64
+Action Type: PLACE, Tower ID: 49, Position: (432, 522), Tower Type: Ninja Monkey, Path: -1, Round: 64
+Action Type: PLACE, Tower ID: 50, Position: (69, 282), Tower Type: Monkey Village, Path: -1, Round: 65
+Action Type: PLACE, Tower ID: 51, Position: (938, 129), Tower Type: Alchemist, Path: -1, Round: 65
+Action Type: UPGRADE, Tower ID: 2, Position: (793, 162), Tower Type: Dart Monkey, Path: 1, Round: 66
+Action Type: PLACE, Tower ID: 52, Position: (89, 688), Tower Type: Spike Factory, Path: -1, Round: 67
+Action Type: PLACE, Tower ID: 53, Position: (906, 720), Tower Type: Bomb Shooter, Path: -1, Round: 68
+Action Type: UPGRADE, Tower ID: 16, Position: (173, 517), Tower Type: Wizard Monkey, Path: 0, Round: 69
+Action Type: UPGRADE, Tower ID: 29, Position: (58, 423), Tower Type: Ninja Monkey, Path: 1, Round: 69
+Action Type: UPGRADE, Tower ID: 30, Position: (266, 77), Tower Type: Tack Shooter, Path: 2, Round: 69
+Action Type: UPGRADE, Tower ID: 21, Position: (749, 511), Tower Type: Wizard Monkey, Path: 2, Round: 71
+Action Type: UPGRADE, Tower ID: 22, Position: (541, 401), Tower Type: Monkey Buccaneer, Path: 1, Round: 71
+Action Type: UPGRADE, Tower ID: 12, Position: (819, 708), Tower Type: Wizard Monkey, Path: 2, Round: 71
+Action Type: UPGRADE, Tower ID: 20, Position: (418, 129), Tower Type: Boomerang Monkey, Path: 1, Round: 72
+Action Type: UPGRADE, Tower ID: 44, Position: (298, 144), Tower Type: Druid, Path: 2, Round: 72
+Action Type: UPGRADE, Tower ID: 48, Position: (683, 493), Tower Type: Boomerang Monkey, Path: 2, Round: 72
+Action Type: UPGRADE, Tower ID: 51, Position: (938, 129), Tower Type: Alchemist, Path: 0, Round: 72
+Action Type: UPGRADE, Tower ID: 38, Position: (61, 90), Tower Type: Druid, Path: 2, Round: 73
+Action Type: UPGRADE, Tower ID: 17, Position: (366, 81), Tower Type: Wizard Monkey, Path: 0, Round: 73
+Action Type: UPGRADE, Tower ID: 29, Position: (58, 423), Tower Type: Ninja Monkey, Path: 1, Round: 73
+Action Type: UPGRADE, Tower ID: 53, Position: (906, 720), Tower Type: Bomb Shooter, Path: 1, Round: 73
+Action Type: UPGRADE, Tower ID: 11, Position: (106, 130), Tower Type: Dart Monkey, Path: 0, Round: 73

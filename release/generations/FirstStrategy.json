@@ -1,0 +1,19 @@
+{
+  "ID": "0-0",
+  "actions": [
+    {
+      "path": -1,
+      "round": 6,
+      "towerId": 1,
+      "towerType": 0,
+      "type": "PLACE",
+      "x":417,
+      "y": 397
+    }
+    
+  ],
+  "difficulty": "CHIMPS",
+  "endCash": 650,
+  "roundObtained": 20,
+  "score": 420
+}
