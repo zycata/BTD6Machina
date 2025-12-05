@@ -5,12 +5,13 @@
 - link to video of it beating chimps: https://www.youtube.com/watch?v=b4V2-yvDnXA
 
 Requirements to compile:
-- make
-- gcc >= 6.3.0 (clang also should work)
+- gnu make
+- gnu gcc >= 6.3.0 (clang also should work)
 
 Compile with `make aitd6`
 Compile tests with `make tests`
 
+remove exe and obj files with: `make clean_all` and `make clean_tests`
 
 # FlowChart & include hierarchy below
 
