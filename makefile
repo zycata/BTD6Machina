@@ -1,6 +1,10 @@
-CC = gcc #clang
-# CXX = clang
-# clang works too i think
+# this program should compile with gcc version 6.3.0 or higher (works with 15.2.0) clang has been tested with 21.1.0
+
+
+# you can replace both CC and CXX with clang or clang++ if you want to use clang btw
+CC = gcc
+CXX = gcc
+
 # unfortunately this program is gonna be windows exclusive anyways so the makefile will be windows exclusive too
 CFLAGS = -Wall -Wextra -g # -static 
 
