@@ -9,7 +9,7 @@
 using namespace std;
 // 
 // in this folder ofc bevause im the goat
-// compile using g++ test/GameReaderTest/GameReaderTest.cpp src/jsonHandlers/GameReader.cpp -o test/GameReaderTest/GameReaderTest.exe
+// compile using g++ test/GameReaderTest/GameReaderTest.cpp src/jsonHandlers/GameReader.cpp src/mouseControl/mouseControl.cpp -o test/GameReaderTest/GameReaderTest.exe
 
 
 template<typename T>

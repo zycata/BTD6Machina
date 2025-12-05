@@ -1,9 +1,11 @@
+#pragma once
+
 #ifndef GAMEREADER_H
 #define GAMEREADER_H
 
+#include <string>
 #include "json.hpp"
 using json = nlohmann::json;
-
 class GameReader {
 private:
     // All these variables must be declared here
