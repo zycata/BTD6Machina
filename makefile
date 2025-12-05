@@ -1,7 +1,7 @@
 CC = gcc #clang
-#CXX = clang
-# gcc you need to include the fuckass linked to folders n shit because gcc is real
+# CXX = clang
 # clang works too i think
+# unfortunately this program is gonna be windows exclusive anyways so the makefile will be windows exclusive too
 CFLAGS = -Wall -Wextra -g # -static 
 
 # -lstdc++ to manually link standard c library for gcc compiler
